@@ -169,7 +169,7 @@
 </style>
 
 <section class="hero-section">
-    <h1>Daftar Menu Yang Tersedia</h1>
+    <h1>Daftar Menu Yang Tersedia tes laptop3</h1>
 </section>
 
 <section class="menu-section">
