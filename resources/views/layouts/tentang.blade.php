@@ -186,17 +186,17 @@ resep yang tak pernah berubah — masak dengan hati, layani dengan senyum.
     <h2>Mengapa Catering Teras Bu Rini?</h2>
     <div class="why-icons">
         <div class="why-item">
-            <img src="{{ asset('images/icon-home.png') }}" alt="Rasa Rumahan">
+            <img src="{{ asset('images/bg rumahan.png') }}" alt="Rasa Rumahan">
             <h4>Rasa Rumahan Asli</h4>
             <p>Setiap masakan dibuat dengan resep keluarga dan cita rasa autentik rumahan.</p>
         </div>
         <div class="why-item">
-            <img src="{{ asset('images/icon-leaf.png') }}" alt="Bahan Segar">
+            <img src="{{ asset('images/bg segar.png') }}" alt="Bahan Segar">
             <h4>Bahan Segar Setiap Hari</h4>
             <p>Kami menggunakan bahan-bahan segar pilihan dari petani lokal untuk kualitas terbaik.</p>
         </div>
         <div class="why-item">
-            <img src="{{ asset('images/icon-smile.png') }}" alt="Pelayanan Hati">
+            <img src="{{ asset('images/bg pelayanan.png') }}" alt="Pelayanan Hati">
             <h4>Pelayanan Dengan Hati</h4>
             <p>Setiap pesanan kami layani dengan penuh perhatian dan senyum tulus dari tim kami.</p>
         </div>
