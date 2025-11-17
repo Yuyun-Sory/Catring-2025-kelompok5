@@ -78,33 +78,35 @@
     border-radius: 50%;
     background-size: cover;
     background-position: center;
-    border: 6px solid #fff;
     box-shadow: 0 6px 25px rgba(0,0,0,0.25);
+    border:none;
 }
 
 /* posisi tumpukan */
 .circle.one {
-    width: 120px;
-    height: 120px;
+    width: 250px;
+    height: 300px;
     left: 20px;
-    top: 60px;
+    bottom:-9rem;
     z-index: 1;
+    border:17px solid #e4e4e4ff
 }
 
 .circle.two {
-    width: 160px;
-    height: 160px;
-    left: 70px;
-    top: 30px;
+    width: 180px;
+    height: 210px;
+    left: 180px;
+    top: -7rem;
     z-index: 2;
 }
 
 .circle.three {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 180px;
     left: 130px;
     top: 0;
     z-index: 3;
+    border : none;
 }
 
 /* === TEKS === */
@@ -139,6 +141,14 @@
             text-align: center;
             padding: 60px 20px;
             margin: 0;
+        }
+
+
+        .img-1{
+            width: 20%;
+            height: 40%;
+            object-fit: cover;
+            border-radius :30%
         }
 
 
@@ -304,13 +314,13 @@
                 <!-- Ikon Sosial Media (dengan tautan aktif) -->
                 <div class="mt-3 d-flex align-items-center">
                     <a href="https://wa.me/6281234567890" target="_blank" class="me-3" title="WhatsApp">
-                        <img src="{{ asset('icons/wa.png') }}" width="30" alt="WhatsApp">
+                        <img src="{{ asset('icons/wa.png') }}"  alt="WhatsApp" class="img-1 ">
                     </a>
                     <a href="https://www.instagram.com/terasburini" target="_blank" class="me-3" title="Instagram">
-                        <img src="{{ asset('icons/ig.png') }}" width="30" alt="Instagram">
+                        <img src="{{ asset('icons/ig.png') }}"  alt="Instagram">
                     </a>
                     <a href="https://www.facebook.com/terasburini" target="_blank" title="Facebook">
-                        <img src="{{ asset('icons/fb.png') }}" width="30" alt="Facebook">
+                        <img src="{{ asset('icons/fb.png') }}"  alt="Facebook">
                     </a>
                 </div>
             </div>
