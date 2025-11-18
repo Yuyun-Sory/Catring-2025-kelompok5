@@ -30,8 +30,5 @@ Route::get('/tentang', function () {
     return view('layouts.tentang');
 });
 
-<<<<<<< HEAD
-=======
 // Detail Menu
 Route::get('/menu/{slug}', [MenuController::class, 'detail'])->name('menu.detail');
->>>>>>> bae3cb2d062f5842dd8711100c1af550b4f92206
