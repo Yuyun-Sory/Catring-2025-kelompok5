@@ -28,3 +28,4 @@ Route::get('/cara-pesan', function () {
 Route::get('/tentang', function () {
     return view('layouts.tentang');
 });
+

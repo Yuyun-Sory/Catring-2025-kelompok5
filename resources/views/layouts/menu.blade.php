@@ -20,11 +20,23 @@
     }
 
     .hero-section h1 {
-        font-size: 46px;
-        font-weight: 700;
-        color: #FF4D8D;
-        padding: 10px 25px;
-        border-radius: 10px;
+        .hero-section h1 {
+    font-size: 46px;
+    font-weight: 700;
+    color: #ffffff; /* putih */
+    padding: 10px 25px;
+    border-radius: 10px;
+
+    /* Efek glow super tebal */
+    text-shadow:
+        0 0 8px rgba(0, 0, 0, 1),
+        0 0 16px rgba(0, 0, 0, 1),
+        0 0 28px rgba(0, 0, 0, 0.95),
+        0 0 40px rgba(0, 0, 0, 0.9),
+        0 0 55px rgba(0, 0, 0, 0.85),
+        0 0 70px rgba(0, 0, 0, 0.8);
+}
+
     }
 
     .menu-section {
