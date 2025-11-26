@@ -41,4 +41,9 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
+<<<<<<< HEAD
 })->name('dashboard');
+=======
+})->name('dashboard');
+
+>>>>>>> aab7cf07609f6d51500d286948038c035da85164
