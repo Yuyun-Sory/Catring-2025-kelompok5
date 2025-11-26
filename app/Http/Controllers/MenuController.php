@@ -49,7 +49,7 @@ class MenuController extends Controller
                 'harga' => 10000,
                 'minimal' => 50,
                 'rating' => 4.7,
-                'deskripsi' => 'Kuahnya bening, rasanya gurih ringan, dan penuh sayuran segar seperti wortel, kentang, buncis, dan kol. Cocok disantap kapan saja — baik untuk menu harian, acara keluarga, maupun sajian pendamping di paket catering.  Disajikan hangat dengan aroma bawang goreng yang khas, Sop Sayur ini bukan cuma sehat, tapi juga bikin nyaman di setiap suapan.',
+                'deskripsi' => 'Kuahnya bening, rasanya gurih ringan, dan penuh sayuran segar seperti wortel, kentang, buncis, dan kol. Cocok disantap kapan saja — baik untuk menu harian, acara keluarga, maupun sajian pendamping di paket catering. Disajikan hangat dengan aroma bawang goreng yang khas, Sop Sayur ini bukan cuma sehat, tapi juga bikin nyaman di setiap suapan.',
                 'gambar' => 'images/sayur sop.png'
             ],
         'mie-goreng-telur' => [
@@ -57,7 +57,7 @@ class MenuController extends Controller
                 'harga' => 10000,
                 'minimal' => 50,
                 'rating' => 4.7,
-                'deskripsi' => 'Kuahnya bening, rasanya gurih ringan, dan penuh sayuran segar seperti wortel, kentang, buncis, dan kol. Cocok disantap kapan saja — baik untuk menu harian, acara keluarga, maupun sajian pendamping di paket catering.  Disajikan hangat dengan aroma bawang goreng yang khas, Sop Sayur ini bukan cuma sehat, tapi juga bikin nyaman di setiap suapan.',
+                'deskripsi' => 'Kuahnya bening, rasanya gurih ringan, dan penuh sayuran segar seperti wortel, kentang, buncis, dan kol. Cocok disantap kapan saja — baik untuk menu harian, acara keluarga, maupun sajian pendamping di paket catering. Disajikan hangat dengan aroma bawang goreng yang khas, Sop Sayur ini bukan cuma sehat, tapi juga bikin nyaman di setiap suapan.',
                 'gambar' => 'images/mie goreng.png'
             ],
         'mie-rebus-telur' => [
@@ -65,7 +65,7 @@ class MenuController extends Controller
                 'harga' => 10000,
                 'minimal' => 50,
                 'rating' => 4.7,
-                'deskripsi' => 'Kuahnya bening, rasanya gurih ringan, dan penuh sayuran segar seperti wortel, kentang, buncis, dan kol. Cocok disantap kapan saja — baik untuk menu harian, acara keluarga, maupun sajian pendamping di paket catering.  Disajikan hangat dengan aroma bawang goreng yang khas, Sop Sayur ini bukan cuma sehat, tapi juga bikin nyaman di setiap suapan.',
+                'deskripsi' => 'Kuahnya bening, rasanya gurih ringan, dan penuh sayuran segar seperti wortel, kentang, buncis, dan kol. Cocok disantap kapan saja — baik untuk menu harian, acara keluarga, maupun sajian pendamping di paket catering. Disajikan hangat dengan aroma bawang goreng yang khas, Sop Sayur ini bukan cuma sehat, tapi juga bikin nyaman di setiap suapan.',
                 'gambar' => 'images/mie rebus.png'
             ],
         'bakwan-kawi-bakso' => [
@@ -81,7 +81,7 @@ class MenuController extends Controller
                 'harga' => 6000,
                 'minimal' => 50,
                 'rating' => 4.5,
-                'deskripsi' => '🍵 Teh Hangat / Dingin Minuman sederhana yang selalu jadi favorit setiap waktu. Rasa manisnya pas, aromanya menenangkan, dan cocok banget buat nemenin makan siang atau sekadar ngobrol santai. Disajikan dalam dua pilihan ukuran:
+                'deskripsi' => '🍵 Teh Hangat / DinginMinuman sederhana yang selalu jadi favorit setiap waktu. Rasa manisnya pas, aromanya menenangkan, dan cocok banget buat nemenin makan siang atau sekadar ngobrol santai. Disajikan dalam dua pilihan ukuran:
                 🧊 200 ml — Rp 2.000
                 🧊 400 ml — Rp 4.000',
                 'gambar' => 'images/teh manis.png'
@@ -139,7 +139,7 @@ class MenuController extends Controller
                 'harga' => 30000,
                 'minimal' => 50,
                 'rating' => 5.0,
-                'deskripsi' => 'Nikmati perpaduan lembutnya bolu kukus pandan dengan gurihnya taburan keju melimpah di atasnya. Dibuat dari bahan berkualitas dengan aroma pandan alami yang harum dan tekstur lembut yang mengembang sempurna. Setiap potongnya menghadirkan rasa manis, gurih, dan wangi yang pas di lidah.  Cocok untuk camilan keluarga, oleh-oleh, atau sajian acara spesial',
+                'deskripsi' => 'Nikmati perpaduan lembutnya bolu kukus pandan dengan gurihnya taburan keju melimpah di atasnya. Dibuat dari bahan berkualitas dengan aroma pandan alami yang harum dan tekstur lembut yang mengembang sempurna. Setiap potongnya menghadirkan rasa manis, gurih, dan wangi yang pas di lidah. Cocok untuk camilan keluarga, oleh-oleh, atau sajian acara spesial',
                 'gambar' => 'images/bolu kukus pandan keju.png'
         ],
         'bolu-kukus-pandan-keju' => [
@@ -147,7 +147,7 @@ class MenuController extends Controller
                 'harga' => 30000,
                 'minimal' => 50,
                 'rating' => 5.0,
-                'deskripsi' => 'Nikmati perpaduan lembutnya bolu kukus pandan dengan gurihnya taburan keju melimpah di atasnya. Dibuat dari bahan berkualitas dengan aroma pandan alami yang harum dan tekstur lembut yang mengembang sempurna. Setiap potongnya menghadirkan rasa manis, gurih, dan wangi yang pas di lidah.  Cocok untuk camilan keluarga, oleh-oleh, atau sajian acara spesial',
+                'deskripsi' => 'Nikmati perpaduan lembutnya bolu kukus pandan dengan gurihnya taburan keju melimpah di atasnya. Dibuat dari bahan berkualitas dengan aroma pandan alami yang harum dan tekstur lembut yang mengembang sempurna. Setiap potongnya menghadirkan rasa manis, gurih, dan wangi yang pas di lidah. Cocok untuk camilan keluarga, oleh-oleh, atau sajian acara spesial',
                 'gambar' => 'images/bolu kukus pandan keju.png'
         ],
         'bolu-kukus-pandan-keju 15 x 10 x 5 cm' => [
@@ -195,7 +195,7 @@ class MenuController extends Controller
                 'harga' => 9000,
                 'minimal' => 15,
                 'rating' => 4.7,
-                'deskripsi' => 'Mie goreng telur ini punya cita rasa gurih dan sedikit manis yang pas. Teksturnya lembut, tidak terlalu berminyak, dan telurnya memberi aroma harum yang bikin nagih. Simpel, tapi rasanya comforting banget.',
+                'deskripsi' => 'Mie goreng telur ini punya cita rasa gurih dan sedikit manis yang pas. Teksturnya lembut, tidak terlalu berminyak, dan telurnya memberi aroma harum yang bikin nagih. Simpel, tapi rasanya comforting banget.',
                 'gambar' => 'images/mie goreng.png'
             ],
 
