@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\MenuController; // ← WAJIB ADA
+use App\Http\Controllers\LoginController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -32,3 +33,13 @@ Route::get('/tentang', function () {
 
 // Detail Menu
 Route::get('/menu/{slug}', [MenuController::class, 'detail'])->name('menu.detail');
+
+Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
