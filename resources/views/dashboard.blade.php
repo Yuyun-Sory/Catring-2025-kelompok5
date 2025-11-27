@@ -102,12 +102,29 @@
         <a href="{{ route('pemesanan.masuk') }}">📥 Pemesanan Masuk</a>
       </li>
 
-      <li><a href="#">📊 Status Pesanan</a></li>
-      <li><a href="#">📦 Jumlah Stok Bahan</a></li>
-      <li><a href="#">📅 Jadwal Produksi</a></li>
-      <li><a href="#">📄 Laporan</a></li>
-      <li><a href="#">💬 TerasChat</a></li>
-      <li><a href="#">⏻ Logout</a></li>
+      <li>
+        <a href="{{ route('status.pesanan') }}">📊 Status Pesanan</a>
+      </li>
+
+       <li>
+        <a href="{{ route('stok.bahan') }}">📦 Stok Bahan</a>
+      </li>
+
+      <li>
+        <a href="{{ route('jadwal.produksi') }}">📅 Jadwal Produksi</a>
+      </li>
+
+       <li>
+        <a href="{{ route('laporan') }}">📄 Laporan</a>
+      </li>
+
+      <li>
+        <a href="{{ route('teras.chat') }}">💬 TerasChat</a>
+      </li>
+
+      <li>
+        <a href="{{ route('logout') }}">⏻ Logout</a>
+      </li>
     </ul>
   </div>
 
@@ -122,12 +139,11 @@
 
       <!-- CARD: PEMESANAN MASUK -->
       <a href="{{ route('pemesanan.masuk') }}" class="card-link">
-         <div class="card blue">👥 3 Pelanggan</div>
-         
-           <div class="card green">📂 Kategori</div>
         <div class="card orange">🛒 2 Pesanan Baru</div>
       </a>
 
+      <div class="card blue">👥 3 Pelanggan</div>
+      <div class="card green">📂 Kategori</div>
       <div class="card orange2">🛒 5 Total Pesanan</div>
     </div>
   </div>
