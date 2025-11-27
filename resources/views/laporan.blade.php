@@ -4,117 +4,218 @@
 
 @section('content')
 
-<!-- HEADER -->
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
-    <h1 style="font-size:32px; font-weight:700;">Laporan</h1>
+<style>
+    .laporan-container {
+        width: 100%;
+    }
 
-    <button style="padding:10px 18px; background:white; border:1px solid black; border-radius:8px;">
-        + Export Laporan
-    </button>
-</div>
+    .summary-container {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+    }
 
-<!-- FILTER -->
-<div style="
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    margin-bottom:25px;
-    border:1px solid #e0e0e0;
-    width:70%;
-">
-    <h3 style="margin-bottom:15px; font-size:20px;">Filter Laporan</h3>
+    .summary-box {
+        background: white;
+        border: 1px solid #dcdcdc;
+        padding: 18px 20px;
+        border-radius: 10px;
+        width: 200px;
+    }
 
-    <div style="display:flex; gap:15px; align-items:center;">
-        <div>
-            <label>Dari Tanggal</label><br>
-            <input type="date" style="padding:8px; width:180px; border-radius:6px; border:1px solid #ccc;">
+    .summary-title {
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+
+    .summary-value {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .chart-box {
+        background: white;
+        border: 1px solid #dcdcdc;
+        border-radius: 12px;
+        padding: 20px;
+        min-height: 200x;
+    }
+
+    .chart-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+</style>
+
+
+<div class="laporan-container">
+
+    <h1 style="font-size:32px; font-weight:700; margin-bottom:0;">Laporan</h1>
+    <p style="margin-top:4px; color:#333;">
+        Analisis performa bisnis dan pengambilan keputusan
+    </p>
+
+    <!-- SUMMARY -->
+    <div class="summary-container">
+        <div class="summary-box">
+            <div class="summary-title">💰 Total Pendapatan</div>
+            <div class="summary-value">Rp 501.00 JT</div>
+            <div style="font-size:13px; color:green; margin-top:4px;">⬆ 12%</div>
         </div>
 
-        <div>
-            <label>Sampai Tanggal</label><br>
-            <input type="date" style="padding:8px; width:180px; border-radius:6px; border:1px solid #ccc;">
+        <div class="summary-box">
+            <div class="summary-title">📈 Total Profit</div>
+            <div class="summary-value">Rp 26.05 JT</div>
+            <div style="font-size:13px; color:green; margin-top:4px;">⬆ 12%</div>
         </div>
 
-        <button style="
-            margin-top:22px;
-            background:#0066ff; 
-            color:white; 
-            padding:8px 16px; 
-            border:none;
-            border-radius:6px;
-        ">
-            Tampilkan
-        </button>
+        <div class="summary-box">
+            <div class="summary-title">📊 Status Pesanan</div>
+            <div class="summary-value">750</div>
+            <div style="font-size:13px; color:green; margin-top:4px;">⬆ 12%</div>
+        </div>
+
+        <div class="summary-box">
+            <div class="summary-title">📅 Hari Tersibuk</div>
+            <div class="summary-value">Jumat</div>
+            <div style="font-size:13px; color:green; margin-top:4px;">Sabtu</div>
+        </div>
     </div>
+
+
+    <!-- ROW 1 -->
+    <div class="grid-2">
+
+        <!-- BAR HORIZONTAL -->
+        <div class="chart-box">
+            <div class="chart-title">Penjualan per Item</div>
+            <canvas id="itemChart"></canvas>
+        </div>
+
+        <!-- PIE CHART -->
+        <div class="chart-box">
+            <div class="chart-title">Distribusi Penjualan</div>
+            <canvas id="pieChart"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- ROW 2 -->
+    <div class="grid-2">
+
+        <!-- LINE CHART -->
+        <div class="chart-box">
+            <div class="chart-title">Trend Penjualan per Hari</div>
+            <canvas id="lineChart"></canvas>
+        </div>
+
+        <!-- BAR CHART -->
+        <div class="chart-box">
+            <div class="chart-title">Pendapatan Vs Profit</div>
+            <canvas id="barChart"></canvas>
+        </div>
+
+    </div>
+
 </div>
 
-<!-- SUMMARY BOX -->
-<div style="display:flex; gap:15px; margin-bottom:25px;">
 
-    <div style="padding:15px 25px; background:#0066ff; color:white; border-radius:10px;">
-        <div style="font-size:20px; font-weight:bold;">25</div>
-        <div>Total Pesanan</div>
-    </div>
+{{-- CHART.JS SCRIPT --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <div style="padding:15px 25px; background:#0066ff; color:white; border-radius:10px;">
-        <div style="font-size:20px; font-weight:bold;">Rp 12.500.000</div>
-        <div>Total Pendapatan</div>
-    </div>
+<script>
+    // ---------- 1. BAR HORIZONTAL ----------
+    new Chart(document.getElementById('itemChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Nasi Ayam Goreng', 'Nasi Pecel', 'Sate Ayam'],
+            datasets: [{
+                label: 'Jumlah Terjual',
+                data: [85, 65, 40],
+                backgroundColor: ['#b15cd1', '#0066ff', '#7de99f'],
+                borderRadius: 8
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            scales: {
+                x: {beginAtZero: true}
+            }
+        }
+    });
 
-    <div style="padding:15px 25px; background:#0066ff; color:white; border-radius:10px;">
-        <div style="font-size:20px; font-weight:bold;">Nasi Ayam</div>
-        <div>Menu Terlaris</div>
-    </div>
+    // ---------- 2. PIE CHART ----------
+    new Chart(document.getElementById('pieChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Nasi Ayam Goreng', 'Nasi Pecel', 'Sate Ayam'],
+            datasets: [{
+                data: [35, 28, 20],
+                backgroundColor: ['#b15cd1', '#0066ff', '#7de99f']
+            }]
+        },
+        options: {
+            cutout: '55%',
+            responsive: true
+        }
+    });
 
-</div>
+    // ---------- 3. LINE CHART ----------
+    new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+            labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+            datasets: [{
+                label: 'Penjualan',
+                data: [10, 25, 40, 60, 85, 80],
+                borderWidth: 2,
+                borderColor: '#0066ff',
+                fill: false,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
 
-<!-- TABLE -->
-<div style="background:white; padding:20px; border-radius:12px; width:90%;">
-
-    <table style="width:100%; border-collapse:collapse;">
-        <thead>
-            <tr style="background:#f0f0f0;">
-                <th style="padding:12px; border-bottom:1px solid #ddd; text-align:left;">Tanggal</th>
-                <th style="padding:12px; border-bottom:1px solid #ddd; text-align:left;">Nama Pelanggan</th>
-                <th style="padding:12px; border-bottom:1px solid #ddd; text-align:left;">Menu</th>
-                <th style="padding:12px; border-bottom:1px solid #ddd; text-align:left;">Jumlah</th>
-                <th style="padding:12px; border-bottom:1px solid #ddd; text-align:left;">Total Harga</th>
-                <th style="padding:12px; border-bottom:1px solid #ddd; text-align:left;">Status</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            <tr>
-                <td style="padding:12px;">02/11/2025</td>
-                <td style="padding:12px;">Afnan Rizki</td>
-                <td style="padding:12px;">Nasi Ayam Goreng</td>
-                <td style="padding:12px;">20 box</td>
-                <td style="padding:12px;">Rp 1.000.000</td>
-                <td style="padding:12px;">Selesai</td>
-            </tr>
-
-            <tr>
-                <td style="padding:12px;">05/11/2025</td>
-                <td style="padding:12px;">Budi Santoso</td>
-                <td style="padding:12px;">Soto Ayam</td>
-                <td style="padding:12px;">10 box</td>
-                <td style="padding:12px;">Rp 750.000</td>
-                <td style="padding:12px;">Selesai</td>
-            </tr>
-
-            <tr>
-                <td style="padding:12px;">08/11/2025</td>
-                <td style="padding:12px;">Sri Nurholis</td>
-                <td style="padding:12px;">Nasi Pecel</td>
-                <td style="padding:12px;">15 box</td>
-                <td style="padding:12px;">Rp 600.000</td>
-                <td style="padding:12px;">Menunggu</td>
-            </tr>
-
-        </tbody>
-    </table>
-
-</div>
+    // ---------- 4. BAR CHART ----------
+    new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+            datasets: [
+                {
+                    label: 'Pendapatan',
+                    data: [10, 20, 35, 40, 55, 45],
+                    backgroundColor: '#0066ff'
+                },
+                {
+                    label: 'Profit',
+                    data: [5, 10, 18, 25, 30, 20],
+                    backgroundColor: '#7de99f'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {beginAtZero: true}
+            }
+        }
+    });
+</script>
 
 @endsection

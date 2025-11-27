@@ -4,129 +4,172 @@
 
 @section('content')
 
-<h1 style="display:flex; align-items:center; gap:10px; font-size:32px; font-weight:bold;">
-    📊 Status Pesanan
+<style>
+    .badge-blue {
+        background:#0050ff; 
+        color:white; 
+        padding:6px 14px; 
+        border-radius:10px; 
+        font-size:14px;
+        display:flex;
+        align-items:center;
+        gap:6px;
+    }
+    .badge-gray {
+        background:#e9e9e9; 
+        padding:8px 18px; 
+        border-radius:20px; 
+        border:none;
+        cursor:pointer;
+    }
+    .badge-green {
+        background:#7beb8b; 
+        padding:8px 18px; 
+        border-radius:20px; 
+        border:none;
+        cursor:pointer;
+    }
+    .card-order {
+        background:white; 
+        padding:20px; 
+        border:1px solid #cfcfcf; 
+        border-radius:10px; 
+        margin-bottom:18px;
+    }
+    .status-pill {
+        padding:4px 10px;
+        border-radius:12px;
+        color:white;
+        font-size:12px;
+    }
+    .pill-selesai { background:#3FBF3F; }
+    .pill-menunggu { background:#757575; }
+    .pill-diproses { background:#1976ff; }
+    .pill-dikirim { background:#df9d00; }
+    .pill-batal { background:#d83131; }
+    .update-btn {
+        padding:6px 12px; 
+        border-radius:6px; 
+        border:none;
+        cursor:pointer;
+        font-size:13px;
+    }
+    .btn-proses { background:#7beb8b; }
+    .btn-batalkan { background:#ff6f6f; }
+    .btn-kirim { background:#82C0FF; }
+</style>
+
+<h1 style="
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:20px;
+">
+    Status Pesanan
 </h1>
 
-<!-- Summary Counter -->
-<div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
-    <button style="padding:10px 20px; border-radius:20px; background:#7beb8b; border:none;">Menunggu 1</button>
-    <button style="padding:10px 20px; border-radius:20px; background:#7beb8b; border:none;">Diproses 1</button>
-    <button style="padding:10px 20px; border-radius:20px; background:#7beb8b; border:none;">Dikirim 1</button>
-    <button style="padding:10px 20px; border-radius:20px; background:#7beb8b; border:none;">Selesai 1</button>
-    <button style="padding:10px 20px; border-radius:20px; background:#7beb8b; border:none;">Dibatalkan 1</button>
+<!-- SUMMARY BUTTON BAR -->
+<div style="display:flex; gap:12px; flex-wrap:wrap;">
+    <div class="badge-blue">📦 Menunggu <b>1</b></div>
+    <div class="badge-blue">⚙️ Diproses <b>1</b></div>
+    <div class="badge-blue">📤 Dikirim <b>1</b></div>
+    <div class="badge-blue">✔️ Selesai <b>1</b></div>
+    <div class="badge-blue">❌ Dibatalkan <b>1</b></div>
 </div>
 
-<!-- Filter Buttons -->
-<div style="display:flex; gap:10px; margin:25px 0;">
-    <button style="padding:10px 22px; background:#7beb8b; border:none; border-radius:20px;">Semua</button>
-    <button style="padding:10px 22px; border:none; border-radius:20px;">Menunggu</button>
-    <button style="padding:10px 22px; border:none; border-radius:20px;">Diproses</button>
-    <button style="padding:10px 22px; border:none; border-radius:20px;">Dalam Perjalanan</button>
-    <button style="padding:10px 22px; border:none; border-radius:20px;">Selesai</button>
-    <button style="padding:10px 22px; border:none; border-radius:20px;">Dibatalkan</button>
+<!-- FILTER BUTTONS -->
+<div style="display:flex; gap:10px; margin:20px 0;">
+    <button class="badge-green">Semua</button>
+    <button class="badge-gray">Menunggu</button>
+    <button class="badge-gray">Diproses</button>
+    <button class="badge-gray">Dalam Perjalanan</button>
+    <button class="badge-gray">Selesai</button>
+    <button class="badge-gray">Dibatalkan</button>
 </div>
 
-<!-- Search -->
-<div style="margin-bottom:20px;">
-    <input type="text" placeholder="Cari Pesanan (No Pesanan, Nama/Menu...)"
-        style="width:100%; padding:12px; border-radius:10px; border:1px solid #ccc;">
-</div>
+<!-- SEARCH BAR -->
+<input type="text" placeholder="🔍 Cari Pesanan (No Pesanan, Nama/Menu...)"
+    style="
+        width:100%; 
+        padding:12px; 
+        border-radius:10px; 
+        border:1px solid #ccc;
+        margin-bottom:20px;
+    ">
 
-<!-- CARD LIST ORDER -->
-
-<!-- ORDER 1 -->
-<div style="background:white; padding:20px; border-radius:10px; margin-bottom:20px; border:1px solid #ddd;">
+<!-- CARD 1 -->
+<div class="card-order">
 
     <div style="display:flex; justify-content:space-between;">
-        <div style="font-weight:bold;">2025-0015</div>
-        <span style="background:green; color:white; padding:4px 10px; border-radius:12px;">Selesai</span>
+        <div><b>2025-0015</b></div>
+        <span class="status-pill pill-selesai">Selesai</span>
     </div>
 
     <p style="font-weight:bold; margin-top:10px;">Nasi Ayam Goreng Lalapan</p>
 
-    <p>Ahmad Rizki <br> 0855-1234-5678</p>
+    <p>
+        Ahmad Rizki<br>
+        <span style="opacity:0.7;">0855-1234-5678</span>
+    </p>
 
-    <div style="display:flex; gap:30px;">
-        <div>
-            <b>Tanggal Pesan</b><br> 10/11/2025
-        </div>
-        <div>
-            <b>Tanggal Pengiriman</b><br> 11/11/2025
-        </div>
-        <div>
-            <b>Jumlah</b><br> 20 Orang
-        </div>
-        <div>
-            <b>Total</b><br> 1.000.000
-        </div>
+    <div style="display:flex; gap:40px;">
+        <div><b>Tanggal Pesan</b><br>10/11/2025</div>
+        <div><b>Tanggal Pengiriman</b><br>11/11/2025</div>
+        <div><b>Jumlah</b><br>20 Orang</div>
+        <div><b>Total</b><br>1.000.000</div>
     </div>
+
 </div>
 
-<!-- ORDER 2 -->
-<div style="background:white; padding:20px; border-radius:10px; margin-bottom:20px; border:1px solid #ddd;">
+<!-- CARD 2 -->
+<div class="card-order">
 
     <div style="display:flex; justify-content:space-between;">
-        <div style="font-weight:bold;">2025-0022</div>
-        <span style="background:gray; color:white; padding:4px 10px; border-radius:12px;">Menunggu</span>
+        <div><b>2025-0022</b></div>
+        <span class="status-pill pill-menunggu">Menunggu</span>
     </div>
 
     <p style="font-weight:bold; margin-top:10px;">Soto Ayam</p>
 
-    <p>Budi Santoso <br> 0812-3469-7850</p>
+    <p>Budi Santoso<br><span style="opacity:0.7;">0812-3469-7850</span></p>
 
-    <div style="display:flex; gap:30px;">
-        <div>
-            <b>Tanggal Pesan</b><br> 10/11/2025
-        </div>
-        <div>
-            <b>Tanggal Pengiriman</b><br> 12/11/2025
-        </div>
-        <div>
-            <b>Jumlah</b><br> 70 Orang
-        </div>
-        <div>
-            <b>Total</b><br> 700.000
-        </div>
+    <div style="display:flex; gap:40px;">
+        <div><b>Tanggal Pesan</b><br>10/11/2025</div>
+        <div><b>Tanggal Pengiriman</b><br>12/11/2025</div>
+        <div><b>Jumlah</b><br>70 Orang</div>
+        <div><b>Total</b><br>700.000</div>
     </div>
 
-    <div style="margin-top:15px;">
-        <button style="background:#7beb8b; padding:6px 12px; border:none; border-radius:5px;">Proses</button>
-        <button style="background:#ff6f6f; padding:6px 12px; border:none; border-radius:5px;">Batalkan</button>
+    <div style="margin-top:15px; display:flex; gap:10px;">
+        <button class="update-btn btn-proses">Proses</button>
+        <button class="update-btn btn-batalkan">Batalkan</button>
     </div>
+
 </div>
 
-<!-- ORDER 3 -->
-<div style="background:white; padding:20px; border-radius:10px; margin-bottom:20px; border:1px solid #ddd;">
+<!-- CARD 3 -->
+<div class="card-order">
 
     <div style="display:flex; justify-content:space-between;">
-        <div style="font-weight:bold;">2025-0032</div>
-        <span style="background:#007bff; color:white; padding:4px 10px; border-radius:12px;">Diproses</span>
+        <div><b>2025-0032</b></div>
+        <span class="status-pill pill-diproses">Diproses</span>
     </div>
 
     <p style="font-weight:bold; margin-top:10px;">Soto Ayam</p>
 
-    <p>Siti Nurhaliza <br> 0856-7890-1234</p>
+    <p>Siti Nurhaliza<br><span style="opacity:0.7;">0856-7890-1234</span></p>
 
-    <div style="display:flex; gap:30px;">
-        <div>
-            <b>Tanggal Pesan</b><br> 15/11/2025
-        </div>
-        <div>
-            <b>Tanggal Pengiriman</b><br> 15/11/2025
-        </div>
-        <div>
-            <b>Jumlah</b><br> 30 Orang
-        </div>
-        <div>
-            <b>Total</b><br> 750.000
-        </div>
+    <div style="display:flex; gap:40px;">
+        <div><b>Tanggal Pesan</b><br>15/11/2025</div>
+        <div><b>Tanggal Pengiriman</b><br>15/11/2025</div>
+        <div><b>Jumlah</b><br>30 Orang</div>
+        <div><b>Total</b><br>750.000</div>
     </div>
 
-    <div style="margin-top:15px;">
-        <button style="background:#7beb8b; padding:6px 12px; border:none; border-radius:5px;">Kirim</button>
-        <button style="background:#ff6f6f; padding:6px 12px; border:none; border-radius:5px;">Batalkan</button>
+    <div style="margin-top:15px; display:flex; gap:10px;">
+        <button class="update-btn btn-kirim">Kirim</button>
+        <button class="update-btn btn-batalkan">Batalkan</button>
     </div>
+
 </div>
 
 @endsection
