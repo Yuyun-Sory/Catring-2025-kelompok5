@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\MenuController; // ← WAJIB ADA
 use App\Http\Controllers\LoginController;
-
+use App\Http\Controllers\PemesananController;
 // Halaman utama
 Route::get('/', function () {
     return view('layouts.home');
@@ -42,4 +42,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::get('/admin/pemesanan/masuk', [MenuController::class, 'pesananMasuk'])
+     ->name('pemesanan.masuk');
 
