@@ -87,11 +87,6 @@
             <p style="text-align: justify;">
                 {{ $menu['deskripsi'] }}
             </p>
-
-            <div class="mt-3">
-                <button class="btn-pax">– / Pax</button>
-                <a href="#" class="btn-pilihan">Pilihan</a>
-            </div>
         </div>
     </div>
 
@@ -99,14 +94,22 @@
 
     <h3 class="fw-bold">Ulasan</h3>
 
+    {{-- LOOP UNTUK ULASAN --}}
+    @foreach ($menu['ulasan'] as $u)
     <div class="ulasan-user">
         <div class="ulasan-user-icon">👤</div>
         <div>
-            <strong>Dian</strong> <br>
-            <span class="rating-stars">★★★★★</span>
-            <p>Enak kak sotonyaaa</p>
+            <strong>{{ $u['nama'] }}</strong> <br>
+            {{-- Kalau ada bintang, bisa ditambahkan, kalau tidak abaikan --}}
+            @isset($u['bintang'])
+            <span class="rating-stars">
+                {{ str_repeat('★', $u['bintang']) }}
+            </span>
+            @endisset
+            <p>{{ $u['komentar'] }}</p>
         </div>
     </div>
+    @endforeach
 
 </div>
 @endsection

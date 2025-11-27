@@ -1,152 +1,135 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+    .sidebar {
+      width: 220px;
+      height: 100vh;
+      background: linear-gradient(#7adf8c, #4d8f5c);
+      padding-top: 20px;
+      position: fixed;
+      color: white;
+    }
+    .sidebar .logo {
+      text-align: center;
+      font-size: 40px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar ul li {
+      padding: 12px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sidebar ul li:hover,
+    .active {
+      background-color: rgba(255,255,255,0.2);
+      border-radius: 5px;
+    }
 
-    <!-- ICONS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    /* Agar link memenuhi li */
+    .sidebar a {
+      text-decoration: none;
+      color: white;
+      display: block;
+      width: 100%;
+    }
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f1f1f1;
-        }
+    .topbar {
+      margin-left: 220px;
+      height: 60px;
+      background: #7beb8b;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0 20px;
+      font-weight: bold;
+    }
+    .content {
+      margin-left: 240px;
+      padding: 20px;
+    }
+    .cards {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .card {
+      padding: 20px;
+      color: white;
+      width: 160px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .blue { background: #0066ff; }
+    .green { background: #7fe8a0; color: #064d1f; }
+    .orange { background: #ff8c3a; }
+    .orange2 { background: #e77d45; }
 
-        /* ===== TOP HEADER ===== */
-        .topbar {
-            width: 100%;
-            background: #6EEB83;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            font-size: 18px;
-            height: 55px;
-        }
-
-        .topbar i {
-            margin-right: 8px;
-        }
-
-        /* ===== SIDEBAR ===== */
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            background: linear-gradient(#6EEB83, #5BBF6F);
-            padding-top: 20px;
-            position: fixed;
-        }
-
-        .sidebar .logo {
-            text-align: center;
-            font-size: 48px;
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar ul li a {
-            display: flex;
-            align-items: center;
-            padding: 14px 25px;
-            color: #0f3a16;
-            font-size: 17px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .sidebar ul li a:hover,
-        .sidebar ul li a.active {
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 8px;
-        }
-
-        .sidebar ul li i {
-            width: 28px;
-            margin-right: 10px;
-        }
-
-        /* ===== CONTENT ===== */
-        .content {
-            margin-left: 260px;
-            padding: 30px;
-        }
-
-        .title-page {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-
-        /* ===== CARDS ===== */
-        .card-box {
-            display: flex;
-            gap: 20px;
-        }
-
-        .card {
-            padding: 25px;
-            border-radius: 12px;
-            color: white;
-            font-size: 18px;
-            min-width: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .blue { background: #2979FF; }
-        .green { background: #6EEB83; color: black; }
-        .orange { background: #FF8533; }
-        .light-orange { background: #FFAA66; }
-    </style>
+    /* Biar kartu bisa diklik  */
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- TOP HEADER -->
-    <div class="topbar">
-        <i class="fa-solid fa-user"></i> Admin
+  <div class="sidebar">
+    <div class="logo">T</div>
+    <ul>
+      <li class="active">
+        <a href="{{ route('dashboard') }}">🏠 Dashboard</a>
+      </li>
+
+      <li>
+        <a href="{{ route('pemesanan.masuk') }}">📥 Pemesanan Masuk</a>
+      </li>
+
+      <li><a href="#">📊 Status Pesanan</a></li>
+      <li><a href="#">📦 Jumlah Stok Bahan</a></li>
+      <li><a href="#">📅 Jadwal Produksi</a></li>
+      <li><a href="#">📄 Laporan</a></li>
+      <li><a href="#">💬 TerasChat</a></li>
+      <li><a href="#">⏻ Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="topbar">👤 Admin</div>
+
+  <div class="content">
+    <h1 style="display:flex; align-items:center; gap:10px; font-size:32px; font-weight:bold;">
+      Dashboard
+    </h1>
+
+    <div class="cards">
+
+      <!-- CARD: PEMESANAN MASUK -->
+      <a href="{{ route('pemesanan.masuk') }}" class="card-link">
+        <div class="card orange">🛒 2 Pesanan Baru</div>
+      </a>
+
+      <div class="card blue">👥 3 Pelanggan</div>
+      <div class="card green">📂 Kategori</div>
+      <div class="card orange2">🛒 5 Total Pesanan</div>
     </div>
-
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="logo">T</div>
-
-        <ul>
-            <li><a href="#" class="active"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-            <li><a href="#"><i class="fa-solid fa-list-check"></i> Pemesanan Masuk</a></li>
-            <li><a href="#"><i class="fa-solid fa-chart-bar"></i> Status Pesanan</a></li>
-            <li><a href="#"><i class="fa-solid fa-boxes-stacked"></i> Jumlah Stok Bahan</a></li>
-            <li><a href="#"><i class="fa-solid fa-calendar"></i> Jadwal Produksi</a></li>
-            <li><a href="#"><i class="fa-solid fa-file-alt"></i> Laporan</a></li>
-            <li><a href="#"><i class="fa-solid fa-comments"></i> TerasChat</a></li>
-            <li><a href="/logout" onclick="return confirm('Yakin ingin logout?')">
-                <i class="fa-solid fa-power-off"></i> Logout
-            </a></li>
-        </ul>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div class="content">
-
-        <div class="title-page">Dashboard</div>
-
-        <div class="card-box">
-            <div class="card blue">3 Pelanggan</div>
-            <div class="card green">Kategori</div>
-            <div class="card orange">2 Pesanan Baru</div>
-            <div class="card light-orange">5 Total Pesanan</div>
-        </div>
-
-    </div>
+  </div>
 
 </body>
 </html>

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use App\Http\Controllers\MenuController; // ← WAJIB ADA
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\LoginController;
 
 // Halaman utama
@@ -31,8 +31,11 @@ Route::get('/tentang', function () {
     return view('layouts.tentang');
 });
 
-// Detail Menu
+// Detail Menu + Tampilkan Ulasan
 Route::get('/menu/{slug}', [MenuController::class, 'detail'])->name('menu.detail');
+
+// (Opsional) API Ulasan kalau nanti mau
+Route::get('/menu/{slug}/ulasan', [MenuController::class, 'getUlasan'])->name('menu.ulasan');
 
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
@@ -41,9 +44,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-<<<<<<< HEAD
-})->name('dashboard');
-=======
 })->name('dashboard');
 
->>>>>>> aab7cf07609f6d51500d286948038c035da85164
+Route::get('/pemesanan-masuk', function () {
+    return view('pemesanan-masuk');
+})->name('pemesanan.masuk');
