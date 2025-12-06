@@ -135,8 +135,9 @@
 <div class="calendar-box">
 
     <div class="calendar-header">
-        <span>Kalendar Rekomendasi</span>
-        <span>&lt; November 2025 &gt;</span>
+        <button id="prevMonthBtn" style="cursor:pointer;">&lt;</button>
+        <span id="monthLabel">Loading...</span>
+        <button id="nextMonthBtn" style="cursor:pointer;">&gt;</button>
     </div>
 
     <!-- Nama Hari -->
@@ -145,51 +146,7 @@
     </div>
 
     <!-- GRID KALENDER -->
-    <div class="calendar-grid">
-
-        <!-- Minggu 1 -->
-        <div></div><div></div><div></div><div></div>
-        <div class="date-box ava">1</div>
-
-        <!-- Minggu 2 -->
-        <div class="date-box ava">2</div>
-        <div class="date-box ava">3</div>
-        <div class="date-box ava">4</div>
-        <div class="date-box ava">5</div>
-        <div class="date-box taken">6</div>
-        <div class="date-box taken">7</div>
-        <div class="date-box ava">8</div>
-
-        <!-- Minggu 3 -->
-        <div class="date-box ava">9</div>
-        <div class="date-box ava">10</div>
-        <div class="date-box ava">11</div>
-        <div class="date-box taken">12</div>
-        <div class="date-box taken">13</div>
-        <div class="date-box taken">14</div>
-        <div class="date-box selected">15</div>
-
-        <!-- Minggu 4 -->
-        <div class="date-box ava">16</div>
-        <div class="date-box ava">17</div>
-        <div class="date-box ava">18</div>
-        <div class="date-box ava">19</div>
-        <div class="date-box taken">20</div>
-        <div class="date-box taken">21</div>
-        <div class="date-box ava">22</div>
-
-        <!-- Minggu 5 -->
-        <div class="date-box ava">23</div>
-        <div class="date-box ava">24</div>
-        <div class="date-box taken">25</div>
-        <div class="date-box ava">26</div>
-        <div class="date-box ava">27</div>
-        <div class="date-box taken">28</div>
-        <div class="date-box ava">29</div>
-
-        <!-- Minggu 6 -->
-        <div class="date-box ava">30</div>
-    </div>
+    <div id="calendarBody" class="calendar-grid"></div>
 
     <!-- Legend -->
     <div class="legend">
@@ -199,6 +156,89 @@
     </div>
 
 </div>
+
+<script>
+/* ================================
+   DATA KONDISI TANGGAL
+   Bisa Anda ganti dari database
+================================ */
+let tanggalTaken = ["2025-11-12", "2025-11-18", "2025-11-20", "2025-11-21", "2025-11-25"];
+let selectedDate = "2025-11-15"; // contoh tanggal pilihan user
+
+/* ================================
+   VARIABEL BULAN DINAMIS
+================================ */
+let currentYear = new Date().getFullYear();
+let currentMonth = new Date().getMonth();
+
+const monthNames = [
+    "Januari","Februari","Maret","April","Mei","Juni",
+    "Juli","Agustus","September","Oktober","November","Desember"
+];
+
+function renderCalendar() {
+    const monthLabel = document.getElementById("monthLabel");
+    const calendarBody = document.getElementById("calendarBody");
+
+    monthLabel.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+    calendarBody.innerHTML = "";
+
+    let firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    let lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    // Tambahkan grid kosong sebelum tanggal 1
+    for (let i = 0; i < firstDay; i++) {
+        calendarBody.innerHTML += `<div></div>`;
+    }
+
+    // Generate tanggal dalam bulan
+    for (let d = 1; d <= lastDate; d++) {
+        let formatted =
+            currentYear + "-" +
+            String(currentMonth + 1).padStart(2, "0") + "-" +
+            String(d).padStart(2, "0");
+
+        let className = "ava"; // default tersedia
+
+        if (tanggalTaken.includes(formatted)) {
+            className = "taken";
+        }
+        if (formatted === selectedDate) {
+            className = "selected";
+        }
+
+        calendarBody.innerHTML += `
+            <div class="date-box ${className}">${d}</div>
+        `;
+    }
+}
+
+/* ================================
+   EVENT TOMBOL NEXT / PREV
+================================ */
+document.getElementById("prevMonthBtn").onclick = () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+    }
+    renderCalendar();
+};
+
+document.getElementById("nextMonthBtn").onclick = () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
+    renderCalendar();
+};
+
+/* ================================
+   MULAI RENDER
+================================ */
+renderCalendar();
+</script>
 
 <!-- CHATBOT LOG -->
 <div class="table-box">
@@ -238,5 +278,9 @@
         </tr>
     </table>
 </div>
+
+</div>
+
+
 
 @endsection
