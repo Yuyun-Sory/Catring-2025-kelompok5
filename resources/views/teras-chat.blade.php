@@ -149,8 +149,6 @@
 
         <!-- Minggu 1 -->
         <div></div><div></div><div></div><div></div>
-        <div class="date-box taken">6</div>
-        <div class="date-box taken">7</div>
         <div class="date-box ava">1</div>
 
         <!-- Minggu 2 -->

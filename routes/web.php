@@ -81,5 +81,21 @@ Route::get('/logout', function () {
     return view('logout');
 })->name('logout');
 
+Route::get('/pelanggan', function () {
+    return view('pelanggan');
+})->name('pelanggan.index');
+
+Route::get('/pesanan', function () {
+    return view('pesanan');
+})->name('pesanan.index');
+
+Route::get('/kategori', function () {
+    return view('kategori');
+})->name('kategori.index');
+
+Route::get('/total-pesanan', function () {
+    return view('total-pesanan');
+})->name('total-pesanan.index');
+
 
 

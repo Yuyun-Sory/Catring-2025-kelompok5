@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Data Pelanggan</title>
 
   <style>
     body {
@@ -48,13 +48,13 @@
       color: black;
       display: flex;
       width: 100%;
+      gap: 10px;
       align-items: center;
-      gap: 12px;
     }
 
     .sidebar li:hover,
     .active {
-      background-color: rgba(255,255,255,0.35);
+      background-color: rgba(255, 255, 255, 0.35);
       border-radius: 8px;
     }
 
@@ -74,55 +74,58 @@
     /* CONTENT */
     .content {
       margin-left: 250px;
-      padding: 35px;
+      padding: 25px 35px;
     }
 
     /* TITLE BOX */
-    .title-box {
+    .breadcrumb-box {
       background: white;
       border: 1px solid #ccc;
-      padding: 18px 20px;
+      padding: 15px 20px;
       border-radius: 6px;
-      font-size: 34px;
+      font-size: 30px;
       font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      margin-bottom: 20px;
     }
 
-    .breadcrumb {
+    /* TABLE */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 17px;
+    }
+
+    table, th, td {
+      border: 1px solid #999;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background: #f3f3f3;
+      text-align: center;
+    }
+
+    /* ADD BUTTON */
+    .add-btn {
+      background: #6be38b;
+      color: black;
+      padding: 7px 12px;
+      border-radius: 6px;
       font-size: 14px;
-      color: #333;
-    }
-
-    /* CARDS */
-    .cards {
-      display: flex;
-      gap: 20px;
-      margin-top: 25px;
-    }
-
-    .card {
-      padding: 20px 25px;
-      font-size: 16px;
-      color: white;
-      border-radius: 8px;
-      font-weight: bold;
-      width: 180px;
+      border: 1px solid #3d9a56;
+      float: right;
+      margin-bottom: 10px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      text-decoration: none;
     }
 
-    .blue { background: #0066ff; }
-    .green { background: #65f28f; color: black; }
-    .orange { background: #ff8c29; }
-    .orange2 { background: #e67d45; }
-
-    .card-link {
-      text-decoration: none;
-      color: inherit;
+    .add-btn:hover {
+      background: #5ad27b;
     }
   </style>
 </head>
@@ -133,10 +136,7 @@
     <div class="logo">T</div>
 
     <ul>
-      <li class="active">
-        <a href="{{ route('dashboard') }}">🏠 Dashboard</a>
-      </li>
-
+      <li><a href="{{ route('dashboard') }}">🏠 Dashboard</a></li>
       <li><a href="{{ route('pemesanan.masuk') }}">📥 Pemesanan Masuk</a></li>
       <li><a href="{{ route('status.pesanan') }}">📊 Status Pesanan</a></li>
       <li><a href="{{ route('stok.bahan') }}">📦 Jumlah Stok Bahan</a></li>
@@ -153,30 +153,48 @@
   <!-- CONTENT -->
   <div class="content">
 
-    <div class="title-box">
-      Dashboard
-      <span class="breadcrumb">⚙ / Dashboard</span>
+    <!-- BREADCRUMB HEADER -->
+    <div class="breadcrumb-box">
+      Dashboard > Pelanggan
     </div>
 
-    <div class="cards">
-  <a class="card-link" href="{{ route('pelanggan.index') }}">
-    <div class="card blue">👥 3 Pelanggan</div>
-  </a>
+    <h2>Data Pelanggan</h2>
 
-  <div class="cards">
-  <a class="card-link" href="{{ route('kategori.index') }}">
-    <div class="card blue">📂 Kategori</div>
-  </a>
+    <a href="#" class="add-btn">+ Tambah Pelanggan</a>
 
-  <div class="cards">
-  <a class="card-link" href="{{ route('pesanan.index') }}">
-    <div class="card blue">🛒 2 Pesanan Baru</div>
-  </a>
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama</th>
+          <th>Telepon</th>
+          <th>Alamat</th>
+        </tr>
+      </thead>
 
-   <div class="cards">
-  <a class="card-link" href="{{ route('total-pesanan.index') }}">
-    <div class="card blue">🛒 5 Total Pesanan</div>
-  </a>
+      <tbody>
+        <tr>
+          <td style="text-align:center;">1</td>
+          <td><b>Budi Santoso</b></td>
+          <td>0812-3456-7890</td>
+          <td>Jl. Seturan No. 05 Yogyakarta</td>
+        </tr>
+
+        <tr>
+          <td style="text-align:center;">2</td>
+          <td><b>Siti Nurlizah</b></td>
+          <td>0856-7890-1234</td>
+          <td>Jl. Babarsari No. 15 Yogyakarta</td>
+        </tr>
+
+        <tr>
+          <td style="text-align:center;">3</td>
+          <td><b>Ahmad Rizky</b></td>
+          <td>0898-1234-5678</td>
+          <td>Jl. Mawar No. 15 Yogyakarta</td>
+        </tr>
+      </tbody>
+    </table>
 
   </div>
 
