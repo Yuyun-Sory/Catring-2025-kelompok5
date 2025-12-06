@@ -1,10 +1,17 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
 
-@section('title', 'Dashboard - Teras')
+  <style>
+    body {
+      margin: 0;
+      font-family: "Georgia", serif;
+      background-color: #ffffff;
+    }
 
-<<<<<<< HEAD
-@section('content')
-=======
     /* SIDEBAR */
     .sidebar {
       width: 230px;
@@ -150,34 +157,14 @@
 
   <!-- CONTENT -->
   <div class="content">
->>>>>>> 81cbdb0b35aedb2f531b475f1fd90f4604e4f62c
 
     <div class="title-box">
-        Dashboard
-        <span class="breadcrumb">⚙ / Dashboard</span>
+      Dashboard
+      <span class="breadcrumb">⚙ / Dashboard</span>
     </div>
 
     <!-- CARDS -->
     <div class="cards">
-<<<<<<< HEAD
-        <a class="card-link" href="{{ route('pelanggan.index') }}">
-            <div class="card blue">👥 3 Pelanggan</div>
-        </a>
-
-        <a class="card-link" href="{{ route('kategori.index') }}">
-            <div class="card blue">📂 Kategori</div>
-        </a>
-        
-        <a class="card-link" href="{{ route('pesanan.index') }}">
-            <div class="card blue">🛒 2 Pesanan Baru</div>
-        </a>
-
-        <a class="card-link" href="{{ route('total-pesanan.index') }}">
-            <div class="card blue">🛒 5 Total Pesanan</div>
-        </a>
-    </div>
-    
-@endsection
       <a class="card-link" href="{{ route('pelanggan.index') }}">
         <div class="card blue">👥 3 Pelanggan</div>
       </a>
@@ -199,3 +186,4 @@
 
 </body>
 </html>
+ 
