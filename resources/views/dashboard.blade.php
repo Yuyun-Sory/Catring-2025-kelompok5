@@ -178,7 +178,6 @@
     </div>
     
 @endsection
-=======
       <a class="card-link" href="{{ route('pelanggan.index') }}">
         <div class="card blue">👥 3 Pelanggan</div>
       </a>
@@ -200,4 +199,3 @@
 
 </body>
 </html>
->>>>>>> 81cbdb0b35aedb2f531b475f1fd90f4604e4f62c
