@@ -3,147 +3,315 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Kategori</title>
+  <title>Kategori</title>
 
   <style>
     body {
       margin: 0;
-      padding: 0;
-      background: #e9ffe9;
       font-family: "Georgia", serif;
+      background-color: #ffffff;
     }
 
-    .container {
-      width: 85%;
-      margin: 40px auto;
-      background: white;
-      border-radius: 12px;
-      padding: 25px 30px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.15);
+    /* SIDEBAR */
+    .sidebar {
+      width: 230px;
+      height: 100vh;
+      background: linear-gradient(#9af7a6, #5da770);
+      position: fixed;
+      padding-top: 20px;
     }
 
-    .header-box {
-      width: 100%;
-      padding: 18px 22px;
-      border-radius: 10px;
-      background: #7af28c;
-      font-weight: bold;
-      font-size: 28px;
+    .logo {
       text-align: center;
-      border: 1px solid #4da85b;
+      font-size: 48px;
+      margin-bottom: 25px;
+      font-weight: bold;
     }
 
-    h2 {
-      margin-top: 25px;
-      font-size: 22px;
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
     }
 
-    .add-btn {
-      background: #6be38b;
-      color: black;
-      padding: 8px 13px;
-      border-radius: 8px;
-      font-size: 15px;
-      border: 1px solid #3d9a56;
+    .sidebar li {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 17px;
+    }
+
+    .sidebar a {
       text-decoration: none;
-      float: right;
-      margin-bottom: 10px;
+      color: black;
+      display: flex;
+      width: 100%;
+      gap: 10px;
     }
 
-    .add-btn:hover {
-      background: #58d17c;
+    .sidebar li:hover,
+    .active {
+      background: rgba(255,255,255,0.35);
+      border-radius: 8px;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      margin-left: 230px;
+      height: 65px;
+      background: #7aef8d;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0 25px;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    /* CONTENT */
+    .content {
+      margin-left: 250px;
+      padding: 25px;
+    }
+
+    .title-box {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 18px 20px;
+      border-radius: 6px;
+      font-size: 28px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .breadcrumb {
+      font-size: 14px;
+      color: #333;
+    }
+
+    /* TABLE SECTION */
+    h2 {
+      margin-top: 40px;
+      font-size: 24px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 15px;
-      font-size: 17px;
+      margin-top: 10px;
+      margin-bottom: 25px;
     }
 
-    th, td {
-      border: 1px solid #999;
-      padding: 12px;
+    table th, table td {
+      border: 1px solid #ccc;
+      padding: 10px;
       text-align: left;
+      font-size: 15px;
     }
 
-    th {
-      background: #f2f2f2;
-      text-align: center;
+    table th {
+      background: #e8e8e8;
+      font-weight: bold;
     }
 
-    .action-btn {
-      padding: 6px 10px;
-      font-size: 14px;
-      text-decoration: none;
+    .btn-add {
+      background: #7aef8d;
+      border: none;
+      padding: 8px 14px;
       border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
     }
 
-    .edit {
-      background: #7de3ff;
-      border: 1px solid #4bb5d1;
+    .btn-action {
+      padding: 5px 12px;
+      border-radius: 5px;
+      font-size: 12px;
+      cursor: pointer;
+      border: none;
+      background: #7aef8d;
     }
 
-    .delete {
-      background: #ff8a8a;
-      border: 1px solid #d66;
+    .thumb {
+      width: 35px;
+      height: 35px;
+      border-radius: 4px;
+      object-fit: cover;
     }
+
   </style>
 </head>
+
 <body>
 
-<div class="container">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo">T</div>
 
-  <div class="header-box">Data Kategori</div>
+    <ul>
+      <li><a href="{{ route('dashboard') }}">🏠 Dashboard</a></li>
+      <li><a href="{{ route('pemesanan.masuk') }}">📥 Pemesanan Masuk</a></li>
+      <li><a href="{{ route('status.pesanan') }}">📊 Status Pesanan</a></li>
+      <li><a href="{{ route('stok.bahan') }}">📦 Jumlah Stok Bahan</a></li>
+      <li><a href="{{ route('jadwal.produksi') }}">📅 Jadwal Produksi</a></li>
+      <li><a href="{{ route('laporan') }}">📄 Laporan</a></li>
+      <li><a href="{{ route('teras.chat') }}">💬 TerasChat</a></li>
+      <li><a href="{{ route('logout') }}">⏻ Logout</a></li>
+    </ul>
+  </div>
 
-  <h2>Daftar Kategori Menu</h2>
+  <!-- TOPBAR -->
+  <div class="topbar">👤 Admin</div>
 
-  <a href="#" class="add-btn">+ Tambah Kategori</a>
 
-  <table>
-    <thead>
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- TITLE -->
+    <div class="title-box">
+      Dashboard > Kategori
+      <span class="breadcrumb">⚙ / Kategori</span>
+    </div>
+
+
+    <!-- KATEGORI: MAKANAN -->
+    <h2>Makanan</h2>
+    <button class="btn-add">+ Tambah Menu</button>
+
+    <table>
       <tr>
-        <th>No</th>
-        <th>Nama Kategori</th>
-        <th>Deskripsi</th>
+        <th>Nama Menu</th>
+        <th>Harga</th>
+        <th>Foto</th>
         <th>Aksi</th>
       </tr>
-    </thead>
 
-    <tbody>
       <tr>
-        <td style="text-align:center;">1</td>
-        <td><b>Makanan</b></td>
-        <td>Aneka makanan berat & ringan</td>
+        <td>Soto Ayam</td>
+        <td>Rp 15.000</td>
+        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
         <td>
-          <a href="#" class="action-btn edit">Edit</a>
-          <a href="#" class="action-btn delete">Hapus</a>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
         </td>
       </tr>
 
       <tr>
-        <td style="text-align:center;">2</td>
-        <td><b>Minuman</b></td>
-        <td>Aneka minuman dingin & panas</td>
+        <td>Nasi Ayam Goreng</td>
+        <td>Rp 20.000</td>
+        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
         <td>
-          <a href="#" class="action-btn edit">Edit</a>
-          <a href="#" class="action-btn delete">Hapus</a>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+    </table>
+
+
+    <!-- KATEGORI: PAKET MINUMAN -->
+    <h2>Paket Minuman</h2>
+
+    <table>
+      <tr>
+        <th>Nama Menu</th>
+        <th>Harga</th>
+        <th>Foto</th>
+        <th>Aksi</th>
+      </tr>
+
+      <tr>
+        <td>Teh</td>
+        <td>Rp 5.000</td>
+        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
         </td>
       </tr>
 
       <tr>
-        <td style="text-align:center;">3</td>
-        <td><b>Cemilan</b></td>
-        <td>Cemilan cepat saji</td>
+        <td>Kopi Hitam</td>
+        <td>Rp 8.000</td>
+        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
         <td>
-          <a href="#" class="action-btn edit">Edit</a>
-          <a href="#" class="action-btn delete">Hapus</a>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
         </td>
       </tr>
-    </tbody>
-  </table>
+    </table>
 
-</div>
+
+    <!-- KATEGORI: CEMILAN -->
+    <h2>Cemilan</h2>
+
+    <table>
+      <tr>
+        <th>Nama Menu</th>
+        <th>Harga</th>
+        <th>Foto</th>
+        <th>Aksi</th>
+      </tr>
+
+      <tr>
+        <td>Tempe Mendoan</td>
+        <td>Rp 9.000</td>
+        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Bakwuan</td>
+        <td>Rp 9.000</td>
+        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+    </table>
+
+
+    <!-- KATEGORI: OLEH-OLEH -->
+    <h2>Oleh–Oleh</h2>
+
+    <table>
+      <tr>
+        <th>Nama Menu</th>
+        <th>Harga</th>
+        <th>Foto</th>
+        <th>Aksi</th>
+      </tr>
+
+      <tr>
+        <td>Bolu Kukus Original</td>
+        <td>Rp 25.000</td>
+        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Roti Kukus Keju</td>
+        <td>Rp 20.000</td>
+        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
 
 </body>
 </html>

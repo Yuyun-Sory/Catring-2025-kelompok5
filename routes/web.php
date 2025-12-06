@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PemesananController;
+use App\Http\Controllers\AdminController;
+
 // Halaman utama
 Route::get('/', function () {
     return view('layouts.home');
@@ -96,6 +98,8 @@ Route::get('/kategori', function () {
 Route::get('/total-pesanan', function () {
     return view('total-pesanan');
 })->name('total-pesanan.index');
+
+Route::get('/daftar-akun', [AdminController::class, 'daftarAkun'])->name('admin.daftar');
 
 
 
