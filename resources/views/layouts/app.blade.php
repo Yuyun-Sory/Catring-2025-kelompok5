@@ -3,29 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Teras')</title>
+    
+    {{-- Menggunakan yield untuk Judul Halaman spesifik --}}
+    <title>@yield('title', 'Teras Dashboard')</title>
 
-    <!-- Bootstrap CSS -->
+    {{-- Bootstrap CSS (Dari App 1) --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    {{-- jQuery (Dari App 1, Penting untuk Interaksi Dinamis) --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
 
     <style>
         body {
             margin: 0;
-            background: #f7f7f7;
-            display: flex;
+            /* Menggunakan background dari App 1 dan font dari App 2 */
+            background: #f7f7f7; 
+            font-family: "Georgia", serif;
+            display: flex; /* Memungkinkan Sidebar dan Konten berdampingan */
         }
 
-        /* Sidebar */
+        /* ---------------------------------------------------------------------- */
+        /* SIDEBAR (Menggunakan struktur dan warna App 2) */
+        /* ---------------------------------------------------------------------- */
         .sidebar {
-            width: 220px;
+            width: 230px; /* Lebar dari App 2 */
             height: 100vh;
-            background: linear-gradient(#7adf8c, #4d8f5c);
-            color: white;
-            padding-top: 30px;
+            background: linear-gradient(#9af7a6, #5da770);
             position: fixed;
             left: 0;
             top: 0;
+            color: black; /* Warna Teks dari App 2 */
+            padding-top: 20px;
             z-index: 9999;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: black;
         }
 
         .sidebar ul {
@@ -33,53 +50,118 @@
             padding: 0;
         }
 
-        .sidebar ul li {
+        .sidebar li {
             padding: 12px 20px;
-            margin: 5px 0;
-            border-radius: 6px;
+            margin: 5px 10px; /* Tambahkan margin horizontal agar active class ada jarak */
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 17px;
+            cursor: pointer;
         }
 
-        .sidebar ul li a {
-            color: white;
+        .sidebar a {
             text-decoration: none;
-            display: block;
+            color: black;
+            display: flex;
+            width: 100%;
+            align-items: center;
+            gap: 12px;
         }
 
-        .sidebar ul li.active {
-            background: rgba(255,255,255,0.3);
+        .sidebar li:hover,
+        .sidebar li.active {
+            background-color: rgba(255,255,255,0.35);
+            border-radius: 8px;
         }
 
-        /* Topbar */
+        /* ---------------------------------------------------------------------- */
+        /* TOPBAR (Menggunakan posisi fixed App 1, lebar konten App 1, dan style App 2) */
+        /* ---------------------------------------------------------------------- */
         .topbar {
-            height: 60px;
-            background: #7beb8b;
+            height: 65px; /* Tinggi dari App 2 */
+            background: #7aef8d; /* Warna dari App 2 */
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 25px;
+            font-size: 17px;
             font-weight: bold;
-
+            
             position: fixed;
             top: 0;
-            left: 220px;
-            width: calc(100% - 220px);
+            left: 230px; /* Sesuaikan dengan lebar sidebar App 2 (230px) */
+            width: calc(100% - 230px);
             z-index: 500;
         }
 
-        /* Content */
+        /* ---------------------------------------------------------------------- */
+        /* CONTENT (Menggunakan margin dan padding yang disesuaikan) */
+        /* ---------------------------------------------------------------------- */
         .content {
-            margin-left: 220px;
-            padding: 100px 25px 25px 25px;
-            width: calc(100% - 220px);
+            margin-left: 230px; /* Sesuaikan dengan lebar sidebar (230px) */
+            /* Padding disesuaikan agar tidak tertutup Topbar */
+            padding: 95px 35px 35px 35px; 
+            width: calc(100% - 230px);
+        }
+
+        /* ---------------------------------------------------------------------- */
+        /* UTILITY CSS (Dari App 2 untuk konsistensi child view) */
+        /* ---------------------------------------------------------------------- */
+        .title-box {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 18px 20px;
+            border-radius: 6px;
+            font-size: 34px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px; /* Tambahkan jarak */
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            padding: 20px 25px;
+            font-size: 16px;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            width: 180px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .blue { background: #0066ff; }
+        .green { background: #65f28f; color: black; }
+        .orange { background: #ff8c29; }
+        .orange2 { background: #e67d45; }
+
+        .card-link {
+            text-decoration: none;
+            color: inherit;
         }
     </style>
 </head>
 <body>
 
-    <!-- SIDEBAR -->
     <div class="sidebar">
-        <ul>
+        <div class="logo">T</div>
 
+        <ul>
+            {{-- Logika active class dari App 2 --}}
             <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <a href="{{ route('dashboard') }}">🏠 Dashboard</a>
             </li>
@@ -111,22 +193,22 @@
             <li class="{{ request()->routeIs('logout') ? 'active' : '' }}">
                 <a href="{{ route('logout') }}">⏻ Logout</a>
             </li>
-
         </ul>
     </div>
 
-    <!-- TOPBAR -->
     <div class="topbar">
         👤 Admin
     </div>
 
-    <!-- CONTENT -->
     <div class="content">
         @yield('content')
     </div>
 
-    <!-- Bootstrap JS -->
+    {{-- Bootstrap JS (Dari App 1) --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    {{-- Stack Scripts (Dari App 1, Penting untuk Child View) --}}
+    @stack('scripts') 
 
 </body>
 </html>
