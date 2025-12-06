@@ -14,7 +14,7 @@ class AdminController extends Controller
 
     public function daftarAkun()
     {
-        return view('admin.daftar-akun');
+        return view('daftar-akun');
         // ini menuju halaman daftar akun
     }
 }

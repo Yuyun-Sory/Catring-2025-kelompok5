@@ -99,7 +99,7 @@ Route::get('/total-pesanan', function () {
     return view('total-pesanan');
 })->name('total-pesanan.index');
 
-Route::get('/admin/daftar-akun', [AdminController::class, 'daftarAkun'])->name('admin.daftar');
+Route::get('/daftar-akun', [AdminController::class, 'daftarAkun'])->name('admin.daftar');
 
 
 

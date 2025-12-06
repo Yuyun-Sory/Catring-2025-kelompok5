@@ -3,112 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Akun Admin</title>
+    <title>Daftar Akun</title>
 
     <style>
         body {
             margin: 0;
+            background: #ffffff;
             font-family: "Georgia", serif;
-            background-color: #ffffff;
         }
 
-        /* Container ikut layout dashboard */
-        .wrapper {
-            margin-left: 230px; /* mengikuti sidebar */
+        .container {
             padding: 40px;
+            width: 400px;
+            margin-left: 260px;
         }
 
-        .title {
-            font-size: 32px;
+        /* Logo bulat */
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: #70e681;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
             font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .subtitle {
-            font-size: 18px;
-            margin-bottom: 25px;
-        }
-
-        /* BOX HIJAU BESAR (sesuai mockup) */
-        .box {
-            width: 550px;
-            background: #7aef8d;
-            padding: 35px;
-            border-radius: 12px;
-        }
-
-        .box h2 {
-            margin: 0;
-            font-size: 26px;
-            font-weight: bold;
+            color: black;
             margin-bottom: 10px;
         }
 
-        .box p {
-            font-size: 16px;
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: -5px;
             margin-bottom: 25px;
         }
 
-        /* Tombol sesuai mockup */
-        .btn {
+        label {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .input {
             width: 100%;
-            background: white;
-            border: none;
-            padding: 14px;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 18px;
             border-radius: 8px;
+            border: 1px solid #999;
+            font-size: 15px;
+        }
+
+        select.input {
+            cursor: pointer;
+        }
+
+        .btn-simpan {
+            width: 100%;
+            padding: 14px;
+            background: #5dd46d;
+            border: none;
+            border-radius: 10px;
             font-size: 17px;
             font-weight: bold;
             cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
-        .btn + .btn {
-            margin-top: 12px;
-        }
-
-        .arrow {
-            font-size: 22px;
-        }
-
-        .btn-link {
-            text-decoration: none;
-            color: black;
+        .btn-simpan:hover {
+            background: #4ec15d;
         }
     </style>
-
 </head>
+
 <body>
 
-<div class="wrapper">
+<div class="container">
 
-    <!-- TITLE SAMA PERSIS MOCKUP -->
-    <div class="title">Admin</div>
-    <div class="subtitle">Daftar Masuk</div>
+    <!-- Logo -->
+    <div class="logo">T</div>
 
-    <!-- BOX HIJAU -->
-    <div class="box">
-        <h2>Daftar Masuk</h2>
-        <p>Silakan pilih untuk melanjutkan</p>
+    <!-- Judul -->
+    <div class="title">Catering Teras Bu Rini</div>
 
-        <!-- Tombol login -->
-        <a href="{{ route('login') }}" class="btn-link">
-            <button class="btn">
-                Masuk
-                <span class="arrow">→</span>
-            </button>
-        </a>
+    <!-- Form -->
+    <form action="#" method="POST">
+        @csrf
 
-        <!-- Tombol register -->
-        <a href="#" class="btn-link">
-            <button class="btn">
-                Buat Akun
-                <span class="arrow">→</span>
-            </button>
-        </a>
+        <label>Nama Lengkap</label>
+        <input type="text" class="input" name="nama" placeholder="Masukkan Nama Lengkap">
 
-    </div>
+        <label>Email</label>
+        <input type="email" class="input" name="email" placeholder="Masukkan Email">
+
+        <label>Password</label>
+        <input type="password" class="input" name="password" placeholder="Masukkan Password">
+
+        <label>Nomor Telepon</label>
+        <input type="text" class="input" name="telepon" placeholder="Masukkan Nomor Telepon">
+
+        <label>Role</label>
+        <select class="input" name="role">
+            <option value="admin utama">Admin Utama</option>
+            <option value="karyawan">Karyawan</option>
+        </select>
+
+        <button type="submit" class="btn-simpan">Simpan</button>
+
+    </form>
 
 </div>
 
