@@ -159,7 +159,7 @@
 
     <!-- CARDS -->
     <div class="cards">
-<<<<<<< HEAD
+<<<<<<<
         <a class="card-link" href="{{ route('pelanggan.index') }}">
             <div class="card blue">👥 3 Pelanggan</div>
         </a>
