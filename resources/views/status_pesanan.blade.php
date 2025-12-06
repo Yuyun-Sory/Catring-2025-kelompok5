@@ -29,7 +29,7 @@
     padding:12px 18px;
     border-radius:8px;
     font-weight:bold;
-    border:1px solid #0066ff;
+    border:1px solid #dcdcdc;
 }
 .stat-number {
     display:block;
