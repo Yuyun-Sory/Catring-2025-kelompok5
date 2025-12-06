@@ -155,7 +155,7 @@
       <li><a href="{{ route('dashboard') }}">🏠 Dashboard</a></li>
       <li><a href="{{ route('pemesanan.masuk') }}">📥 Pemesanan Masuk</a></li>
       <li><a href="{{ route('status.pesanan') }}">📊 Status Pesanan</a></li>
-      <li><a href="{{ route('stok.bahan') }}">📦 Jumlah Stok Bahan</a></li>
+      <li><a href="{{ route('stok.bahan') }}">📦 Stok Bahan</a></li>
       <li><a href="{{ route('jadwal.produksi') }}">📅 Jadwal Produksi</a></li>
       <li><a href="{{ route('laporan') }}">📄 Laporan</a></li>
       <li><a href="{{ route('teras.chat') }}">💬 TerasChat</a></li>
