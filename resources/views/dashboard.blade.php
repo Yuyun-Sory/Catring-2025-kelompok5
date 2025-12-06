@@ -124,6 +124,7 @@
       text-decoration: none;
       color: inherit;
     }
+
   </style>
 </head>
 <body>
@@ -148,7 +149,12 @@
   </div>
 
   <!-- TOPBAR -->
-  <div class="topbar">👤 Admin</div>
+  <div class="topbar">
+    <a href="{{ route('admin.daftar') }}" style="text-decoration:none; color:black;">
+        👤 Admin
+    </a>
+</div>
+
 
   <!-- CONTENT -->
   <div class="content">
@@ -158,25 +164,24 @@
       <span class="breadcrumb">⚙ / Dashboard</span>
     </div>
 
+    <!-- CARDS -->
     <div class="cards">
-  <a class="card-link" href="{{ route('pelanggan.index') }}">
-    <div class="card blue">👥 3 Pelanggan</div>
-  </a>
+      <a class="card-link" href="{{ route('pelanggan.index') }}">
+        <div class="card blue">👥 3 Pelanggan</div>
+      </a>
 
-  <div class="cards">
-  <a class="card-link" href="{{ route('kategori.index') }}">
-    <div class="card blue">📂 Kategori</div>
-  </a>
+      <a class="card-link" href="{{ route('kategori.index') }}">
+        <div class="card green">📂 Kategori</div>
+      </a>
 
-  <div class="cards">
-  <a class="card-link" href="{{ route('pesanan.index') }}">
-    <div class="card blue">🛒 2 Pesanan Baru</div>
-  </a>
+      <a class="card-link" href="{{ route('pesanan.index') }}">
+        <div class="card orange">🛒 2 Pesanan Baru</div>
+      </a>
 
-   <div class="cards">
-  <a class="card-link" href="{{ route('total-pesanan.index') }}">
-    <div class="card blue">🛒 5 Total Pesanan</div>
-  </a>
+      <a class="card-link" href="{{ route('total-pesanan.index') }}">
+        <div class="card orange2">🛒 5 Total Pesanan</div>
+      </a>
+    </div>
 
   </div>
 

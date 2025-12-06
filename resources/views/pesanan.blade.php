@@ -1,141 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2 Pesanan Baru</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesanan</title>
 
-<style>
+  <style>
     body {
-        margin: 0;
-        padding: 0;
-        background: #e9ffe9;
-        font-family: "Georgia", serif;
+      margin: 0;
+      font-family: "Georgia", serif;
+      background: #ffffff;
     }
 
-    .container {
-        width: 85%;
-        margin: 40px auto;
-        background: white;
-        border-radius: 12px;
-        padding: 25px 30px;
-        box-shadow: 0 0 12px rgba(0,0,0,0.15);
+    /* SIDEBAR */
+    .sidebar {
+      width: 230px;
+      height: 100vh;
+      background: linear-gradient(#9af7a6, #5da770);
+      position: fixed;
+      padding-top: 20px;
     }
 
-    .header-box {
-        width: 100%;
-        padding: 18px 22px;
-        border-radius: 10px;
-        background: #7af28c;
-        font-weight: bold;
-        font-size: 26px;
-        text-align: center;
-        border: 1px solid #4da85b;
+    .logo {
+      text-align: center;
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 25px;
     }
 
-    .sub-title {
-        font-size: 20px;
-        margin-top: 25px;
-        font-weight: bold;
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
     }
 
-    .order-card {
-        background: #d3ffdc;
-        border-radius: 12px;
-        padding: 18px 20px;
-        border: 1px solid #77c586;
-        margin-top: 15px;
+    .sidebar li {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 17px;
     }
 
-    .order-row {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 8px;
-        font-size: 18px;
+    .sidebar a {
+      text-decoration: none;
+      color: black;
+      display: flex;
+      width: 100%;
+      gap: 10px;
     }
 
-    .order-label {
-        font-weight: bold;
+    .sidebar li:hover, .active {
+      background: rgba(255,255,255,0.35);
+      border-radius: 8px;
     }
 
-    .btn-detail {
-        margin-top: 10px;
-        background: #6be38b;
-        padding: 7px 14px;
-        border-radius: 8px;
-        border: 1px solid #3b8e4c;
-        font-size: 15px;
-        text-decoration: none;
-        color: black;
+    /* TOPBAR */
+    .topbar {
+      margin-left: 230px;
+      height: 65px;
+      background: #7aef8d;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0 25px;
+      font-size: 17px;
+      font-weight: bold;
     }
 
-    .btn-detail:hover {
-        background: #5cd27b;
+    /* CONTENT */
+    .content {
+      margin-left: 250px;
+      padding: 25px;
     }
-</style>
 
+    .title-box {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 18px 20px;
+      border-radius: 6px;
+      font-size: 28px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .breadcrumb {
+      font-size: 14px;
+      color: #333;
+    }
+
+    h3 {
+      margin-top: 35px;
+      font-size: 22px;
+    }
+
+    /* BUTTON */
+    .btn-add {
+      background: #7aef8d;
+      padding: 7px 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: bold;
+      float: right;
+      margin-top: -35px;
+    }
+
+    /* TABLE */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    table th, table td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+      font-size: 15px;
+    }
+
+    table th {
+      background: #e8e8e8;
+      font-weight: bold;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="container">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo">T</div>
 
-    <div class="header-box">
-        2 Pesanan Baru
+    <ul>
+      <li><a href="{{ route('dashboard') }}">🏠 Dashboard</a></li>
+      <li><a href="{{ route('pemesanan.masuk') }}">📥 Pemesanan Masuk</a></li>
+      <li class="active"><a href="{{ route('pesanan.index') }}">📊 Status Pesanan</a></li>
+      <li><a href="{{ route('stok.bahan') }}">📦 Jumlah Stok Bahan</a></li>
+      <li><a href="{{ route('jadwal.produksi') }}">📅 Jadwal Produksi</a></li>
+      <li><a href="{{ route('laporan') }}">📄 Laporan</a></li>
+      <li><a href="{{ route('teras.chat') }}">💬 TerasChat</a></li>
+      <li><a href="{{ route('logout') }}">⏻ Logout</a></li>
+    </ul>
+  </div>
+
+  <!-- TOPBAR -->
+  <div class="topbar">👤 Admin</div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- Title -->
+    <div class="title-box">
+      Dashboard > Pesanan
+      <span class="breadcrumb">⚙ / Pesanan</span>
     </div>
 
-    <div class="sub-title">Daftar Pesanan:</div>
+    <h3>Data Pesanan Baru</h3>
 
-    <!-- PESANAN 1 -->
-    <div class="order-card">
-        <div class="order-row">
-            <span class="order-label">Nama Pelanggan:</span>
-            <span>Andi Saputra</span>
-        </div>
+    <!-- Button -->
+    <button class="btn-add">+ Tambah Pesanan</button>
 
-        <div class="order-row">
-            <span class="order-label">Menu:</span>
-            <span>Ayam Geprek</span>
-        </div>
+    <!-- TABLE -->
+    <table>
+      <tr>
+        <th>No Order</th>
+        <th>Nama</th>
+        <th>Menu</th>
+        <th>Tanggal</th>
+        <th>Total Pesan</th>
+        <th>Total</th>
+      </tr>
 
-        <div class="order-row">
-            <span class="order-label">Jumlah:</span>
-            <span>2</span>
-        </div>
+      <tr>
+        <td>ORD001</td>
+        <td>Budi Santoso</td>
+        <td>Soto Ayam</td>
+        <td>7 Nov 2025</td>
+        <td>50 Porsi</td>
+        <td>Rp 750.000</td>
+      </tr>
 
-        <div class="order-row">
-            <span class="order-label">Total Harga:</span>
-            <span>Rp 28.000</span>
-        </div>
+      <tr>
+        <td>ORD002</td>
+        <td>Siti Nurlizah</td>
+        <td>Sate Ayam</td>
+        <td>10 Nov 2025</td>
+        <td>55 Porsi</td>
+        <td>Rp 550.000</td>
+      </tr>
 
-        <a href="#" class="btn-detail">Lihat Detail</a>
-    </div>
+    </table>
 
-    <!-- PESANAN 2 -->
-    <div class="order-card">
-        <div class="order-row">
-            <span class="order-label">Nama Pelanggan:</span>
-            <span>Rina Lestari</span>
-        </div>
-
-        <div class="order-row">
-            <span class="order-label">Menu:</span>
-            <span>Nasi Goreng</span>
-        </div>
-
-        <div class="order-row">
-            <span class="order-label">Jumlah:</span>
-            <span>1</span>
-        </div>
-
-        <div class="order-row">
-            <span class="order-label">Total Harga:</span>
-            <span>Rp 15.000</span>
-        </div>
-
-        <a href="#" class="btn-detail">Lihat Detail</a>
-    </div>
-
-</div>
+  </div>
 
 </body>
 </html>

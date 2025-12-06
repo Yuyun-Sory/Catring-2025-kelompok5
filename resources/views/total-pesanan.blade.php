@@ -1,163 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Total Pesanan</title>
-
-  <style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard > Total Pesanan</title>
+<style>
     body {
-      margin: 0;
-      padding: 0;
-      background: #e9ffe9;
-      font-family: "Georgia", serif;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
     }
-
-    .container {
-      width: 85%;
-      margin: 40px auto;
-      background: white;
-      border-radius: 12px;
-      padding: 25px 30px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.15);
+    .sidebar {
+        width: 220px;
+        height: 100vh;
+        background: #7ecf97;
+        padding-top: 20px;
+        position: fixed;
     }
-
-    .header-box {
-      width: 100%;
-      padding: 18px 22px;
-      border-radius: 10px;
-      background: #7af28c;
-      font-weight: bold;
-      font-size: 28px;
-      text-align: center;
-      border: 1px solid #4da85b;
+    .sidebar h2 {
+        text-align: center;
+        margin-bottom: 20px;
     }
-
-    h2 {
-      margin-top: 25px;
-      font-size: 22px;
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
     }
-
+    .sidebar ul li {
+        padding: 12px 20px;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    .sidebar ul li:hover {
+        background: #6bc588;
+    }
+    .content {
+        margin-left: 240px;
+        padding: 20px;
+    }
+    .title-box {
+        background: #fff;
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-size: 24px;
+        font-weight: bold;
+        border: 1px solid #ccc;
+        width: fit-content;
+    }
     table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-      font-size: 17px;
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: #fff;
+        border-radius: 6px;
+        overflow: hidden;
     }
-
-    th, td {
-      border: 1px solid #999;
-      padding: 12px;
-      text-align: left;
+    table th, table td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
     }
-
-    th {
-      background: #f2f2f2;
-      text-align: center;
+    table th {
+        background: #e5e5e5;
+        font-weight: bold;
     }
-
-    .status {
-      padding: 6px 10px;
-      border-radius: 6px;
-      color: black;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .baru { background: #ffe076; }
-    .proses { background: #8fd3ff; }
-    .selesai { background: #86ff9f; }
-
-    .action-btn {
-      padding: 6px 10px;
-      font-size: 14px;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-
-    .detail {
-      background: #b9ffb9;
-      border: 1px solid #4ca454;
-    }
-
-  </style>
+</style>
 </head>
 <body>
 
-<div class="container">
+<div class="sidebar">
+    <h2>TT</h2>
+    <ul>
+        <li>Dashboard</li>
+        <li>Pemesanan Masuk</li>
+        <li>Status Pesanan</li>
+        <li>Jumlah Stok Bahan</li>
+        <li>Jadwal Produksi</li>
+        <li>Laporan</li>
+        <li>TerasChat</li>
+        <li>Logout</li>
+    </ul>
+</div>
 
-  <div class="header-box">Total Pesanan</div>
+<div class="content">
+    <div class="title-box">Dashboard > Total Pesanan</div>
 
-  <h2>Daftar Semua Pesanan</h2>
+    <h3>Data Total Pesanan</h3>
 
-  <table>
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Nama Pelanggan</th>
-        <th>Pesanan</th>
-        <th>Jumlah</th>
-        <th>Total Harga</th>
-        <th>Status</th>
-        <th>Aksi</th>
-      </tr>
-    </thead>
-
-    <tbody>
-
-      <tr>
-        <td style="text-align:center;">1</td>
-        <td><b>Budi Santoso</b></td>
-        <td>Nasi Goreng</td>
-        <td>2</td>
-        <td>Rp 35.000</td>
-        <td><span class="status baru">Pesanan Baru</span></td>
-        <td><a href="#" class="action-btn detail">Detail</a></td>
-      </tr>
-
-      <tr>
-        <td style="text-align:center;">2</td>
-        <td><b>Siti Nurlizah</b></td>
-        <td>Ayam Bakar</td>
-        <td>1</td>
-        <td>Rp 25.000</td>
-        <td><span class="status proses">Diproses</span></td>
-        <td><a href="#" class="action-btn detail">Detail</a></td>
-      </tr>
-
-      <tr>
-        <td style="text-align:center;">3</td>
-        <td><b>Ahmad Rizky</b></td>
-        <td>Es Teh</td>
-        <td>3</td>
-        <td>Rp 12.000</td>
-        <td><span class="status selesai">Selesai</span></td>
-        <td><a href="#" class="action-btn detail">Detail</a></td>
-      </tr>
-
-      <tr>
-        <td style="text-align:center;">4</td>
-        <td><b>Dewi Yuliani</b></td>
-        <td>Mie Ayam</td>
-        <td>1</td>
-        <td>Rp 15.000</td>
-        <td><span class="status proses">Diproses</span></td>
-        <td><a href="#" class="action-btn detail">Detail</a></td>
-      </tr>
-
-      <tr>
-        <td style="text-align:center;">5</td>
-        <td><b>Hendra Wijaya</b></td>
-        <td>Bakso</td>
-        <td>1</td>
-        <td>Rp 18.000</td>
-        <td><span class="status selesai">Selesai</span></td>
-        <td><a href="#" class="action-btn detail">Detail</a></td>
-      </tr>
-
-    </tbody>
-  </table>
-
+    <table>
+        <tr>
+            <th>No Order</th>
+            <th>Nama</th>
+            <th>Menu</th>
+            <th>Tanggal</th>
+            <th>Total Pesan</th>
+            <th>Total</th>
+        </tr>
+        <tr>
+            <td>ORD001</td>
+            <td>Budi Santoso</td>
+            <td>Soto Ayam</td>
+            <td>7 Nov 2025</td>
+            <td>50 Porsi</td>
+            <td>Rp 750.000</td>
+        </tr>
+        <tr>
+            <td>ORD002</td>
+            <td>Siti Nurlizah</td>
+            <td>Sate Ayam</td>
+            <td>10 Nov 2025</td>
+            <td>55 Porsi</td>
+            <td>Rp 550.000</td>
+        </tr>
+        <tr>
+            <td>ORD003</td>
+            <td>Ahmad Rizki</td>
+            <td>Nasi Pecal</td>
+            <td>20 Nov 2025</td>
+            <td>55 Porsi</td>
+            <td>Rp 660.000</td>
+        </tr>
+        <tr>
+            <td>ORD004</td>
+            <td>Ahmad Rizki</td>
+            <td>Nasi Ayam Goreng</td>
+            <td>25 Nov 2025</td>
+            <td>55 Porsi</td>
+            <td>Rp 1.100.000</td>
+        </tr>
+        <tr>
+            <td>ORD005</td>
+            <td>Ahmad Rizki</td>
+            <td>Sayur Sop</td>
+            <td>20 Nov 2025</td>
+            <td>55 Porsi</td>
+            <td>Rp 660.000</td>
+        </tr>
+    </table>
 </div>
 
 </body>
