@@ -5,8 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PemesananController;
-use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\BahanController;
 // Halaman utama
 Route::get('/', function () {
     return view('layouts.home');
@@ -58,11 +57,17 @@ Route::get('/status_pesanan', function () {
     return view('status_pesanan');
 })->name('status.pesanan');
 
-// Stok Bahan
-Route::get('/stok-bahan', function () {
-    return view('stok-bahan');
-})->name('stok.bahan');
 
+
+Route::get('/stok-bahan', [BahanController::class, 'index'])->name('stok.bahan');
+
+Route::get('/stok-bahan/create', [BahanController::class, 'create'])->name('stok.bahan.create');
+Route::post('/stok-bahan', [BahanController::class, 'store'])->name('stok.bahan.store');
+
+Route::get('/stok-bahan/{bahan}/edit', [BahanController::class, 'edit'])->name('stok.bahan.edit');
+Route::put('/stok-bahan/{bahan}', [BahanController::class, 'update'])->name('stok.bahan.update');
+
+Route::delete('/stok-bahan/{bahan}', [BahanController::class, 'destroy'])->name('stok.bahan.destroy');
 // Jadwal Produksi
 Route::get('/jadwal-produksi', function () {
     return view('jadwal-produksi');
@@ -83,23 +88,18 @@ Route::get('/logout', function () {
     return view('logout');
 })->name('logout');
 
-Route::get('/pelanggan', function () {
-    return view('pelanggan');
-})->name('pelanggan.index');
 
-Route::get('/pesanan', function () {
-    return view('pesanan');
-})->name('pesanan.index');
+// CRUD Pelanggan
+Route::resource('pelanggan', App\Http\Controllers\PelangganController::class);
 
-Route::get('/kategori', function () {
-    return view('kategori');
-})->name('kategori.index');
+// CRUD Kategori
+Route::resource('kategori', App\Http\Controllers\KategoriController::class);
 
-Route::get('/total-pesanan', function () {
-    return view('total-pesanan');
-})->name('total-pesanan.index');
+// CRUD Pesanan
+Route::resource('pesanan', App\Http\Controllers\PesananController::class);
 
-Route::get('/daftar-akun', [AdminController::class, 'daftarAkun'])->name('admin.daftar');
+// CRUD Total Pesanan
+Route::resource('total-pesanan', App\Http\Controllers\TotalPesananController::class);
 
 
 
