@@ -91,16 +91,34 @@
       color: #333;
     }
 
-    /* TABLE SECTION */
-    h2 {
+    /* HEADER TABEL: NAMA + TOMBOL */
+    .header-table {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-top: 40px;
+    }
+
+    h2 {
+      margin: 0;
       font-size: 24px;
     }
 
+    .btn-add {
+      background: #7aef8d;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* TABLE */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      margin-top: 12px;
       margin-bottom: 25px;
     }
 
@@ -116,16 +134,6 @@
       font-weight: bold;
     }
 
-    .btn-add {
-      background: #7aef8d;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
     .btn-action {
       padding: 5px 12px;
       border-radius: 5px;
@@ -136,8 +144,8 @@
     }
 
     .thumb {
-      width: 35px;
-      height: 35px;
+      width: 40px;
+      height: 40px;
       border-radius: 4px;
       object-fit: cover;
     }
@@ -177,9 +185,13 @@
     </div>
 
 
-    <!-- KATEGORI: MAKANAN -->
-    <h2>Makanan</h2>
-    <button class="btn-add">+ Tambah Menu</button>
+    <!-- ========================================================== -->
+    <!-- KATEGORI MAKANAN -->
+    <!-- ========================================================== -->
+    <div class="header-table">
+      <h2>Makanan</h2>
+      <button class="btn-add">+ Tambah Menu</button>
+    </div>
 
     <table>
       <tr>
@@ -192,7 +204,7 @@
       <tr>
         <td>Soto Ayam</td>
         <td>Rp 15.000</td>
-        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td><img class="thumb" src="{{ asset('images/Soto ayam.png') }}"></td>
         <td>
           <button class="btn-action">Edit</button>
           <button class="btn-action">Hapus</button>
@@ -202,18 +214,84 @@
       <tr>
         <td>Nasi Ayam Goreng</td>
         <td>Rp 20.000</td>
-        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td><img class="thumb" src="{{ asset('images/Nasi ayam goreng.png') }}"></td>
         <td>
           <button class="btn-action">Edit</button>
           <button class="btn-action">Hapus</button>
         </td>
       </tr>
 
+      <tr>
+        <td>Nasi Pecal</td>
+        <td>Rp 12.000</td>
+        <td><img class="thumb" src="{{ asset('images/Nasi pecal.png') }}"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Sate Ayam</td>
+        <td>Rp 10.000</td>
+        <td><img class="thumb" src="{{ asset('images/Sate ayam.png') }}"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Sayur Sop</td>
+        <td>Rp 9.000</td>
+        <td><img class="thumb" src="{{ asset('images/sayur sop.png') }}"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Mie Rebus Telur</td>
+        <td>Rp 7.000</td>
+        <td><img class="thumb" src="{{ asset('images/mie rebus.png') }}"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Mie Goreng Telur</td>
+        <td>Rp 9.000</td>
+        <td><img class="thumb" src="{{ asset('images/mie goreng.png') }}"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Bakwan Kawi Bakso</td>
+        <td>Rp 6.000</td>
+        <td><img class="thumb" src="{{ asset('images/bakwan kawi.png') }}"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+      
     </table>
 
 
-    <!-- KATEGORI: PAKET MINUMAN -->
-    <h2>Paket Minuman</h2>
+    <!-- ========================================================== -->
+    <!-- KATEGORI PAKET MINUMAN -->
+    <!-- ========================================================== -->
+    <div class="header-table">
+      <h2>Paket Minuman</h2>
+      <button class="btn-add">+ Tambah Menu</button>
+    </div>
 
     <table>
       <tr>
@@ -226,7 +304,17 @@
       <tr>
         <td>Teh</td>
         <td>Rp 5.000</td>
-        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td><img class="thumb" src="{{ asset('images/teh manis.png') }}"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Wedang Jahe Merah Susu</td>
+        <td>Rp 5.000</td>
+        <td><img class="thumb" src="{{ asset('images/wedang susu jahe.png') }}"></td>
         <td>
           <button class="btn-action">Edit</button>
           <button class="btn-action">Hapus</button>
@@ -235,8 +323,18 @@
 
       <tr>
         <td>Kopi Hitam</td>
+        <td>Rp 5.000</td>
+        <td><img class="thumb" src="{{ asset('images/kopi hitam.png') }}"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Wedang Jahe Merah</td>
         <td>Rp 8.000</td>
-        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td><img class="thumb" src="{{ asset('images/wedang jahe merah.png') }}"></td>
         <td>
           <button class="btn-action">Edit</button>
           <button class="btn-action">Hapus</button>
@@ -245,8 +343,13 @@
     </table>
 
 
-    <!-- KATEGORI: CEMILAN -->
-    <h2>Cemilan</h2>
+    <!-- ========================================================== -->
+    <!-- KATEGORI CEMILAN -->
+    <!-- ========================================================== -->
+    <div class="header-table">
+      <h2>Cemilan</h2>
+      <button class="btn-add">+ Tambah Menu</button>
+    </div>
 
     <table>
       <tr>
@@ -259,7 +362,7 @@
       <tr>
         <td>Tempe Mendoan</td>
         <td>Rp 9.000</td>
-        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td><img class="thumb" src="{{ asset('images/tempe mendoan.png') }}"></td>
         <td>
           <button class="btn-action">Edit</button>
           <button class="btn-action">Hapus</button>
@@ -267,9 +370,9 @@
       </tr>
 
       <tr>
-        <td>Bakwuan</td>
+        <td>Bakwan</td>
         <td>Rp 9.000</td>
-        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td><img class="thumb" src="{{ asset('images/Bakwan.png') }}"></td>
         <td>
           <button class="btn-action">Edit</button>
           <button class="btn-action">Hapus</button>
@@ -278,8 +381,13 @@
     </table>
 
 
-    <!-- KATEGORI: OLEH-OLEH -->
-    <h2>Oleh–Oleh</h2>
+    <!-- ========================================================== -->
+    <!-- KATEGORI OLEH – OLEH -->
+    <!-- ========================================================== -->
+    <div class="header-table">
+      <h2>Oleh–Oleh</h2>
+      <button class="btn-add">+ Tambah Menu</button>
+    </div>
 
     <table>
       <tr>
@@ -290,9 +398,9 @@
       </tr>
 
       <tr>
-        <td>Bolu Kukus Original</td>
+        <td>Bolu Kukus Original Ukuran 22x10x5cm</td>
         <td>Rp 25.000</td>
-        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td><img class="thumb" src="{{ asset('images/bolu kukus pandan.png') }}"></td>
         <td>
           <button class="btn-action">Edit</button>
           <button class="btn-action">Hapus</button>
@@ -300,18 +408,57 @@
       </tr>
 
       <tr>
-        <td>Roti Kukus Keju</td>
-        <td>Rp 20.000</td>
-        <td><img class="thumb" src="https://via.placeholder.com/50"></td>
+        <td>Bolu Kukus Keju Ukuran 22x10x5cm</td>
+        <td>Rp 30.000</td>
+        <td><img class="thumb" src="{{ asset('images/Boluu kukus pandan keju.png') }}"></td>
         <td>
           <button class="btn-action">Edit</button>
           <button class="btn-action">Hapus</button>
         </td>
       </tr>
 
+       <tr>
+        <td>Bolu Kukus Original Ukuran 15x10x5cm</td>
+        <td>Rp 25.000</td>
+        <td><img class="thumb" src="{{ asset('images/Bolu kukus original.png') }}"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+       <tr>
+        <td>Bolu Kukus Keju Ukuran 15x10x5cm</td>
+        <td>Rp 17.000</td>
+        <td><img class="thumb" src="{{ asset('images/bolu kukus pandan keju.png') }}"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+       <tr>
+        <td>Jahe Merah Instan</td>
+        <td>Rp 13.000</td>
+        <td><img class="thumb" src="{{ asset('images/Produk5.png') }}"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
+
+       <tr>
+        <td>Telur Asin</td>
+        <td>Rp 3.500</td>
+        <td><img class="thumb" src="{{ asset('images/Telur asin.png') }}"></td>
+        <td>
+          <button class="btn-action">Edit</button>
+          <button class="btn-action">Hapus</button>
+        </td>
+      </tr>
     </table>
 
   </div>
 
 </body>
-</html>
+</html> 
