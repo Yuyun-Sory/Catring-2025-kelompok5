@@ -237,11 +237,7 @@ h1 {
 
 <div class="container-full">
 
-    <!-- HEADER -->
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; flex-wrap:wrap;">
-        <h1>Jadwal Produksi</h1>
-        <button class="add-btn" onclick="openPopup()">+ Tambah Jadwal</button>
-    </div>
+   
 
     <!-- MONTH SELECTOR -->
     <div style="border:1px solid #ccc; padding:25px; border-radius:12px; margin-bottom:25px; background:white;">
