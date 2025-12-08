@@ -5,7 +5,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PemesananController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BahanController;
+use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PesananController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -58,11 +61,17 @@ Route::get('/status_pesanan', function () {
     return view('status_pesanan');
 })->name('status.pesanan');
 
-// Stok Bahan
-Route::get('/stok-bahan', function () {
-    return view('stok-bahan');
-})->name('stok.bahan');
 
+
+Route::get('/stok-bahan', [BahanController::class, 'index'])->name('stok.bahan');
+
+Route::get('/stok-bahan/create', [BahanController::class, 'create'])->name('stok.bahan.create');
+Route::post('/stok-bahan', [BahanController::class, 'store'])->name('stok.bahan.store');
+
+Route::get('/stok-bahan/{bahan}/edit', [BahanController::class, 'edit'])->name('stok.bahan.edit');
+Route::put('/stok-bahan/{bahan}', [BahanController::class, 'update'])->name('stok.bahan.update');
+
+Route::delete('/stok-bahan/{bahan}', [BahanController::class, 'destroy'])->name('stok.bahan.destroy');
 // Jadwal Produksi
 Route::get('/jadwal-produksi', function () {
     return view('jadwal-produksi');
@@ -83,22 +92,20 @@ Route::get('/logout', function () {
     return view('logout');
 })->name('logout');
 
-Route::get('/pelanggan', function () {
-    return view('pelanggan');
-})->name('pelanggan.index');
 
-Route::get('/pesanan', function () {
-    return view('pesanan');
-})->name('pesanan.index');
 
-Route::get('/kategori', function () {
-    return view('kategori');
-})->name('kategori.index');
+// CRUD Pelanggan
+Route::resource('pelanggan', App\Http\Controllers\PelangganController::class);
+Route::resource('pelanggan', App\Http\Controllers\PelangganController::class);
 
-Route::get('/total-pesanan', function () {
-    return view('total-pesanan');
-})->name('total-pesanan.index');
-
+// CRUD Kategori
+Route::resource('kategori', KategoriController::class);
+Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
+Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
+Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
+Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
+Route::put('/kategori/{id}/update', [KategoriController::class, 'update'])->name('kategori.update');
+Route::delete('/kategori/{id}/delete', [KategoriController::class, 'destroy'])->name('kategori.delete');
 // Pastikan rute Anda memiliki nama menggunakan method ->name()
 Route::get('/admin/list', [AdminController::class, 'daftar'])->name('admin.daftar');
 
@@ -106,6 +113,13 @@ Route::get('/pendapatan-detail', [LaporanController::class, 'pendapatanDetail'])
 
  // Rute Detail Profit
 Route::get('/profit-detail', [LaporanController::class, 'profitDetail'])->name('profit.detail');
+
+// CRUD Pesanan
+Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
+
+// CRUD Total Pesanan
+Route::resource('total-pesanan', App\Http\Controllers\TotalPesananController::class);
+
 
 
 

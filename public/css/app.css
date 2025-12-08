@@ -1,0 +1,207 @@
+/* ====================================================================== */
+/* GLOBAL & LAYOUT CSS */
+/* ====================================================================== */
+body {
+    margin: 0;
+    background: #f7f7f7; 
+    font-family: "Georgia", serif;
+    display: flex; 
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 230px; 
+    height: 100vh;
+    background: linear-gradient(#9af7a6, #5da770);
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: black; 
+    padding-top: 20px;
+    z-index: 9999;
+}
+
+.logo {
+    text-align: center;
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: black;
+}
+
+.sidebar ul { list-style: none; padding: 0; }
+
+.sidebar li {
+    padding: 12px 20px;
+    margin: 5px 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar li:hover,
+.sidebar li.active {
+    background-color: rgba(255,255,255,0.35);
+    border-radius: 8px;
+}
+
+/* TOPBAR */
+.topbar {
+    height: 65px; 
+    background: #7aef8d; 
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 25px;
+    font-size: 17px;
+    font-weight: bold;
+    
+    position: fixed;
+    top: 0;
+    left: 230px;
+    width: calc(100% - 230px);
+    z-index: 500;
+}
+
+/* CONTENT WRAPPER */
+.content-wrapper {
+    margin-left: 230px;
+    padding: 95px 35px 35px 35px; 
+    width: calc(100% - 230px);
+}
+
+/* TITLE & BREADCRUMB */
+.title-box {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 18px 20px;
+    border-radius: 6px;
+    font-size: 34px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px; 
+}
+
+.breadcrumb { font-size: 14px; color: #333; }
+
+/* SUMMARY BOX */
+.summary-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.summary-box {
+    flex: 1;
+    min-width: 200px;
+    padding: 30px 20px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.summary-box:nth-child(1) { background: #ffecb3; color: #ff6f00; }
+.summary-box:nth-child(2) { background: #bbdefb; color: #1565c0; }
+.summary-box:nth-child(3) { background: #c8e6c9; color: #2e7d32; }
+
+.summary-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background:white;
+    border-radius: 12px;
+    overflow:hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+thead th {
+    background: #f5f5f5;
+    font-weight: 600;
+    text-align: center;
+    padding: 12px 10px;
+}
+
+tbody td {
+    padding: 12px 10px;
+    vertical-align: middle;
+}
+
+tr:nth-child(even) { background: #fafafa; }
+tr:hover { background: #f0f4ff; transition: 0.3s; }
+
+/* STATUS BADGE */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-block;
+    text-align:center;
+    min-width: 75px;
+}
+
+.status-baru { background: #ffe0b2; color: #e65100; }
+.status-proses { background: #b3e5fc; color: #0277bd; }
+.status-selesai { background: #c8e6c9; color: #2e7d32; }
+
+/* ACTION BUTTON */
+.action-group button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    margin-right: 5px;
+    transition: all 0.3s;
+}
+
+.process-btn { background: #1565c0; color:white; }
+.detail-btn { background: #2e7d32; color:white; }
+.invoice-btn { background: #ff9800; color:white; }
+
+.action-group button:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+    .summary-container { flex-direction: column; }
+    table, thead, tbody, th, td, tr { display:block; }
+    tr { margin-bottom: 15px; }
+    th { text-align:left; }
+    td { text-align:left; padding-left: 50%; position:relative; }
+    td::before { 
+        content: attr(data-label);
+        position:absolute; 
+        left:0; 
+        width:45%; 
+        padding-left:15px; 
+        font-weight:600; 
+        color:#555;
+    }
+}

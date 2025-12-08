@@ -1,188 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+@extends('layouts.app')
 
-  <style>
-    body {
-      margin: 0;
-      font-family: "Georgia", serif;
-      background-color: #ffffff;
-    }
+@section('title', 'Dashboard')
+@section('dashboard_active', 'active')
 
-    /* SIDEBAR */
-    .sidebar {
-      width: 230px;
-      height: 100vh;
-      background: linear-gradient(#9af7a6, #5da770);
-      position: fixed;
-      color: black;
-      padding-top: 20px;
-    }
+@push('styles')
+<style>
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-top: 15px;
+}
 
-    .logo {
-      text-align: center;
-      font-size: 48px;
-      font-weight: bold;
-      margin-bottom: 25px;
-    }
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    flex: 1 1 220px;
+}
 
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
-    }
+.card {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 25px 20px;
+    border-radius: 15px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* pastikan konten tidak melebihi */
+    align-items: flex-start;
+    height: 150px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    overflow: hidden; /* mencegah konten keluar */
+}
 
-    .sidebar li {
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 17px;
-      cursor: pointer;
-    }
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+}
 
-    .sidebar a {
-      text-decoration: none;
-      color: black;
-      display: flex;
-      width: 100%;
-      align-items: center;
-      gap: 12px;
-    }
+.card .icon {
+    font-size: 40px;
+}
 
-    .sidebar li:hover,
-    .active {
-      background-color: rgba(255,255,255,0.35);
-      border-radius: 8px;
-    }
+.card .title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 10px;
+}
 
-    /* TOPBAR */
-    .topbar {
-      margin-left: 230px;
-      height: 65px;
-      background: #7aef8d;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 0 25px;
-      font-size: 17px;
-      font-weight: bold;
-    }
+.card .count {
+    font-size: 22px; /* lebih kecil agar muat */
+    font-weight: bold;
+    margin-top: auto; /* push ke bawah card */
+    align-self: flex-end; /* letakkan angka di kanan bawah */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    /* CONTENT */
-    .content {
-      margin-left: 250px;
-      padding: 35px;
-    }
+/* Gradien warna */
+.green { background: linear-gradient(135deg, #42e695, #3bb2b8); }
+.blue { background: linear-gradient(135deg, #36d1dc, #5b86e5); }
+.orange { background: linear-gradient(135deg, #f7971e, #ffd200); }
+.purple { background: linear-gradient(135deg, #8e2de2, #4a00e0); }
+</style>
 
-    /* TITLE BOX */
-    .title-box {
-      background: white;
-      border: 1px solid #ccc;
-      padding: 18px 20px;
-      border-radius: 6px;
-      font-size: 34px;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+@endpush
 
-    .breadcrumb {
-      font-size: 14px;
-      color: #333;
-    }
+@section('content')
 
-    /* CARDS */
-    .cards {
-      display: flex;
-      gap: 20px;
-      margin-top: 25px;
-    }
+<div class="title-box">
+    Dashboard
+    <span class="breadcrumb">⚙ / Overview</span>
+</div>
 
-    .card {
-      padding: 20px 25px;
-      font-size: 16px;
-      color: white;
-      border-radius: 8px;
-      font-weight: bold;
-      width: 180px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+<div class="cards">
+    <!-- Pelanggan Card -->
+    <a class="card-link" href="{{ route('pelanggan.index') }}">
+        <div class="card green">
+            <div class="icon">👤</div>
+            <div class="title">Pelanggan</div>
+            <div class="count">{{ $totalPelanggan ?? 0 }}</div>
+        </div>
+    </a>
 
-    .blue { background: #0066ff; }
-    .green { background: #65f28f; color: black; }
-    .orange { background: #ff8c29; }
-    .orange2 { background: #e67d45; }
+    <!-- Kategori Card -->
+    <a class="card-link" href="{{ route('kategori.index') }}">
+        <div class="card blue">
+            <div class="icon">📂</div>
+            <div class="title">Kategori</div>
+            <div class="count">{{ $totalKategori ?? 0 }}</div>
+        </div>
+    </a>
 
-    .card-link {
-      text-decoration: none;
-      color: inherit;
-    }
+    <!-- Pesanan Card -->
+    <a class="card-link" href="{{ route('pesanan.index') }}">
+        <div class="card orange">
+            <div class="icon">🛒</div>
+            <div class="title">Pesanan</div>
+            <div class="count">{{ $totalPesanan ?? 0 }}</div>
+        </div>
+    </a>
 
-  </style>
-</head>
-<body>
-
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <div class="logo">T</div>
-
-    <ul>
-      <li class="active">
-        <a href="{{ route('dashboard') }}">🏠 Dashboard</a>
-      </li>
-
-      <li><a href="{{ route('pemesanan.masuk') }}">📥 Pemesanan Masuk</a></li>
-      <li><a href="{{ route('status.pesanan') }}">📊 Status Pesanan</a></li>
-      <li><a href="{{ route('stok.bahan') }}">📦 Jumlah Stok Bahan</a></li>
-      <li><a href="{{ route('jadwal.produksi') }}">📅 Jadwal Produksi</a></li>
-      <li><a href="{{ route('laporan') }}">📄 Laporan</a></li>
-      <li><a href="{{ route('teras.chat') }}">💬 TerasChat</a></li>
-      <li><a href="{{ route('logout') }}">⏻ Logout</a></li>
-    </ul>
-  </div>
-
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <a href="{{ route('admin.daftar') }}" style="text-decoration:none; color:black;">
-        👤 Admin
+    <!-- Total Pendapatan Card -->
+    <a class="card-link" href="{{ route('total-pesanan.index') }}">
+        <div class="card purple">
+            <div class="icon">📊</div>
+            <div class="title">Total Pendapatan</div>
+            <div class="count">Rp {{ number_format($totalPendapatan ?? 0, 0, ',', '.') }}</div>
+        </div>
     </a>
 </div>
 
-  <!-- CONTENT -->
-  <div class="content">
-
-    <div class="title-box">
-      Dashboard
-      <span class="breadcrumb">⚙ / Dashboard</span>
-    </div>
-
-    <!-- CARDS -->
-    <div class="cards">
-      <a class="card-link" href="{{ route('pelanggan.index') }}">
-        <div class="card blue">👥 3 Pelanggan</div>
-      </a>
-
-      <a class="card-link" href="{{ route('kategori.index') }}">
-        <div class="card green">📂 Kategori</div>
-      </a>
-
-      <a class="card-link" href="{{ route('pesanan.index') }}">
-        <div class="card orange">🛒 2 Pesanan Baru</div>
-      </a>
-
-      <a class="card-link" href="{{ route('total-pesanan.index') }}">
-        <div class="card orange2">🛒 5 Total Pesanan</div>
-      </a>
-    </div>
-
-  </div>
-
-</body>
-</html>
+@endsection

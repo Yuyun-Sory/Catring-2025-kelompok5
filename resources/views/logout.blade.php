@@ -4,52 +4,101 @@
 
 @section('content')
 
-<h1 style="font-size:32px; font-weight:bold; margin-bottom:20px;">
-    Logout
-</h1>
+<style>
+    body {
+        background: #f5f6fa;
+        font-family: 'Inter', sans-serif;
+    }
 
-<div style="
-    background:white;
-    padding:30px;
-    border-radius:12px;
-    border:1px solid #e0e0e0;
-    width:60%;
-    text-align:center;
-    margin-top:40px;
-">
+    .logout-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh;
+    }
 
-    <h3 style="margin-bottom:15px;">Apakah Anda yakin ingin logout?</h3>
-    <p style="opacity:0.7; margin-bottom:25px;">
-        Anda akan keluar dari dashboard dan kembali ke halaman login.
-    </p>
+    .logout-card {
+        background: white;
+        padding: 40px 50px;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        transition: transform 0.3s;
+    }
 
-    <form action="{{ route('logout') }}" method="POST">
-        @csrf
+    .logout-card:hover {
+        transform: translateY(-5px);
+    }
 
-        <button type="submit" style="
-            background:#e74c3c;
-            color:white;
-            padding:12px 25px;
-            border:none;
-            border-radius:8px;
-            font-size:16px;
-            margin-right:10px;
-        ">
-            Ya, Logout
-        </button>
+    .logout-card h1 {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #333;
+    }
 
-        <a href="{{ route('dashboard') }}" style="
-            background:#7beb8b;
-            padding:12px 25px;
-            text-decoration:none;
-            border-radius:8px;
-            color:black;
-            font-weight:bold;
-        ">
-            Batal
-        </a>
-    </form>
+    .logout-card h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #555;
+    }
 
+    .logout-card p {
+        color: #777;
+        font-size: 15px;
+        margin-bottom: 30px;
+    }
+
+    .btn-logout {
+        background: linear-gradient(135deg, #e74c3c, #ff6b6b);
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-right: 15px;
+    }
+
+    .btn-logout:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(231,76,60,0.4);
+    }
+
+    .btn-cancel {
+        background: linear-gradient(135deg, #7beb8b, #32c76c);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-cancel:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(50,199,108,0.4);
+    }
+
+</style>
+
+<div class="logout-container">
+    <div class="logout-card">
+        <h1>Logout</h1>
+        <h3>Apakah Anda yakin ingin logout?</h3>
+        <p>Anda akan keluar dari dashboard dan kembali ke halaman login.</p>
+
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn-logout">Ya, Logout</button>
+            <a href="{{ route('dashboard') }}" class="btn-cancel">Batal</a>
+        </form>
+    </div>
 </div>
 
 @endsection

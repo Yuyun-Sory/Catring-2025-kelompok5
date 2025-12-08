@@ -5,84 +5,191 @@
 @section('content')
 
 <style>
-/* MODAL */
+/* =========================== MODAL =========================== */
 .modal-overlay {
-    position: fixed; top:0; left:0;
+    position: fixed;
+    top:0; left:0;
     width:100%; height:100%;
-    background:rgba(0,0,0,0.5);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
 }
 .modal-box {
-    background:white;
-    width:90%; max-width:600px;
-    border-radius:12px;
-    padding:20px;
-    box-shadow:0 0 15px rgba(0,0,0,0.35);
+    background: #fff;
+    width: 90%; max-width: 600px;
+    border-radius: 16px;
+    padding: 25px 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    animation: modalIn 0.3s ease-out;
+}
+@keyframes modalIn {
+    from {transform: scale(0.8); opacity:0;}
+    to {transform: scale(1); opacity:1;}
 }
 
-/* STATISTIK */
+/* =========================== STATISTICS =========================== */
+#statsBar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 15px;
+}
 .stat-box {
-    background:#f5f5f5;
-    padding:12px 18px;
-    border-radius:8px;
-    font-weight:bold;
-    border:1px solid #dcdcdc;
+    flex: 1 1 150px;
+    padding: 20px 18px;
+    border-radius: 16px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
 }
+.stat-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+.stat-box.total { background: linear-gradient(135deg, #4b7bec, #3867d6); }
+.stat-box.menunggu { background: linear-gradient(135deg, #ffb347, #ffcc33); }
+.stat-box.diproses { background: linear-gradient(135deg, #4aa3ff, #70c1ff); }
+.stat-box.dikirim { background: linear-gradient(135deg, #df9d00, #f3c623); }
+.stat-box.selesai { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+.stat-box.batal { background: linear-gradient(135deg, #ff6f6f, #e74c3c); }
+
 .stat-number {
-    display:block;
-    font-size:22px;
-    color:#0050ff;
-    text-align:center;
+    display: block;
+    font-size: 28px;
+    margin-top: 8px;
 }
 
-/* BADGE & CARD */
-.badge-blue { background:#0050ff; color:white; padding:6px 14px; border-radius:10px; display:flex; gap:6px;}
-.badge-gray, .badge-green {
-    padding:8px 18px; border-radius:20px; border:none; cursor:pointer; font-weight:bold;
+/* =========================== FILTER BUTTONS =========================== */
+.filter-btn {
+    padding: 10px 20px;
+    border-radius: 22px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    background: #e0e0e0;
 }
-.badge-gray{background:#e9e9e9;}
-.badge-green{background:#7beb8b;}
+.filter-btn.active,
+.filter-btn:hover {
+    background: #4f46e5;
+    color: white;
+}
 
+/* =========================== SEARCH BAR =========================== */
+input[type="text"] {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    margin: 20px 0;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    transition: 0.3s;
+}
+input[type="text"]:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 12px rgba(79,70,229,0.3);
+    outline: none;
+}
+
+/* =========================== CARD ORDER =========================== */
 .card-order {
-    background:white;
-    padding:18px;
-    border:1px solid #cfcfcf;
-    border-radius:10px;
-    margin-bottom:18px;
+    background:#fff;
+    padding:20px 22px;
+    border-radius:16px;
+    border:1px solid #e0e0e0;
+    margin-bottom:20px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.card-order:hover {
+    transform: translateY(-4px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.12);
+}
+.card-order b {
+    font-size: 18px;
+}
+.card-order p {
+    margin:6px 0;
 }
 
-.status-pill {padding:4px 10px; border-radius:12px; color:white; font-size:12px;}
-.pill-selesai{background:#3FBF3F;}
-.pill-menunggu{background:#757575;}
-.pill-diproses{background:#1976ff;}
-.pill-dikirim{background:#df9d00;}
-.pill-batal{background:#d83131;}
+/* =========================== STATUS PILLS =========================== */
+.status-pill {
+    padding:6px 16px;
+    border-radius:20px;
+    color:#fff;
+    font-size:13px;
+    font-weight:600;
+    transition: background 0.3s;
+}
+.pill-selesai { background:#27ae60; }
+.pill-menunggu { background:#757575; }
+.pill-diproses { background:#1976ff; }
+.pill-dikirim { background:#df9d00; }
+.pill-batal { background:#d83131; }
 
-.update-btn {padding:6px 12px; border:none; border-radius:6px; cursor:pointer;}
-.btn-proses{background:#7beb8b;}
-.btn-kirim{background:#82C0FF;}
-.btn-batalkan{background:#ff6f6f;}
+/* =========================== ACTION BUTTONS =========================== */
+.update-btn {
+    padding:8px 16px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+    transition: all 0.3s;
+}
+.btn-proses { background:#7beb8b; color:#fff; }
+.btn-kirim { background:#82c0ff; color:#fff; }
+.btn-batalkan { background:#ff6f6f; color:#fff; }
+.update-btn:hover {
+    opacity:0.9;
+    transform: translateY(-2px);
+}
 
-.filter-btn.active {background:#0050ff !important; color:white;}
+/* =========================== RESPONSIVE =========================== */
+@media(max-width:768px){
+    #statsBar { flex-direction: column; }
+    .filter-btn { flex:1 1 45%; margin-bottom:10px; }
+    .card-order { padding:16px; }
+}
 </style>
 
+<!-- ================= HTML ================= -->
+<h1 class="title-page"><b>Pesanan Masuk</b></h1>
 
-<h1 style="font-size:32px; font-weight:bold; margin-bottom:10px;">Status Pesanan</h1>
-
-{{-- STATISTICS --}}
-<div id="statsBar" style="display:flex; gap:15px; margin-top:15px; flex-wrap:wrap;">
-    <div class="stat-box">Total Pesanan <span class="stat-number total-count">5</span></div>
-    <div class="stat-box">Menunggu <span class="stat-number menunggu-count">1</span></div>
-    <div class="stat-box">Diproses <span class="stat-number diproses-count">1</span></div>
-    <div class="stat-box">Dalam Perjalanan <span class="stat-number dikirim-count">1</span></div>
-    <div class="stat-box">Selesai <span class="stat-number selesai-count">1</span></div>
-    <div class="stat-box">Dibatalkan <span class="stat-number batal-count">1</span></div>
+<!-- STATISTICS -->
+<div id="statsBar">
+    <div class="stat-box total">
+        Total Pesanan
+        <span class="stat-number total-count">5</span>
+    </div>
+    <div class="stat-box menunggu">
+        Menunggu
+        <span class="stat-number menunggu-count">1</span>
+    </div>
+    <div class="stat-box diproses">
+        Diproses
+        <span class="stat-number diproses-count">1</span>
+    </div>
+    <div class="stat-box dikirim">
+        Dalam Perjalanan
+        <span class="stat-number dikirim-count">1</span>
+    </div>
+    <div class="stat-box selesai">
+        Selesai
+        <span class="stat-number selesai-count">1</span>
+    </div>
+    <div class="stat-box batal">
+        Dibatalkan
+        <span class="stat-number batal-count">1</span>
+    </div>
 </div>
 
-<!-- FILTER BUTTON -->
+<!-- FILTER -->
 <div style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;">
     <button class="filter-btn active" data-filter="all">Semua</button>
     <button class="filter-btn" data-filter="menunggu">Menunggu</button>
@@ -93,83 +200,66 @@
 </div>
 
 <!-- SEARCH BAR -->
-<input type="text" placeholder="🔍 Cari Pesanan (No Pesanan, Nama/Menu...)"
-    style="width:100%; padding:12px; border-radius:10px; border:1px solid #ccc; margin:20px 0;">
+<input type="text" id="searchBar" placeholder="🔍 Cari Pesanan (No Pesanan, Nama/Menu...)">
 
-
-{{-- ================= CARD LIST ================= --}}
-
-<!-- SELESAI -->
+<!-- CARD LIST -->
 <div class="card-order card-item selesai">
     <div style="display:flex; justify-content:space-between;">
         <b onclick="openModal(detail_1)" style="color:#0050ff; cursor:pointer;">2025-0015</b>
         <span class="status-pill pill-selesai">Selesai</span>
     </div>
-
     <p style="font-weight:bold;">Nasi Ayam Goreng Lalapan</p>
     <p>Ahmad Rizki<br><span style="opacity:0.7;">0855-1234-5678</span></p>
 </div>
 
-<!-- MENUNGGU -->
 <div class="card-order card-item menunggu">
     <div style="display:flex; justify-content:space-between;">
         <b onclick="openModal(detail_2)" style="cursor:pointer; color:#0050ff;">2025-0021</b>
         <span class="status-pill pill-menunggu">Menunggu</span>
     </div>
-
     <p style="font-weight:bold;">Soto Ayam Special</p>
     <p>Budi Santoso<br><span style="opacity:0.7;">0812-3469-7850</span></p>
-
     <div style="margin-top:12px; display:flex; gap:10px;">
         <button class="update-btn btn-proses" onclick="updateStatus(this,'diproses')">Proses</button>
         <button class="update-btn btn-batalkan" onclick="updateStatus(this,'batal')">Batalkan</button>
     </div>
 </div>
 
-<!-- DIPROSES -->
 <div class="card-order card-item diproses">
     <div style="display:flex; justify-content:space-between;">
         <b onclick="openModal(detail_3)" style="cursor:pointer; color:#0050ff;">2025-0032</b>
         <span class="status-pill pill-diproses">Diproses</span>
     </div>
-
     <p style="font-weight:bold;">Sate Ayam Madura</p>
     <p>Siti Nurhaliza<br><span style="opacity:0.7;">0856-7890-1234</span></p>
-
     <div style="margin-top:12px; display:flex; gap:10px;">
         <button class="update-btn btn-kirim" onclick="updateStatus(this,'dikirim')">Kirim</button>
         <button class="update-btn btn-batalkan" onclick="updateStatus(this,'batal')">Batalkan</button>
     </div>
 </div>
 
-<!-- DIKIRIM -->
 <div class="card-order card-item dikirim">
     <div style="display:flex; justify-content:space-between;">
         <b onclick="openModal(detail_4)" style="cursor:pointer; color:#0050ff;">2025-0040</b>
         <span class="status-pill pill-dikirim">Dalam Perjalanan</span>
     </div>
-
     <p style="font-weight:bold;">Bakso Super</p>
     <p>Rico Hidayat<br><span style="opacity:0.7;">0821-2233-5522</span></p>
-
     <div style="margin-top:12px; display:flex; gap:10px;">
         <button class="update-btn btn-proses" onclick="updateStatus(this,'selesai')">Selesai</button>
     </div>
 </div>
 
-<!-- BATAL -->
 <div class="card-order card-item batal">
     <div style="display:flex; justify-content:space-between;">
         <b onclick="openModal(detail_5)" style="cursor:pointer; color:#0050ff;">2025-0044</b>
         <span class="status-pill pill-batal">Dibatalkan</span>
     </div>
-
     <p style="font-weight:bold;">Nasi Box Komplit</p>
     <p>Dina Purnama<br><span style="opacity:0.7;">0831-7788-2211</span></p>
 </div>
 
-
-{{-- ========== MODAL DETAIL ========= --}}
+<!-- MODAL DETAIL -->
 <div id="detailModal" class="modal-overlay">
     <div class="modal-box">
         <h3 style="font-size:20px; font-weight:bold; margin-bottom:15px;">Detail Pesanan</h3>
@@ -179,54 +269,12 @@
 </div>
 
 <script>
-// DETAIL DATA (SEBAGAI CONTOH)
-const detail_1 = `
-<b>No Pesanan:</b> 2025-0015<br>
-<b>Status:</b> <span class='status-pill pill-selesai'>Selesai</span><br>
-<b>Menu:</b> Nasi Ayam Goreng Lalapan<br>
-<b>Nama:</b> Ahmad Rizki<br>
-<b>Telp:</b> 0855-1234-5678<br>
-<b>Tanggal Pesan:</b> 10/11/2025<br>
-<b>Tanggal Kirim:</b> 11/11/2025<br>
-<b>Total:</b> Rp 1.000.000
-`;
-
-const detail_2 = `
-<b>No Pesanan:</b> 2025-0021<br>
-<b>Status:</b> <span class='status-pill pill-menunggu'>Menunggu</span><br>
-<b>Menu:</b> Soto Ayam Special<br>
-<b>Nama:</b> Budi Santoso<br>
-<b>Telp:</b> 0812-3469-7850<br>
-<b>Tanggal Pesan:</b> 13/11/2025<br>
-<b>Total:</b> Rp 700.000
-`;
-
-const detail_3 = `
-<b>No Pesanan:</b> 2025-0032<br>
-<b>Status:</b> <span class='status-pill pill-diproses'>Diproses</span><br>
-<b>Menu:</b> Sate Ayam Madura<br>
-<b>Nama:</b> Siti Nurhaliza<br>
-<b>Telp:</b> 0856-7890-1234<br>
-<b>Total:</b> Rp 750.000
-`;
-
-const detail_4 = `
-<b>No Pesanan:</b> 2025-0040<br>
-<b>Status:</b> <span class='status-pill pill-dikirim'>Dalam Perjalanan</span><br>
-<b>Menu:</b> Bakso Super<br>
-<b>Nama:</b> Rico Hidayat<br>
-<b>Telp:</b> 0821-2233-5522<br>
-<b>Total:</b> Rp 900.000
-`;
-
-const detail_5 = `
-<b>No Pesanan:</b> 2025-0044<br>
-<b>Status:</b> <span class='status-pill pill-batal'>Dibatalkan</span><br>
-<b>Menu:</b> Nasi Box Komplit<br>
-<b>Nama:</b> Dina Purnama<br>
-<b>Telp:</b> 0831-7788-2211<br>
-<b>Total:</b> Rp 600.000
-`;
+// DETAIL DATA
+const detail_1 = `<b>No Pesanan:</b> 2025-0015<br><b>Status:</b> <span class='status-pill pill-selesai'>Selesai</span><br><b>Menu:</b> Nasi Ayam Goreng Lalapan<br><b>Nama:</b> Ahmad Rizki<br><b>Telp:</b> 0855-1234-5678<br><b>Tanggal Pesan:</b> 10/11/2025<br><b>Tanggal Kirim:</b> 11/11/2025<br><b>Total:</b> Rp 1.000.000`;
+const detail_2 = `<b>No Pesanan:</b> 2025-0021<br><b>Status:</b> <span class='status-pill pill-menunggu'>Menunggu</span><br><b>Menu:</b> Soto Ayam Special<br><b>Nama:</b> Budi Santoso<br><b>Telp:</b> 0812-3469-7850<br><b>Tanggal Pesan:</b> 13/11/2025<br><b>Total:</b> Rp 700.000`;
+const detail_3 = `<b>No Pesanan:</b> 2025-0032<br><b>Status:</b> <span class='status-pill pill-diproses'>Diproses</span><br><b>Menu:</b> Sate Ayam Madura<br><b>Nama:</b> Siti Nurhaliza<br><b>Telp:</b> 0856-7890-1234<br><b>Total:</b> Rp 750.000`;
+const detail_4 = `<b>No Pesanan:</b> 2025-0040<br><b>Status:</b> <span class='status-pill pill-dikirim'>Dalam Perjalanan</span><br><b>Menu:</b> Bakso Super<br><b>Nama:</b> Rico Hidayat<br><b>Telp:</b> 0821-2233-5522<br><b>Total:</b> Rp 900.000`;
+const detail_5 = `<b>No Pesanan:</b> 2025-0044<br><b>Status:</b> <span class='status-pill pill-batal'>Dibatalkan</span><br><b>Menu:</b> Nasi Box Komplit<br><b>Nama:</b> Dina Purnama<br><b>Telp:</b> 0831-7788-2211<br><b>Total:</b> Rp 600.000`;
 
 // MODAL
 function openModal(data){
@@ -253,7 +301,7 @@ filterButtons.forEach(btn=>{
     });
 });
 
-// REALTIME UPDATE STATUS
+// UPDATE STATUS
 function updateStatus(button,newStatus){
     const card=button.closest(".card-item");
     const oldStatus=[...card.classList].find(c=>["menunggu","diproses","dikirim","selesai","batal"].includes(c));
@@ -280,10 +328,10 @@ function updateStatus(button,newStatus){
 
 function updateStats(oldS,newS){
     document.querySelector(`.${oldS}-count`).innerText =
-    parseInt(document.querySelector(`.${oldS}-count`).innerText)-1;
+        parseInt(document.querySelector(`.${oldS}-count`).innerText)-1;
 
     document.querySelector(`.${newS}-count`).innerText =
-    parseInt(document.querySelector(`.${newS}-count`).innerText)+1;
+        parseInt(document.querySelector(`.${newS}-count`).innerText)+1;
 }
 </script>
 
