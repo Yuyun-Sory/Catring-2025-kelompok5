@@ -1,464 +1,350 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kategori</title>
+@extends('layouts.app')
 
-  <style>
-    body {
-      margin: 0;
-      font-family: "Georgia", serif;
-      background-color: #ffffff;
+@section('title', 'Manajemen Kategori')
+@section('kategori_active', 'active')
+
+@push('styles')
+<style>
+    /* ====================================================================== */
+    /* CSS KATEGORI (Modern & Bersih) */
+    /* ====================================================================== */
+
+    /* Container untuk memastikan tombol global dan judul sejajar */
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        margin-bottom: 10px;
     }
 
-    /* SIDEBAR */
-    .sidebar {
-      width: 230px;
-      height: 100vh;
-      background: linear-gradient(#9af7a6, #5da770);
-      position: fixed;
-      padding-top: 20px;
+    /* Tombol Global Tambah Menu Baru */
+    .btn-add-global {
+        background: #007bff; /* Warna biru modern */
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.1s;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .btn-add-global:hover {
+        background: #0056b3;
+        transform: translateY(-1px);
     }
 
-    .logo {
-      text-align: center;
-      font-size: 48px;
-      margin-bottom: 25px;
-      font-weight: bold;
-    }
-
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .sidebar li {
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 17px;
-    }
-
-    .sidebar a {
-      text-decoration: none;
-      color: black;
-      display: flex;
-      width: 100%;
-      gap: 10px;
-    }
-
-    .sidebar li:hover,
-    .active {
-      background: rgba(255,255,255,0.35);
-      border-radius: 8px;
-    }
-
-    /* TOPBAR */
-    .topbar {
-      margin-left: 230px;
-      height: 65px;
-      background: #7aef8d;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 0 25px;
-      font-size: 17px;
-      font-weight: bold;
-    }
-
-    /* CONTENT */
-    .content {
-      margin-left: 250px;
-      padding: 25px;
-    }
-
-    .title-box {
-      background: white;
-      border: 1px solid #ccc;
-      padding: 18px 20px;
-      border-radius: 6px;
-      font-size: 28px;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .breadcrumb {
-      font-size: 14px;
-      color: #333;
-    }
-
-    /* HEADER TABEL: NAMA + TOMBOL */
-    .header-table {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 40px;
-    }
-
+    /* Judul Kategori (H2) */
     h2 {
-      margin: 0;
-      font-size: 24px;
+        font-size: 26px;
+        font-weight: bold;
+        color: #333;
+        padding-top: 15px;
+        margin-top: 30px; /* Jarak antara kategori */
+        border-bottom: 2px solid #5da770; /* Garis pemisah yang elegan */
+        padding-bottom: 5px;
     }
 
-    .btn-add {
-      background: #7aef8d;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
+    /* Table Container (untuk responsivitas dan shadow) */
+    .table-container {
+        overflow-x: auto;
+        margin-top: 15px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Shadow yang lebih lembut */
     }
 
-    /* TABLE */
     table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-      margin-bottom: 25px;
+        width: 100%;
+        border-collapse: separate; /* Menggunakan separate untuk border-radius */
+        border-spacing: 0;
     }
 
     table th, table td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: left;
-      font-size: 15px;
+        padding: 15px 20px; /* Padding lebih besar */
+        border: none; /* Hilangkan border individual */
+        border-bottom: 1px solid #eee; /* Garis horizontal halus */
+        font-size: 15px;
     }
 
     table th {
-      background: #e8e8e8;
-      font-weight: bold;
+        background: #f8f9fa; /* Header terang */
+        color: #495057;
+        font-weight: 700;
+        text-align: left;
+        position: sticky;
+        top: 0;
+        z-index: 10;
     }
 
-    .btn-action {
-      padding: 5px 12px;
-      border-radius: 5px;
-      font-size: 12px;
-      cursor: pointer;
-      border: none;
-      background: #7aef8d;
+    /* Sudut border untuk header */
+    table thead tr:first-child th:first-child { border-top-left-radius: 10px; }
+    table thead tr:first-child th:last-child { border-top-right-radius: 10px; }
+
+    /* Baris hover */
+    table tbody tr:hover {
+        background-color: #f1f1f1;
+        transition: background-color 0.2s;
     }
 
+    /* Thumbnails */
     .thumb {
-      width: 40px;
-      height: 40px;
-      border-radius: 4px;
-      object-fit: cover;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%; /* Membuat lingkaran */
+        object-fit: cover;
+        border: 2px solid #ddd;
     }
 
-  </style>
-</head>
+    /* Action Buttons */
+    .btn-action {
+        padding: 6px 14px;
+        border-radius: 5px;
+        font-size: 13px;
+        cursor: pointer;
+        border: none;
+        margin-right: 5px;
+        font-weight: 500;
+        transition: opacity 0.2s;
+        background: #28a745; /* Default Edit color (Hijau Muda) */
+        color: white;
+    }
+    
+    .btn-action:hover {
+        opacity: 0.85;
+    }
 
-<body>
+    /* Style spesifik Hapus */
+    .btn-action.danger { 
+        background: #dc3545; /* Merah */
+        color: white;
+    }
+    
+    /* No Data Row */
+    .nodata {
+        text-align: center;
+        padding: 20px !important;
+        font-style: italic;
+        color: #6c757d;
+    }
+</style>
+@endpush
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <div class="logo">T</div>
+@section('content')
 
-    <ul>
-      <li><a href="{{ route('dashboard') }}">🏠 Dashboard</a></li>
-      <li><a href="{{ route('pemesanan.masuk') }}">📥 Pemesanan Masuk</a></li>
-      <li><a href="{{ route('status.pesanan') }}">📊 Status Pesanan</a></li>
-      <li><a href="{{ route('stok.bahan') }}">📦 Stok Bahan</a></li>
-      <li><a href="{{ route('jadwal.produksi') }}">📅 Jadwal Produksi</a></li>
-      <li><a href="{{ route('laporan') }}">📄 Laporan</a></li>
-      <li><a href="{{ route('teras.chat') }}">💬 TerasChat</a></li>
-      <li><a href="{{ route('logout') }}">⏻ Logout</a></li>
-    </ul>
-  </div>
+<div class="title-box">
+    Dashboard > Kategori
+    <span class="breadcrumb">⚙ / Kategori</span>
+</div>
 
-  <!-- TOPBAR -->
-  <div class="topbar">👤 Admin</div>
+{{-- Memisahkan Judul Halaman dan Tombol Global --}}
+<div class="header-content">
+    <h1>Daftar Menu Berdasarkan Kategori</h1>
+    <button class="btn-add-global" onclick="openCreateModal()">+ Tambah Menu Baru</button>
+</div>
 
+@include('kategori.create') {{-- Popup Create (Pastikan file ini ada) --}}
+@include('kategori.edit')   {{-- Popup Edit (Pastikan file ini ada) --}}
 
-  <!-- CONTENT -->
-  <div class="content">
-
-    <!-- TITLE -->
-    <div class="title-box">
-      Dashboard > Kategori
-      <span class="breadcrumb">⚙ / Kategori</span>
-    </div>
-
-
-    <!-- ========================================================== -->
-    <!-- KATEGORI MAKANAN -->
-    <!-- ========================================================== -->
-    <div class="header-table">
-      <h2>Makanan</h2>
-      <button class="btn-add">+ Tambah Menu</button>
-    </div>
-
+{{-- ============================= --}}
+{{-- TABEL DATA MAKANAN --}}
+{{-- ============================= --}}
+<h2>Makanan</h2>
+<div class="table-container">
     <table>
-      <tr>
-        <th>Nama Menu</th>
-        <th>Harga</th>
-        <th>Foto</th>
-        <th>Aksi</th>
-      </tr>
+        <thead>
+            <tr>
+                <th>Nama Menu</th>
+                <th>Harga</th>
+                <th>Foto</th>
+                <th style="width: 15%; text-align: center;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($makanans as $menu)
+            <tr data-kategori="{{ $menu->kategori }}">
+                <td>{{ $menu->nama_menu }}</td>
+                <td>Rp {{ number_format($menu->harga, 0, ',', '.') }}</td>
+                <td><img class="thumb" src="{{ asset('storage/' . $menu->foto) }}" alt="{{ $menu->nama_menu }}"></td>
+                <td style="text-align: center;">
+                    <button class="btn-action" onclick="openEditModal({{ $menu->id }})">Edit</button>
 
-      <tr>
-        <td>Soto Ayam</td>
-        <td>Rp 15.000</td>
-        <td><img class="thumb" src="{{ asset('images/Soto ayam.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>Nasi Ayam Goreng</td>
-        <td>Rp 20.000</td>
-        <td><img class="thumb" src="{{ asset('images/Nasi ayam goreng.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>Nasi Pecal</td>
-        <td>Rp 12.000</td>
-        <td><img class="thumb" src="{{ asset('images/Nasi pecal.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>Sate Ayam</td>
-        <td>Rp 10.000</td>
-        <td><img class="thumb" src="{{ asset('images/Sate ayam.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>Sayur Sop</td>
-        <td>Rp 9.000</td>
-        <td><img class="thumb" src="{{ asset('images/sayur sop.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>Mie Rebus Telur</td>
-        <td>Rp 7.000</td>
-        <td><img class="thumb" src="{{ asset('images/mie rebus.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>Mie Goreng Telur</td>
-        <td>Rp 9.000</td>
-        <td><img class="thumb" src="{{ asset('images/mie goreng.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>Bakwan Kawi Bakso</td>
-        <td>Rp 6.000</td>
-        <td><img class="thumb" src="{{ asset('images/bakwan kawi.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      
+                    <form action="{{ route('kategori.destroy', $menu->id) }}" method="POST"
+                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus menu {{ $menu->nama_menu }}?')" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn-action danger">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            @empty
+            <tr><td colspan="4" class="nodata">Tidak ada data Makanan.</td></tr>
+            @endforelse
+        </tbody>
     </table>
+</div>
 
-
-    <!-- ========================================================== -->
-    <!-- KATEGORI PAKET MINUMAN -->
-    <!-- ========================================================== -->
-    <div class="header-table">
-      <h2>Paket Minuman</h2>
-      <button class="btn-add">+ Tambah Menu</button>
-    </div>
-
+{{-- ============================= --}}
+{{-- TABEL DATA MINUMAN --}}
+{{-- ============================= --}}
+<h2>Paket Minuman</h2>
+<div class="table-container">
     <table>
-      <tr>
-        <th>Nama Menu</th>
-        <th>Harga</th>
-        <th>Foto</th>
-        <th>Aksi</th>
-      </tr>
+        <thead>
+            <tr>
+                <th>Nama Menu</th>
+                <th>Harga</th>
+                <th>Foto</th>
+                <th style="width: 15%; text-align: center;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($minumans as $menu)
+            <tr data-kategori="{{ $menu->kategori }}">
+                <td>{{ $menu->nama_menu }}</td>
+                <td>Rp {{ number_format($menu->harga, 0, ',', '.') }}</td>
+                <td><img class="thumb" src="{{ asset('storage/' . $menu->foto) }}" alt="{{ $menu->nama_menu }}"></td>
+                <td style="text-align: center;">
+                    <button class="btn-action" onclick="openEditModal({{ $menu->id }})">Edit</button>
 
-      <tr>
-        <td>Teh</td>
-        <td>Rp 5.000</td>
-        <td><img class="thumb" src="{{ asset('images/teh manis.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>Wedang Jahe Merah Susu</td>
-        <td>Rp 5.000</td>
-        <td><img class="thumb" src="{{ asset('images/wedang susu jahe.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>Kopi Hitam</td>
-        <td>Rp 5.000</td>
-        <td><img class="thumb" src="{{ asset('images/kopi hitam.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>Wedang Jahe Merah</td>
-        <td>Rp 8.000</td>
-        <td><img class="thumb" src="{{ asset('images/wedang jahe merah.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
+                    <form action="{{ route('kategori.destroy', $menu->id) }}" method="POST"
+                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus menu {{ $menu->nama_menu }}?')" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn-action danger">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            @empty
+            <tr><td colspan="4" class="nodata">Tidak ada data Minuman.</td></tr>
+            @endforelse
+        </tbody>
     </table>
+</div>
 
 
-    <!-- ========================================================== -->
-    <!-- KATEGORI CEMILAN -->
-    <!-- ========================================================== -->
-    <div class="header-table">
-      <h2>Cemilan</h2>
-      <button class="btn-add">+ Tambah Menu</button>
-    </div>
-
+{{-- ============================= --}}
+{{-- TABEL DATA CEMILAN --}}
+{{-- ============================= --}}
+<h2>Cemilan</h2>
+<div class="table-container">
     <table>
-      <tr>
-        <th>Nama Menu</th>
-        <th>Harga</th>
-        <th>Foto</th>
-        <th>Aksi</th>
-      </tr>
+        <thead>
+            <tr>
+                <th>Nama Menu</th>
+                <th>Harga</th>
+                <th>Foto</th>
+                <th style="width: 15%; text-align: center;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($cemilans as $menu)
+            <tr data-kategori="{{ $menu->kategori }}">
+                <td>{{ $menu->nama_menu }}</td>
+                <td>Rp {{ number_format($menu->harga, 0, ',', '.') }}</td>
+                <td><img class="thumb" src="{{ asset('storage/' . $menu->foto) }}" alt="{{ $menu->nama_menu }}"></td>
+                <td style="text-align: center;">
+                    <button class="btn-action" onclick="openEditModal({{ $menu->id }})">Edit</button>
 
-      <tr>
-        <td>Tempe Mendoan</td>
-        <td>Rp 9.000</td>
-        <td><img class="thumb" src="{{ asset('images/tempe mendoan.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>Bakwan</td>
-        <td>Rp 9.000</td>
-        <td><img class="thumb" src="{{ asset('images/Bakwan.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
+                    <form action="{{ route('kategori.destroy', $menu->id) }}" method="POST"
+                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus menu {{ $menu->nama_menu }}?')" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn-action danger">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            @empty
+            <tr><td colspan="4" class="nodata">Tidak ada data Cemilan.</td></tr>
+            @endforelse
+        </tbody>
     </table>
+</div>
 
 
-    <!-- ========================================================== -->
-    <!-- KATEGORI OLEH – OLEH -->
-    <!-- ========================================================== -->
-    <div class="header-table">
-      <h2>Oleh–Oleh</h2>
-      <button class="btn-add">+ Tambah Menu</button>
-    </div>
-
+{{-- ============================= --}}
+{{-- TABEL DATA OLEH-OLEH --}}
+{{-- ============================= --}}
+<h2>Oleh-Oleh</h2>
+<div class="table-container">
     <table>
-      <tr>
-        <th>Nama Menu</th>
-        <th>Harga</th>
-        <th>Foto</th>
-        <th>Aksi</th>
-      </tr>
+        <thead>
+            <tr>
+                <th>Nama Menu</th>
+                <th>Harga</th>
+                <th>Foto</th>
+                <th style="width: 15%; text-align: center;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($oleholeh as $menu)
+            <tr data-kategori="{{ $menu->kategori }}">
+                <td>{{ $menu->nama_menu }}</td>
+                <td>Rp {{ number_format($menu->harga, 0, ',', '.') }}</td>
+                <td><img class="thumb" src="{{ asset('storage/' . $menu->foto) }}" alt="{{ $menu->nama_menu }}"></td>
+                <td style="text-align: center;">
+                    <button class="btn-action" onclick="openEditModal({{ $menu->id }})">Edit</button>
 
-      <tr>
-        <td>Bolu Kukus Original Ukuran 22x10x5cm</td>
-        <td>Rp 25.000</td>
-        <td><img class="thumb" src="{{ asset('images/bolu kukus pandan.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>Bolu Kukus Keju Ukuran 22x10x5cm</td>
-        <td>Rp 30.000</td>
-        <td><img class="thumb" src="{{ asset('images/Boluu kukus pandan keju.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-       <tr>
-        <td>Bolu Kukus Original Ukuran 15x10x5cm</td>
-        <td>Rp 25.000</td>
-        <td><img class="thumb" src="{{ asset('images/Bolu kukus original.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-       <tr>
-        <td>Bolu Kukus Keju Ukuran 15x10x5cm</td>
-        <td>Rp 17.000</td>
-        <td><img class="thumb" src="{{ asset('images/bolu kukus pandan keju.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-       <tr>
-        <td>Jahe Merah Instan</td>
-        <td>Rp 13.000</td>
-        <td><img class="thumb" src="{{ asset('images/Produk5.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
-
-       <tr>
-        <td>Telur Asin</td>
-        <td>Rp 3.500</td>
-        <td><img class="thumb" src="{{ asset('images/Telur asin.png') }}"></td>
-        <td>
-          <button class="btn-action">Edit</button>
-          <button class="btn-action">Hapus</button>
-        </td>
-      </tr>
+                    <form action="{{ route('kategori.destroy', $menu->id) }}" method="POST"
+                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus menu {{ $menu->nama_menu }}?')" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn-action danger">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            @empty
+            <tr><td colspan="4" class="nodata">Tidak ada data Oleh-Oleh.</td></tr>
+            @endforelse
+        </tbody>
     </table>
+</div>
 
-  </div>
+{{-- ============================= --}}
+{{-- SCRIPT MODAL CREATE & EDIT --}}
+{{-- ============================= --}}
+<script>
+    // === MODAL CREATE ===
+    function openCreateModal() {
+        document.getElementById('createModal').style.display = 'block';
+    }
+    function closeCreateModal() {
+        document.getElementById('createModal').style.display = 'none';
+    }
 
-</body>
-</html> 
+    // === MODAL EDIT ===
+    function openEditModal(id) {
+        let row = event.target.closest('tr');
+        let nama = row.children[0].innerText;
+        // Menghapus format Rupiah (Rp, titik) sebelum dimasukkan ke input harga
+        let harga = row.children[1].innerText.replace('Rp ', '').replace(/\./g,''); 
+        let fotoSrc = row.children[2].querySelector('img').src;
+        let kategori = row.dataset.kategori;
+
+        document.getElementById('edit-id').value = id;
+        document.getElementById('edit-nama').value = nama;
+        document.getElementById('edit-harga').value = harga;
+        document.getElementById('edit-kategori').value = kategori;
+        document.getElementById('current-photo').innerHTML = '<img src="'+fotoSrc+'" width="100">';
+        
+        // Mengarahkan form edit ke URL update yang benar
+        document.getElementById('editForm').action = '{{ url('kategori') }}/' + id; 
+
+        document.getElementById('editModal').style.display = 'block';
+    }
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+
+    // Klik di luar modal → tutup
+    window.onclick = function(event) {
+        let createModal = document.getElementById('createModal');
+        let editModal = document.getElementById('editModal');
+        if (event.target == createModal) closeCreateModal();
+        if (event.target == editModal) closeEditModal();
+    }
+</script>
+
+@endsection

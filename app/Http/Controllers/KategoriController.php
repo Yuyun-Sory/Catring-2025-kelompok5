@@ -2,63 +2,83 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class KategoriController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Tampilkan semua menu berdasarkan kategori
     public function index()
     {
-        //
+        return view('kategori.index', [
+            'makanans' => Kategori::where('kategori', 'makanan')->get(),
+            'minumans' => Kategori::where('kategori', 'minuman')->get(),
+            'cemilans' => Kategori::where('kategori', 'cemilan')->get(),
+            'oleholeh' => Kategori::where('kategori', 'oleh-oleh')->get(),
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Simpan menu baru
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_menu' => 'required|string',
+            'harga' => 'required|numeric',
+            'kategori' => 'required|string',
+            'foto' => 'required|image|mimes:png,jpg,jpeg|max:2048',
+        ]);
+
+        $file = $request->foto->store('kategoris', 'public');
+
+        Kategori::create([
+            'nama_menu' => $request->nama_menu,
+            'harga' => $request->harga,
+            'kategori' => $request->kategori,
+            'foto' => $file,
+        ]);
+
+        return redirect()->route('kategori.index')->with('success', 'Menu berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Update menu
+    public function update(Request $request, $id)
     {
-        //
+        $menu = Kategori::findOrFail($id);
+
+        $request->validate([
+            'nama_menu' => 'required|string',
+            'harga' => 'required|numeric',
+            'kategori' => 'required|string',
+            'foto' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+        ]);
+
+        $file = $menu->foto;
+        if ($request->hasFile('foto')) {
+            // hapus foto lama jika ingin
+            // Storage::disk('public')->delete($menu->foto);
+            $file = $request->foto->store('kategoris', 'public');
+        }
+
+        $menu->update([
+            'nama_menu' => $request->nama_menu,
+            'harga' => $request->harga,
+            'kategori' => $request->kategori,
+            'foto' => $file,
+        ]);
+
+        return redirect()->route('kategori.index')->with('success', 'Menu berhasil diupdate!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Hapus menu
+    public function destroy($id)
     {
-        //
-    }
+        $menu = Kategori::findOrFail($id);
+        // hapus file foto dari storage (opsional)
+        // Storage::disk('public')->delete($menu->foto);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $menu->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('kategori.index')->with('success', 'Menu berhasil dihapus!');
     }
 }

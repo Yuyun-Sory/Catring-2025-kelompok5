@@ -3,22 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pesanan; // Model Pesanan
+use App\Models\Pelanggan;
+use App\Models\Kategori;
+use App\Models\Pesanan;
 
-class PesananController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $pesananBaru = Pesanan::where('status', 'Baru')->get();
-
-        $totalBaru = Pesanan::where('status', 'Baru')->count();
-        $totalProses = Pesanan::where('status', 'Proses')->count();
-        $totalSelesai = Pesanan::where('status', 'Selesai')->count();
-
-        return view('pesanan.index', compact('pesananBaru', 'totalBaru', 'totalProses', 'totalSelesai'));
+        $totals = [
+            'pelanggan' => Pelanggan::count(),
+            'kategori' => Kategori::count(),
+            'pesanan' => Pesanan::count(),
+            // Total pesanan selesai / total pendapatan bisa ditambahkan juga
+            'total_pesanan' => Pesanan::sum('total_harga'), 
+        ];
+        return view('dashboard', compact('totals'));
     }
 
     /**

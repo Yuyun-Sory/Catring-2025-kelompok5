@@ -5,69 +5,111 @@
 
 @push('styles')
 <style>
-    .cards {
-        display: flex;
-        gap: 20px;
-        margin-top: 25px;
-        flex-wrap: wrap;
-    }
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-top: 15px;
+}
 
-    .card-link {
-        text-decoration: none;
-        color: inherit;
-        flex-grow: 1;
-        flex-basis: 0;
-        min-width: 150px;
-    }
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    flex: 1 1 220px;
+}
 
-    .card {
-        padding: 20px 25px;
-        font-size: 16px;
-        color: white;
-        border-radius: 10px;
-        font-weight: bold;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        height: 100%;
-        transition: .2s;
-    }
+.card {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 25px 20px;
+    border-radius: 15px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* pastikan konten tidak melebihi */
+    align-items: flex-start;
+    height: 150px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    overflow: hidden; /* mencegah konten keluar */
+}
 
-    .card:hover {
-        transform: translateY(-4px);
-        opacity: 0.95;
-    }
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+}
 
-    .blue { background: #0066ff; }
-    .green { background: #65f28f; color: black; }
-    .orange { background: #ff8c29; }
-    .purple { background: #8a60ff; }
+.card .icon {
+    font-size: 40px;
+}
+
+.card .title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.card .count {
+    font-size: 22px; /* lebih kecil agar muat */
+    font-weight: bold;
+    margin-top: auto; /* push ke bawah card */
+    align-self: flex-end; /* letakkan angka di kanan bawah */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Gradien warna */
+.green { background: linear-gradient(135deg, #42e695, #3bb2b8); }
+.blue { background: linear-gradient(135deg, #36d1dc, #5b86e5); }
+.orange { background: linear-gradient(135deg, #f7971e, #ffd200); }
+.purple { background: linear-gradient(135deg, #8e2de2, #4a00e0); }
 </style>
+
 @endpush
 
 @section('content')
 
 <div class="title-box">
     Dashboard
-    <span class="breadcrumb">⚙ / Dashboard</span>
+    <span class="breadcrumb">⚙ / Overview</span>
 </div>
 
 <div class="cards">
+    <!-- Pelanggan Card -->
     <a class="card-link" href="{{ route('pelanggan.index') }}">
-        <div class="card green">👤 Pelanggan</div>
+        <div class="card green">
+            <div class="icon">👤</div>
+            <div class="title">Pelanggan</div>
+            <div class="count">{{ $totalPelanggan ?? 0 }}</div>
+        </div>
     </a>
 
+    <!-- Kategori Card -->
     <a class="card-link" href="{{ route('kategori.index') }}">
-        <div class="card blue">📂 Kategori</div>
+        <div class="card blue">
+            <div class="icon">📂</div>
+            <div class="title">Kategori</div>
+            <div class="count">{{ $totalKategori ?? 0 }}</div>
+        </div>
     </a>
 
+    <!-- Pesanan Card -->
     <a class="card-link" href="{{ route('pesanan.index') }}">
-        <div class="card orange">🛒 Pesanan</div>
+        <div class="card orange">
+            <div class="icon">🛒</div>
+            <div class="title">Pesanan</div>
+            <div class="count">{{ $totalPesanan ?? 0 }}</div>
+        </div>
     </a>
 
+    <!-- Total Pendapatan Card -->
     <a class="card-link" href="{{ route('total-pesanan.index') }}">
-        <div class="card purple">📊 Total Pesanan</div>
+        <div class="card purple">
+            <div class="icon">📊</div>
+            <div class="title">Total Pendapatan</div>
+            <div class="count">Rp {{ number_format($totalPendapatan ?? 0, 0, ',', '.') }}</div>
+        </div>
     </a>
 </div>
 

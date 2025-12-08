@@ -6,6 +6,10 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\BahanController;
+use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PesananController;
+
 // Halaman utama
 Route::get('/', function () {
     return view('layouts.home');
@@ -89,14 +93,23 @@ Route::get('/logout', function () {
 })->name('logout');
 
 
+
 // CRUD Pelanggan
+Route::resource('pelanggan', App\Http\Controllers\PelangganController::class);
 Route::resource('pelanggan', App\Http\Controllers\PelangganController::class);
 
 // CRUD Kategori
-Route::resource('kategori', App\Http\Controllers\KategoriController::class);
+Route::resource('kategori', KategoriController::class);
+Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
+Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
+Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
+Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
+Route::put('/kategori/{id}/update', [KategoriController::class, 'update'])->name('kategori.update');
+Route::delete('/kategori/{id}/delete', [KategoriController::class, 'destroy'])->name('kategori.delete');
+
 
 // CRUD Pesanan
-Route::resource('pesanan', App\Http\Controllers\PesananController::class);
+Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
 
 // CRUD Total Pesanan
 Route::resource('total-pesanan', App\Http\Controllers\TotalPesananController::class);

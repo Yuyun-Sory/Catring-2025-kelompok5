@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pelanggans', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id(); // Kunci utama otomatis
+            $table->string('nama', 100); // Kolom nama, tipe string, panjang 100
+            $table->string('telepon', 15)->nullable(); // Kolom telepon, tipe string, panjang 15, boleh null
+            $table->text('alamat')->nullable(); // Kolom alamat, tipe text, boleh null
+            $table->timestamps(); // Kolom created_at dan updated_at
         });
     }
 

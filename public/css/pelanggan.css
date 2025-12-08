@@ -1,0 +1,177 @@
+/* ======================================================
+   CSS Gabungan untuk Halaman Pelanggan
+   ====================================================== */
+
+/* ======================= INDEX ======================= */
+.pelanggan-index .add-btn {
+    background: #6be38b;
+    color: black;
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    border: 1px solid #3d9a56;
+    display: inline-block;
+    margin-bottom: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+.pelanggan-index .add-btn:hover { background: #5ad27b; }
+
+.pelanggan-index .action-btn {
+    padding: 5px 8px;
+    margin: 0 2px;
+    border-radius: 4px;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+.pelanggan-index .edit-btn { background: #007bff; }
+.pelanggan-index .delete-btn { background: #dc3545; }
+.pelanggan-index .action-btn:hover { opacity: 0.8; }
+
+.pelanggan-index .table-container {
+    overflow-x: auto;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+.pelanggan-index table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+.pelanggan-index table, .pelanggan-index th, .pelanggan-index td {
+    border: 1px solid #e0e0e0;
+}
+.pelanggan-index th, .pelanggan-index td { padding: 12px; text-align: left; }
+.pelanggan-index th { background: #f8f9fa; text-align: center; font-weight: bold; color: #333; }
+.pelanggan-index tbody tr:nth-child(even) { background-color: #f9f9f9; }
+
+
+/* ======================= CREATE ======================= */
+.pelanggan-create .modal {
+    display: block;
+    position: fixed;
+    z-index: 9999;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.pelanggan-create .modal-content {
+    background: white;
+    margin: auto;
+    padding: 25px;
+    border-radius: 10px;
+    width: 40%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    animation: popup 0.25s ease-out;
+}
+
+.pelanggan-create label { font-weight: 600; margin-bottom: 6px; display: block; }
+.pelanggan-create input, .pelanggan-create textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+.pelanggan-create .modal-buttons { text-align: right; }
+.pelanggan-create .close-btn {
+    background: #ccc;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+.pelanggan-create .close-btn:hover { background: #b3b3b3; }
+.pelanggan-create .save-btn {
+    background: #6be38b;
+    border: 1px solid #3d9a56;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.pelanggan-create .save-btn:hover { background: #5ad27b; }
+
+/* ======================= EDIT ======================= */
+.pelanggan-edit .modal {
+    display: block;
+    position: fixed;
+    z-index: 9999;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.35);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.pelanggan-edit .modal-content {
+    background: white;
+    margin: auto;
+    padding: 25px;
+    border-radius: 12px;
+    width: 40%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: popup 0.25s ease-out;
+}
+
+.pelanggan-edit label { font-weight: 600; margin-bottom: 6px; display: block; }
+.pelanggan-edit input, .pelanggan-edit textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: 0.25s;
+}
+.pelanggan-edit input:focus, .pelanggan-edit textarea:focus {
+    border-color: #6be38b;
+    box-shadow: 0 0 4px rgba(107, 227, 139, 0.5);
+}
+.pelanggan-edit .modal-buttons { text-align: right; margin-top: 10px; }
+.pelanggan-edit .btn-cancel {
+    background: #e0e0e0;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    margin-right: 6px;
+}
+.pelanggan-edit .btn-cancel:hover { background: #cccccc; }
+.pelanggan-edit .btn-save {
+    background: #6be38b;
+    border: 1px solid #3d9a56;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+.pelanggan-edit .btn-save:hover { background: #5ad27b; }
+
+/* ======================= KEYFRAMES ======================= */
+@keyframes popup {
+    from { transform: scale(0.7); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
