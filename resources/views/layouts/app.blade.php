@@ -4,16 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Teras Dashboard Admin')</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- CSS Terpisah -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    
     @stack('styles')
 </head>
 <body>
-
     <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="logo">T</div>
@@ -46,7 +41,9 @@
     </div>
 
     <!-- TOPBAR -->
-    <div class="topbar">👤 Admin</div>
+    <div class="topbar">
+        <a href="{{ route('admin.akun') }}" style="text-decoration: none; color: #000; font-weight: bold;">👤 Admin</a>
+    </div>
 
     <!-- CONTENT -->
     <div class="content-wrapper">

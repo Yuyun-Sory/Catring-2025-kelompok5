@@ -1,118 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Akun</title>
+@extends('layouts.app')
+@section('title', 'Daftar Admin')
 
-    <style>
-        body {
-            margin: 0;
-            background: #ffffff;
-            font-family: "Georgia", serif;
-        }
+@push('styles')
+<style>
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+    }
+    .admin-table th, .admin-table td {
+        border: 1px solid #d6d6d6;
+        padding: 8px;
+        text-align: center;
+    }
+    .admin-table th {
+        background: #f4f4f4;
+        font-weight: bold;
+    }
+    .btn-edit {
+        background: #4cd964;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 5px;
+        border: none;
+        text-decoration: none;
+    }
+    .btn-delete {
+        background: #ff3b30;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 5px;
+        border: none;
+    }
+</style>
+@endpush
 
-        .container {
-            padding: 40px;
-            width: 400px;
-            margin-left: 260px;
-        }
+@section('content')
+<div class="content-wrapper p-4">
+    
+    <h4><b>Daftar Admin</b></h4>
 
-        /* Logo bulat */
-        .logo {
-            width: 70px;
-            height: 70px;
-            background: #70e681;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 40px;
-            font-weight: bold;
-            color: black;
-            margin-bottom: 10px;
-        }
-
-        .title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-top: -5px;
-            margin-bottom: 25px;
-        }
-
-        label {
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .input {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            margin-bottom: 18px;
-            border-radius: 8px;
-            border: 1px solid #999;
-            font-size: 15px;
-        }
-
-        select.input {
-            cursor: pointer;
-        }
-
-        .btn-simpan {
-            width: 100%;
-            padding: 14px;
-            background: #5dd46d;
-            border: none;
-            border-radius: 10px;
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .btn-simpan:hover {
-            background: #4ec15d;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <!-- Logo -->
-    <div class="logo">T</div>
-
-    <!-- Judul -->
-    <div class="title">Catering Teras Bu Rini</div>
-
-    <!-- Form -->
-    <form action="#" method="POST">
+    {{-- FORM TAMBAH ADMIN --}}
+    <form action="{{ route('admin.akun.store') }}" method="POST" class="mb-4">
         @csrf
 
-        <label>Nama Lengkap</label>
-        <input type="text" class="input" name="nama" placeholder="Masukkan Nama Lengkap">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label>Nama Admin</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
 
-        <label>Email</label>
-        <input type="email" class="input" name="email" placeholder="Masukkan Email">
+            <div class="col-md-4">
+                <label>Email</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
 
-        <label>Password</label>
-        <input type="password" class="input" name="password" placeholder="Masukkan Password">
+            <div class="col-md-4">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+        </div>
 
-        <label>Nomor Telepon</label>
-        <input type="text" class="input" name="telepon" placeholder="Masukkan Nomor Telepon">
+        <div class="row mb-3">
 
-        <label>Role</label>
-        <select class="input" name="role">
-            <option value="admin utama">Admin Utama</option>
-            <option value="karyawan">Karyawan</option>
-        </select>
+            <div class="col-md-4">
+                <label>Role</label>
+                <select name="role" class="form-select" required>
+                    <option value="Admin">Admin</option>
+                    <option value="Karyawan">Karyawan</option>
+                </select>
+            </div>
 
-        <button type="submit" class="btn-simpan">Simpan</button>
+            <div class="col-md-4">
+                <label>Telepon</label>
+                <input type="text" name="phone" class="form-control" placeholder="08xxxxxxxx" required>
+            </div>
 
+        </div>
+
+        <button class="btn btn-success px-4">Simpan</button>
     </form>
 
-</div>
+    {{-- TABEL DATA ADMIN --}}
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Telepon</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
 
-</body>
-</html>
+        <tbody>
+            @foreach($users as $index => $user)
+            <tr>
+                <td>{{ $index + 1 }}.</td>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->email }}</td>
+                <td>{{ $user->phone }}</td>
+                <td>{{ $user->role }}</td>
+                <td>{{ $user->status ?? 'Aktif' }}</td>
+
+                <td>
+
+                    {{-- TOMBOL EDIT --}}
+                    <a href="{{ route('admin.akun.edit', $user->id) }}" class="btn-edit">
+                        Edit
+                    </a>
+
+                    {{-- TOMBOL HAPUS --}}
+                    <form action="{{ route('admin.akun.delete', $user->id) }}" 
+                          method="POST" 
+                          style="display:inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-delete"
+                                onclick="return confirm('Yakin mau hapus akun ini?')">
+                            Hapus
+                        </button>
+                    </form>
+
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+
+    </table>
+
+</div>
+@endsection

@@ -9,6 +9,7 @@ use App\Http\Controllers\BahanController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PesananController;
+use App\Http\Controllers\AdminController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -114,5 +115,24 @@ Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index
 // CRUD Total Pesanan
 Route::resource('total-pesanan', App\Http\Controllers\TotalPesananController::class);
 
+// =====================
+// ADMIN DASHBOARD
+// =====================
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
+    ->name('admin.dashboard');
 
+// =====================
+// ADMIN – DAFTAR AKUN
+// =====================
+Route::get('/admin/akun', [AdminController::class, 'daftarAkun'])
+    ->name('admin.akun');
 
+Route::get('/admin/akun/tambah', [AdminController::class, 'tambahAkun'])
+    ->name('admin.akun.tambah');
+
+Route::post('/admin/akun/simpan', [AdminController::class, 'storeAkun'])
+    ->name('admin.akun.store');
+
+Route::get('/admin/akun/{id}/edit', [AdminController::class, 'editAkun'])->name('admin.akun.edit');
+Route::put('/admin/akun/{id}', [AdminController::class, 'updateAkun'])->name('admin.akun.update');
+Route::delete('/admin/akun/{id}', [AdminController::class, 'hapusAkun'])->name('admin.akun.delete');
