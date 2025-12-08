@@ -99,7 +99,13 @@ Route::get('/total-pesanan', function () {
     return view('total-pesanan');
 })->name('total-pesanan.index');
 
-Route::get('/daftar-akun', [AdminController::class, 'daftarAkun'])->name('admin.daftar');
+// Pastikan rute Anda memiliki nama menggunakan method ->name()
+Route::get('/admin/list', [AdminController::class, 'daftar'])->name('admin.daftar');
+
+Route::get('/pendapatan-detail', [LaporanController::class, 'pendapatanDetail'])->name('pendapatan.detail');
+
+ // Rute Detail Profit
+Route::get('/profit-detail', [LaporanController::class, 'profitDetail'])->name('profit.detail');
 
 
 
