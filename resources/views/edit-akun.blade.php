@@ -28,8 +28,10 @@
 
             <div class="col-md-6">
                 <label>Telepon</label>
-                <input type="text" name="phone" class="form-control"
-                       value="{{ old('phone', $user->phone) }}" required>
+                <input type="text" name="phone" class="form-control" placeholder="08xxxxxxxx" required>
+                   <select name="role" class="form-select" required>
+
+
             </div>
 
             <div class="col-md-6">

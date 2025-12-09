@@ -8,23 +8,40 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
+        Schema::table('users', function (Blueprint $table) {
 
-            // Tambahan untuk halaman daftar akun admin
-            $table->string('phone')->nullable();
-            $table->string('role')->default('Admin');     // Admin / Karyawan
-            $table->string('status')->default('Aktif');   // Aktif / Nonaktif
+            // Tambah kolom phone jika belum ada
+            if (!Schema::hasColumn('users', 'phone')) {
+                $table->string('phone')->nullable()->after('password');
+            }
 
-            $table->timestamps();
+            // Tambah kolom role jika belum ada
+            if (!Schema::hasColumn('users', 'role')) {
+                $table->string('role')->default('Admin')->after('phone');
+            }
+
+            // Tambah kolom status jika belum ada
+            if (!Schema::hasColumn('users', 'status')) {
+                $table->string('status')->default('Aktif')->after('role');
+            }
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::table('users', function (Blueprint $table) {
+
+            if (Schema::hasColumn('users', 'phone')) {
+                $table->dropColumn('phone');
+            }
+
+            if (Schema::hasColumn('users', 'role')) {
+                $table->dropColumn('role');
+            }
+
+            if (Schema::hasColumn('users', 'status')) {
+                $table->dropColumn('status');
+            }
+        });
     }
 };
