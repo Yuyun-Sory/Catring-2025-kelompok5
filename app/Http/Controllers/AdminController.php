@@ -3,79 +3,87 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Admin;
 
 class AdminController extends Controller
 {
-    // DASHBOARD
+    // Dashboard
     public function dashboard()
     {
         return view('dashboard');
     }
 
-    // TAMPILKAN DAFTAR AKUN
+    // Daftar Akun
     public function daftarAkun()
     {
-        $users = User::all();
+        $users = Admin::all();
         return view('daftar-akun', compact('users'));
     }
 
-    // FORM TAMBAH AKUN
+    // Form Tambah Akun
     public function tambahAkun()
     {
         return view('tambah-akun');
     }
 
-    // SIMPAN AKUN BARU
+    // Simpan Akun Baru
     public function storeAkun(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'phone' => 'required|string',
+            'phone' => 'nullable|string',
             'role' => 'required|string',
+            'status' => 'nullable|string',
         ]);
 
-        User::create([
+        Admin::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
-            'phone' => $validated['phone'],
+            'phone' => $validated['phone'] ?? null,
             'role' => $validated['role'],
+            'status' => $validated['status'] ?? 'Aktif',
         ]);
 
         return redirect()->route('admin.akun')->with('success', 'Akun berhasil ditambahkan!');
     }
 
-    // FORM EDIT AKUN
+    // Form Edit Akun
     public function editAkun($id)
     {
-        $user = User::findOrFail($id);
+        $user = Admin::findOrFail($id);
         return view('edit-akun', compact('user'));
     }
 
-    // UPDATE AKUN
+    // Update Akun
     public function updateAkun(Request $request, $id)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'required|string',
+            'phone' => 'nullable|string',
             'role' => 'required|string',
+            'status' => 'nullable|string',
         ]);
 
-        $user = User::findOrFail($id);
-        $user->update($validated);
+        $user = Admin::findOrFail($id);
+        $user->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
+            'role' => $validated['role'],
+            'status' => $validated['status'] ?? $user->status,
+        ]);
 
         return redirect()->route('admin.akun')->with('success', 'Akun berhasil diperbarui!');
     }
 
-    // HAPUS AKUN
+    // Hapus Akun
     public function hapusAkun($id)
     {
-        User::findOrFail($id)->delete();
-
+        Admin::findOrFail($id)->delete();
         return redirect()->route('admin.akun')->with('success', 'Akun berhasil dihapus!');
     }
 }
