@@ -10,6 +10,8 @@ use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TotalPesananController;
+
 
 // Halaman utama
 Route::get('/', function () {

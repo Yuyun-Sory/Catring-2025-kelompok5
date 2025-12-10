@@ -46,7 +46,7 @@
     </div>
 
     <!-- CONTENT -->
-    <div class="content-wrapper">
+    <div class="content-wrapper p-4">
         @yield('content')
     </div>
 

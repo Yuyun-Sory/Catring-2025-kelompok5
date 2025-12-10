@@ -98,7 +98,7 @@
     <a class="card-link" href="{{ route('pesanan.index') }}">
         <div class="card orange">
             <div class="icon">🛒</div>
-            <div class="title">Pesanan</div>
+            <div class="title">Pesanan Baru</div>
             <div class="count">{{ $totalPesanan ?? 0 }}</div>
         </div>
     </a>
@@ -107,7 +107,7 @@
     <a class="card-link" href="{{ route('total-pesanan.index') }}">
         <div class="card purple">
             <div class="icon">📊</div>
-            <div class="title">Total Pendapatan</div>
+            <div class="title">Total Pesanan</div>
             <div class="count">Rp {{ number_format($totalPendapatan ?? 0, 0, ',', '.') }}</div>
         </div>
     </a>
