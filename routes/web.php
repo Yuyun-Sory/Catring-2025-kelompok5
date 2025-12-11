@@ -11,6 +11,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TotalPesananController;
+use App\Http\Controllers\ChatAiController;
 
 
 // Halaman utama
@@ -144,3 +145,5 @@ Route::post('/admin/akun/simpan', [AdminController::class, 'storeAkun'])
 Route::get('/admin/akun/{id}/edit', [AdminController::class, 'editAkun'])->name('admin.akun.edit');
 Route::put('/admin/akun/{id}', [AdminController::class, 'updateAkun'])->name('admin.akun.update');
 Route::delete('/admin/akun/{id}', [AdminController::class, 'hapusAkun'])->name('admin.akun.delete');
+
+Route::post('/chatbot/send', [ChatAiController::class, 'ask'])->name('chatbot.send');
