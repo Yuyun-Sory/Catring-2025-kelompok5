@@ -18,6 +18,67 @@
             padding: 0;
         }
 
+        /* HEADER */
+        .header-top {
+            background-color: #9ef7a1;
+            color: #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+        }
+
+        .brand-text {
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .brand-text small {
+            font-weight: normal;
+            font-size: 14px;
+        }
+
+        .btn-auth {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* NAVBAR */
+        .nav-bar {
+            background: #fff;
+            padding: 12px 50px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #9ef7a1;
+            gap: 30px;
+        }
+
+        .nav-bar a {
+            color: #000;
+            font-weight: 500;
+            text-decoration: none;
+            margin-right: 25px;
+        }
+
+        .nav-bar a:hover {
+            color: #46d66a;
+        }
+
+        .active-link {
+            color: #46d66a !important;
+            font-weight: 700;
+            border-bottom: 2px solid #46d66a;
+            padding-bottom: 2px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            background: #eee;
+        }
+
         /* Floating Icon */
         .floating-chatbot {
             position: fixed;
@@ -38,7 +99,7 @@
             height: 520px;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.2);
             display: none;
             flex-direction: column;
             overflow: hidden;
@@ -49,7 +110,6 @@
             background: #9ef7a1;
             padding: 12px 15px;
             font-weight: bold;
-            color: #000;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -59,7 +119,6 @@
             flex: 1;
             padding: 15px;
             overflow-y: auto;
-            font-size: 14px;
         }
 
         .bot-message {
@@ -74,8 +133,8 @@
             background: #d1ffd8;
             padding: 10px;
             border-radius: 8px;
-            margin-bottom: 10px;
             text-align: right;
+            margin-bottom: 10px;
             max-width: 80%;
             margin-left: auto;
         }
@@ -89,7 +148,6 @@
             flex: 1;
             padding: 10px;
             border: none;
-            outline: none;
         }
 
         .chatbot-input button {
@@ -103,6 +161,28 @@
 
 <body>
 
+    <!-- HEADER BRAND -->
+    <div class="header-top">
+        <div class="d-flex align-items-center gap-3">
+            <img src="{{ asset('images/BG teras.png') }}" width="60" height="60">
+            <div class="brand-text">
+                Teras Bu Rini <br>
+                <small>Catering Homemade</small>
+            </div>
+        </div>
+
+        <a href="/login" class="btn-auth">Login</a>
+    </div>
+
+    <!-- NAVBAR -->
+    <div class="nav-bar">
+        <a href="/" class="{{ request()->is('/') ? 'active-link' : '' }}">Home</a>
+        <a href="/menu" class="{{ request()->is('menu*') ? 'active-link' : '' }}">Menu</a>
+        <a href="/cara-pesan" class="{{ request()->is('cara-pesan') ? 'active-link' : '' }}">Cara Pesan</a>
+        <a href="/tentang" class="{{ request()->is('tentang') ? 'active-link' : '' }}">Tentang</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
     @yield('content')
 
     <footer>&copy; {{ date('Y') }} Teras Bu Rini Catering Homemade</footer>
@@ -113,7 +193,7 @@
     <!-- Chatbot Popup -->
     <div id="chatbotPopup" class="chatbot-popup">
         <div class="chatbot-header">
-            <span>Chatbot Teras Bu Rini</span>
+            Chatbot Teras Bu Rini
             <button class="close-btn" onclick="toggleChatbot()">✕</button>
         </div>
 
@@ -142,16 +222,12 @@
         }
 
         function addUserMessage(msg) {
-            chatBody.innerHTML += `
-            <div class="user-message">${escapeHtml(msg)}</div>
-        `;
+            chatBody.innerHTML += `<div class="user-message">${escapeHtml(msg)}</div>`;
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
         function addBotMessage(msg) {
-            chatBody.innerHTML += `
-            <div class="bot-message">${escapeHtml(msg)}</div>
-        `;
+            chatBody.innerHTML += `<div class="bot-message">${escapeHtml(msg)}</div>`;
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
@@ -173,27 +249,24 @@
             typing.className = "bot-message";
             typing.innerText = "Sedang mengetik...";
             chatBody.appendChild(typing);
-            chatBody.scrollTop = chatBody.scrollHeight;
 
             fetch("/chatbot/send", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        message
-                    })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    typing.remove();
-                    addBotMessage(data.reply ?? "Maaf, terjadi kesalahan server.");
-                })
-                .catch(() => {
-                    typing.remove();
-                    addBotMessage("⚠ Tidak dapat terhubung ke server.");
-                });
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ message })
+            })
+            .then(res => res.json())
+            .then(data => {
+                typing.remove();
+                addBotMessage(data.reply ?? "Maaf, terjadi kesalahan server.");
+            })
+            .catch(() => {
+                typing.remove();
+                addBotMessage("⚠ Tidak dapat terhubung ke server.");
+            });
         }
     </script>
 
