@@ -3,6 +3,7 @@
 
 @section('content')
 <style>
+ 
 /* === HERO SECTION === */
 .hero-section {
     position: relative;
@@ -12,6 +13,8 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    margin-top: 40px;
+    z-index: 1;
 }
 
 /* === BACKGROUND === */
@@ -152,15 +155,17 @@
         2px 2px 0 rgba(0,0,0,0.45),
         4px 4px 12px rgba(0,0,0,0.55),
         0 0 18px rgba(0,0,0,0.8);
-}
+} 
 
 
 
 .welcome-banner {
-            background-color: #f2f2f2;
+   position: relative;     /* WAJIB */
+    z-index: 999;           /* ANTI KETUTUP */
+    background-color: #f2f2f2;
     text-align: center;
     padding: 60px 20px;
-    margin: 0;
+    margin: 0 0 40px 0;
 }
 
 /* === HURUF WELCOME BANNER (GAYA PREMIUM + GLOW) === */
@@ -185,7 +190,7 @@
     text-shadow:
         1px 1px 0 rgba(255,255,255,0.8),
         2px 2px 5px rgba(0,0,0,0.25);
-=======
+
     background-color: #f2f2f2;
     text-align: center;
     padding: 60px 20px;

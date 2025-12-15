@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@php $hideNavbar = true; @endphp
+@extends('layouts.user')
 
 @section('content')
 <style>
@@ -30,34 +31,36 @@
     }
 
     .rating-stars {
-        font-size: 22px;
+        font-size: 20px;
         color: gold;
     }
 
-    .btn-pax {
-        border: 1px solid black;
-        background: white;
-        padding: 6px 15px;
-        border-radius: 6px;
-        margin-right: 10px;
-    }
-
-    .btn-pilihan {
-        background: #37a000;
-        color: white;
-        padding: 6px 18px;
-        border-radius: 6px;
-        text-decoration: none;
-    }
-
+    /* === ULASAN DIPERKECIL === */
     .ulasan-user {
         display: flex;
         gap: 10px;
-        margin-top: 15px;
+        margin-top: 10px;
+        padding: 12px 0;
+        border-bottom: 1px solid #ececec;
     }
 
     .ulasan-user-icon {
-        font-size: 40px;
+        font-size: 28px;
+    }
+
+    .ulasan-nama {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .ulasan-rating {
+        font-size: 14px;
+        color: gold;
+    }
+
+    .ulasan-komentar {
+        font-size: 13px;
+        margin-top: 2px;
     }
 </style>
 
@@ -94,19 +97,22 @@
 
     <h3 class="fw-bold">Ulasan</h3>
 
-    {{-- LOOP UNTUK ULASAN --}}
     @foreach ($menu['ulasan'] as $u)
     <div class="ulasan-user">
         <div class="ulasan-user-icon">👤</div>
+
         <div>
-            <strong>{{ $u['nama'] }}</strong> <br>
-            {{-- Kalau ada bintang, bisa ditambahkan, kalau tidak abaikan --}}
+            <div class="ulasan-nama">{{ $u['nama'] }}</div>
+
             @isset($u['bintang'])
-            <span class="rating-stars">
+            <div class="ulasan-rating">
                 {{ str_repeat('★', $u['bintang']) }}
-            </span>
+            </div>
             @endisset
-            <p>{{ $u['komentar'] }}</p>
+
+            <div class="ulasan-komentar">
+                {{ $u['komentar'] }}
+            </div>
         </div>
     </div>
     @endforeach
