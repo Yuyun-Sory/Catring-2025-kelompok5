@@ -4,240 +4,228 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Menu;
-use App\Models\Pesanans;
-use App\Models\Pelanggans;
+use App\Models\Pesanan;
+use App\Models\Pelanggan;
 use App\Services\ChatState;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class ChatAIController extends Controller
 {
     public function ask(Request $request)
     {
-        $state = ChatState::get();
-        $msg = strtolower($request->message);
+        try {
 
-        /* =======================================================
-         |   FITUR INFORMASI GLOBAL — TIDAK MEMPENGARUHI PEMESANAN
-         ========================================================*/
+            $state = ChatState::get();
+            $msg = strtolower(trim($request->message));
 
-        // 1. CEK MENU
-        if (str_contains($msg, 'menu') || str_contains($msg, 'daftar menu')) {
+            /* ================= INFO MENU ================= */
 
-            $menus = Menu::all();
-            if ($menus->count() === 0) {
-                return response()->json(['reply' => "Menu belum tersedia."]);
+            if (str_contains($msg, 'menu')) {
+                $menus = Menu::all();
+                $text = "📋 Daftar Menu:\n";
+                foreach ($menus as $m) {
+                    $text .= "- {$m->nama_menu} (Rp" . number_format($m->harga) . ")\n";
+                }
+                $text .= "\nKetik *pesan* untuk order.";
+                return response()->json(['reply' => $text]);
             }
 
-            $list = "";
-            foreach ($menus as $m) {
-                $list .= "- {$m->nama_menu} (Rp" . number_format($m->harga, 0, ',', '.') . ")\n";
-            }
+            /* ================= START ORDER ================= */
 
-            return response()->json([
-                'reply' => "Berikut daftar menu kami:\n\n$list\n\nKetik pesan untuk mulai melakukan pemesanan."
-            ]);
-        }
-
-        // 2. HARGA CATERING
-        if (
-            str_contains($msg, 'harga catering') ||
-            str_contains($msg, 'harga paket') ||
-            str_contains($msg, 'berapa harga')
-        ) {
-            return response()->json([
-                'reply' =>
-                "Harga catering bervariasi sesuai menu yang dipilih.\n" .
-                    "Silakan ketik menu untuk melihat daftar harga lengkap."
-            ]);
-        }
-
-        // 3. CARA PESAN
-        if (
-            str_contains($msg, 'cara pesan') ||
-            str_contains($msg, 'gimana pesan') ||
-            str_contains($msg, 'pemesanan gimana')
-        ) {
-            return response()->json([
-                'reply' =>
-                "Cara pemesanan sangat mudah 😊:\n\n" .
-                    "1. Ketik pesan\n" .
-                    "2. Pilih menu\n" .
-                    "3. Masukkan jumlah porsi\n" .
-                    "4. Tentukan tanggal\n" .
-                    "5. Isi data pemesan\n" .
-                    "6. Konfirmasi\n\n" .
-                    "Coba ketik pesan untuk memulai."
-            ]);
-        }
-
-        // 4. LOKASI
-        if (str_contains($msg, 'lokasi') || str_contains($msg, 'alamat')) {
-            return response()->json([
-                'reply' =>
-                "Lokasi kami:\n*Teras Bu Rini Catering *\n" .
-                    "📍 995J+P62 Wono Kerto, Kabupaten Sleman, Daerah Istimewa Yogyakarta\n" .
-                    "Melayani pemesanan area sekitar."
-            ]);
-        }
-
-        // 5. RESET jika user mengetik reset
-        if ($msg === 'reset') {
-            ChatState::reset();
-            return response()->json([
-                'reply' => "Sesi chatbot direset. Mau lihat menu atau melakukan pemesanan?"
-            ]);
-        }
-
-
-        /* =======================================================
-         |   LOGIKA PEMESANAN (menggunakan state)
-         ========================================================*/
-
-        // --- STEP 1: MULAI PEMESANAN ---
-        if ($state['step'] === 'start') {
-
-            if (str_contains($msg, 'pesan') || str_contains($msg, 'order')) {
+            if ($state['step'] === 'start' && $msg === 'pesan') {
 
                 $menus = Menu::all();
                 $list = "";
-
                 foreach ($menus as $m) {
-                    $list .= "- {$m->nama_menu} (Rp{$m->harga})\n";
+                    $list .= "- {$m->nama_menu}\n";
                 }
 
                 $state['step'] = 'choose_menu';
                 ChatState::save($state);
 
                 return response()->json([
-                    'reply' => "Baik, silakan pilih menu:\n\n$list\n\nKetik nama menu yang ingin dipesan."
+                    'reply' => "Pilih menu:\n$list"
                 ]);
             }
 
-            return response()->json([
-                'reply' => "Halo! Mau lihat menu, harga catering, cara pesan, lokasi, atau ingin langsung pesan?"
-            ]);
-        }
+            /* ================= PILIH MENU ================= */
 
-        // --- STEP 2: PILIH MENU ---
-        if ($state['step'] === 'choose_menu') {
+            if ($state['step'] === 'choose_menu') {
 
-            $menu = Menu::where('nama_menu', 'like', "%$msg%")->first();
+                $menu = Menu::where('nama_menu', 'like', "%$msg%")->first();
 
-            if (!$menu) {
+                if (!$menu) {
+                    return response()->json([
+                        'reply' => "❌ Menu tidak ditemukan. Ketik ulang nama menu."
+                    ]);
+                }
+
+                $state['data'] = [
+                    'menu_nama'  => $menu->nama_menu,
+                    'menu_harga'=> $menu->harga,
+                ];
+
+                $state['step'] = 'choose_qty';
+                ChatState::save($state);
+
+                return response()->json(['reply' => "Berapa porsi?"]);
+            }
+
+            /* ================= JUMLAH ================= */
+
+            if ($state['step'] === 'choose_qty') {
+
+                if (!is_numeric($msg)) {
+                    return response()->json(['reply' => "Masukkan angka jumlah porsi."]);
+                }
+
+                $state['data']['jumlah'] = (int)$msg;
+                $state['step'] = 'customer_name';
+                ChatState::save($state);
+
+                return response()->json(['reply' => "Nama pemesan?"]);
+            }
+
+            /* ================= NAMA ================= */
+
+            if ($state['step'] === 'customer_name') {
+
+                $state['data']['nama'] = $msg;
+                $state['step'] = 'customer_phone';
+                ChatState::save($state);
+
+                return response()->json(['reply' => "Nomor telepon?"]);
+            }
+
+            /* ================= TELEPON ================= */
+
+            if ($state['step'] === 'customer_phone') {
+
+                $state['data']['telepon'] = $msg;
+                $state['step'] = 'customer_address';
+                ChatState::save($state);
+
+                return response()->json(['reply' => "Alamat lengkap?"]);
+            }
+
+            /* ================= ALAMAT ================= */
+
+            if ($state['step'] === 'customer_address') {
+
+                $state['data']['alamat'] = $msg;
+                $state['step'] = 'confirm_order';
+                ChatState::save($state);
+
+                $d = $state['data'];
+                $total = $d['menu_harga'] * $d['jumlah'];
+
                 return response()->json([
-                    'reply' => "Menu tidak ditemukan. Coba ketik nama menu lain."
+                    'reply' =>
+                        "📦 *Konfirmasi Pesanan*\n" .
+                        "Menu: {$d['menu_nama']}\n" .
+                        "Jumlah: {$d['jumlah']} porsi\n" .
+                        "Nama: {$d['nama']}\n" .
+                        "Telepon: {$d['telepon']}\n" .
+                        "Alamat: {$d['alamat']}\n" .
+                        "Total: Rp" . number_format($total) . "\n\n" .
+                        "Ketik *ya* untuk konfirmasi atau *batal*."
                 ]);
             }
 
-            $state['data']['menu'] = $menu;
-            $state['step'] = 'choose_qty';
-            ChatState::save($state);
+            /* ================= SIMPAN PESANAN + MIDTRANS ================= */
 
-            return response()->json([
-                'reply' => "Baik, kamu memilih {$menu->nama_menu}.\nBerapa porsi yang ingin dipesan?"
-            ]);
-        }
+            if ($state['step'] === 'confirm_order') {
 
-        // --- STEP 3: JUMLAH ---
-        if ($state['step'] === 'choose_qty') {
+                if ($msg !== 'ya') {
+                    ChatState::reset();
+                    return response()->json([
+                        'reply' => "❌ Pesanan dibatalkan. Ketik *pesan* untuk memulai kembali."
+                    ]);
+                }
 
-            if (!is_numeric($msg)) {
-                return response()->json([
-                    'reply' => "Jumlah harus berupa angka. Coba lagi."
+                DB::beginTransaction();
+
+                $d = $state['data'];
+                $total = $d['menu_harga'] * $d['jumlah'];
+                $noOrder = 'ORD-' . strtoupper(Str::random(8));
+
+                // Simpan pelanggan
+                Pelanggan::create([
+                    'nama'    => $d['nama'],
+                    'telepon' => $d['telepon'],
+                    'alamat'  => $d['alamat'],
                 ]);
-            }
 
-            $state['data']['jumlah'] = (int)$msg;
-            $state['step'] = 'choose_date';
-            ChatState::save($state);
+                // Simpan pesanan
+                Pesanan::create([
+                    'no_order'        => $noOrder,
+                    'nama_pelanggan'  => $d['nama'],
+                    'total_item'      => $d['jumlah'],
+                    'total_harga'     => $total,
+                    'status'          => 'pending',
+                ]);
 
-            return response()->json([
-                'reply' => "Untuk tanggal berapa pesanannya?"
-            ]);
-        }
+                /* ===== MIDTRANS CONFIG ===== */
+                Config::$serverKey = config('services.midtrans.server_key');
+                Config::$isProduction = config('services.midtrans.is_production');
+                Config::$isSanitized = true;
+                Config::$is3ds = true;
+                try {
+                   $snapToken = Snap::getSnapToken([
+                    'transaction_details' => [
+                        'order_id' => $noOrder,
+                        'gross_amount' => (int) $total,
+                    ],
+                    'item_details' => [
+                        [
+                            'id' => 'MENU-1',
+                            'price' => (int) $d['menu_harga'],
+                            'quantity' => (int) $d['jumlah'],
+                            'name' => $d['menu_nama'],
+                        ]
+                    ],
+                    'customer_details' => [
+                        'first_name' => $d['nama'],
+                        'phone' => $d['telepon'],
+                        'address' => $d['alamat'],
+                    ],
+                ]);
 
-        // --- STEP 4: TANGGAL ---
-        if ($state['step'] === 'choose_date') {
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    \Log::error('MIDTRANS ERROR: ' . $e->getMessage());
 
-            $state['data']['tanggal'] = $msg;
-            $state['step'] = 'customer_name';
-            ChatState::save($state);
+                    return response()->json([
+                        'reply' => '❌ Gagal membuat pembayaran. Silakan coba lagi.'
+                    ], 500);
+                }
 
-            return response()->json([
-                'reply' => "Siapa nama pemesannya?"
-            ]);
-        }
-
-        // --- STEP 5: NAMA PEMESAN ---
-        if ($state['step'] === 'customer_name') {
-
-            $state['data']['nama'] = $msg;
-            $state['step'] = 'customer_phone';
-            ChatState::save($state);
-
-            return response()->json([
-                'reply' => "Nomor telepon pemesan?"
-            ]);
-        }
-
-        // --- STEP 6: TELEPON ---
-        if ($state['step'] === 'customer_phone') {
-
-            $state['data']['telepon'] = $msg;
-            $state['step'] = 'confirm_order';
-            ChatState::save($state);
-
-            $d = $state['data'];
-            $total = $d['menu']->harga * $d['jumlah'];
-
-            return response()->json([
-                'reply' =>
-                "Berikut detail pesananmu:\n\n" .
-                    "Menu: {$d['menu']->nama_menu}\n" .
-                    "Jumlah: {$d['jumlah']} porsi\n" .
-                    "Tanggal: {$d['tanggal']}\n" .
-                    "Nama: {$d['nama']}\n" .
-                    "Telepon: {$d['telepon']}\n" .
-                    "Total: Rp" . number_format($total, 0, ',', '.') . "\n\n" .
-                    "Ketik ya untuk konfirmasi atau batal."
-            ]);
-        }
-
-        // --- STEP 7: SIMPAN KE DATABASE ---
-        if ($state['step'] === 'confirm_order') {
-
-            if ($msg !== 'ya') {
+                DB::commit();
                 ChatState::reset();
+
                 return response()->json([
-                    'reply' => "Pesanan dibatalkan. Ketik pesan untuk memulai lagi."
+                    'reply' =>
+                        "✅ *Pesanan berhasil disimpan!*\n" .
+                        "Total: Rp" . number_format($total) . "\n\n" .
+                        "Silakan lanjutkan pembayaran 👇",
+                    'snap_token' => $snapToken
                 ]);
             }
 
-            $d = $state['data'];
+            return response()->json(['reply' => "Ketik *menu* atau *pesan*"]);
 
-            Pelanggans::create([
-                'nama' => $d['nama'],
-                'telepon' => $d['telepon']
-            ]);
+        } catch (\Throwable $e) {
 
-            $no_order = "ORD-" . strtoupper(Str::random(8));
+    DB::rollBack();
 
-            Pesanans::create([
-                'no_order' => $no_order,
-                'nama_pelanggan' => $d['nama'],
-                'total_item' => $d['jumlah'],
-                'total_harga' => $d['menu']->harga * $d['jumlah']
-            ]);
-
-            ChatState::reset();
-
-            return response()->json([
-                'reply' => "✅ Pesanan berhasil dibuat!\nNomor order kamu: $no_order\nAdmin akan segera menghubungi ya!"
-            ]);
-        }
-
-        return response()->json([
-            'reply' => "Maaf, saya tidak memahami. Ketik menu, harga catering, cara pesan, lokasi, atau pesan."
-        ]);
+    return response()->json([
+        'reply' => 'SERVER ERROR: ' . $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine(),
+    ], 500);
+}
     }
 }
