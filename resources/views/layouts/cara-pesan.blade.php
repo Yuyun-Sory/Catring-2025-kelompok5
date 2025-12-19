@@ -52,6 +52,18 @@
         margin: 10px;
     }
 
+    /* ================= ANIMASI ================= */
+.animate {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease;
+}
+
+.animate.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
     /* Lokasi Section */
     .location-section {
         background-color: #d1fae5;
@@ -96,30 +108,32 @@
 <section class="steps">
     <div class="step">
       <h2>1. Langkah Pertama – <span>Pemesanan Melalui Chatbot</span></h2>
-      <img src="{{ asset('images/carapesan1.png') }}" alt="Cara Pesan Chatbot">
+      <img class="animate" src="{{ asset('images/carapesan1.png') }}">
     </div>
 
     <div class="step">
       <h2>2. Langkah Dua – <span>Pilih Menu Yang Diinginkan</span></h2>
-      <img src="{{ asset('images/carapesan2.png') }}" alt="Pilih Menu">
+      <img class="animate" src="{{ asset('images/carapesan2.png') }}">
+    </div>
     </div>
 
     <div class="step">
       <h2>3. Langkah Tiga – <span>Tentukan Jumlah & Tanggal</span></h2>
       <div class="step-images">
-        <img src="{{ asset('images/carapesan3.png') }}" alt="Jumlah Tamu">
-        <img src="{{ asset('images/carapesan32.png') }}" alt="Pilih Tanggal">
+        <img class="animate" src="{{ asset('images/carapesan3.png') }}">
+            <img class="animate" src="{{ asset('images/carapesan32.png') }}">
       </div>
     </div>
 
     <div class="step">
       <h2>4. Langkah Empat – <span>Masukkan Data Pemesan</span></h2>
-      <img src="{{ asset('images/carapesan4.png') }}" alt="Data Pemesan">
+      <img class="animate" src="{{ asset('images/carapesan4.png') }}">
+
     </div>
 
     <div class="step">
       <h2>5. Langkah Lima – <span>Konfirmasi Pesanan</span></h2>
-      <img src="{{ asset('images/carapesan5.png') }}" alt="Konfirmasi">
+      <img class="animate" src="{{ asset('images/carapesan5.png') }}">
     </div>
 </section>
 <section class="location-section">
@@ -153,5 +167,25 @@
                 loading="lazy"></iframe>
         </div>
 </div>
+
+<!-- ================= SCRIPT ANIMASI ================= -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const animatedItems = document.querySelectorAll(".animate");
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("show");
+            }
+        });
+    }, {
+        threshold: 0.2
+    });
+
+    animatedItems.forEach(item => observer.observe(item));
+});
+</script>
+
 @endsection
 

@@ -3,6 +3,31 @@
 
 @section('content')
 <style>
+/* ================= MENU CARD ANIMATION ================= */
+.menu-card {
+    width: 250px;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 10px;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.menu-card img {
+    width: 100%;
+    border-radius: 10px;
+    transition: transform 0.35s ease;
+}
+
+.menu-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.18);
+}
+
+.menu-card:hover img {
+    transform: scale(1.08);
+}
+
 /* === HERO SECTION === */
 .hero-section {
     position: relative;
@@ -309,26 +334,23 @@
 </section>
 
 <!-- ====== MENU POPULER ====== -->
-<section class="py-5" style="background-color: #ffffff;">
+<section class="py-5">
     <div class="container">
-        <h2
-            style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 30px; color: #000; text-align: left; margin-bottom: 30px;">
-            Menu Populer
-        </h2>
-        <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
-            <div style="width: 250px; text-align: center;">
-                <img src="{{ asset('images/Nasi ayam goreng.png') }}" style="width:100%; border-radius:10px;">
-                <h5 style="margin-top:10px;">Nasi Ayam Goreng Lalapan</h5>
+        <h2 class="fw-bold mb-4">Menu Populer</h2>
+        <div class="d-flex justify-content-center gap-4 flex-wrap">
+            <div class="menu-card">
+                <img src="{{ asset('images/Nasi ayam goreng.png') }}">
+                <h5 class="mt-2">Nasi Ayam Goreng Lalapan</h5>
                 <p>Rp 20.000</p>
             </div>
-            <div style="width: 250px; text-align: center;">
-                <img src="{{ asset('images/soto ayam.png') }}" style="width:100%; border-radius:10px;">
-                <h5 style="margin-top:10px;">Soto Ayam</h5>
+            <div class="menu-card">
+                <img src="{{ asset('images/soto ayam.png') }}">
+                <h5 class="mt-2">Soto Ayam</h5>
                 <p>Rp 15.000</p>
             </div>
-            <div style="width: 250px; text-align: center;">
-                <img src="{{ asset('images/nasi pecal.png') }}" style="width:100%; border-radius:10px;">
-                <h5 style="margin-top:10px;">Nasi Pecel</h5>
+            <div class="menu-card">
+                <img src="{{ asset('images/nasi pecal.png') }}">
+                <h5 class="mt-2">Nasi Pecel</h5>
                 <p>Rp 12.000</p>
             </div>
         </div>
@@ -336,26 +358,23 @@
 </section>
 
 <!-- ====== OLEH-OLEH POPULER ====== -->
-<section class="py-5" style="background-color: #f9f9f9;">
+<section class="py-5" style="background:#f9f9f9;">
     <div class="container">
-        <h2
-            style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 30px; color: #000; text-align: left; margin-bottom: 30px;">
-            Oleh-Oleh Populer
-        </h2>
-        <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
-            <div style="width: 250px; text-align: center;">
-                <img src="{{ asset('images/Produk5.png') }}" style="width:100%; border-radius:10px;">
-                <h5 style="margin-top:10px;">Jahe Merah Instan</h5>
+        <h2 class="fw-bold mb-4">Oleh-Oleh Populer</h2>
+        <div class="d-flex justify-content-center gap-4 flex-wrap">
+            <div class="menu-card">
+                <img src="{{ asset('images/Produk5.png') }}">
+                <h5 class="mt-2">Jahe Merah Instan</h5>
                 <p>Rp 15.000</p>
             </div>
-            <div style="width: 250px; text-align: center;">
-                <img src="{{ asset('images/Produk4.png') }}" style="width:100%; border-radius:10px;">
-                <h5 style="margin-top:10px;">Bolu Kukus Pandan Keju</h5>
+            <div class="menu-card">
+                <img src="{{ asset('images/Produk4.png') }}">
+                <h5 class="mt-2">Bolu Kukus Pandan Keju</h5>
                 <p>Rp 30.000</p>
             </div>
-            <div style="width: 250px; text-align: center;">
-                <img src="{{ asset('images/Telur asin.png') }}" style="width:100%; border-radius:10px;">
-                <h5 style="margin-top:10px;">Telur Asin</h5>
+            <div class="menu-card">
+                <img src="{{ asset('images/Telur asin.png') }}">
+                <h5 class="mt-2">Telur Asin</h5>
                 <p>Rp 15.000</p>
             </div>
         </div>
@@ -363,21 +382,18 @@
 </section>
 
 <!-- ====== MINUMAN SEHAT ====== -->
-<section class="py-5" style="background-color: #ffffff;">
+<section class="py-5">
     <div class="container">
-        <h2
-            style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 30px; color: #000; text-align: left; margin-bottom: 30px;">
-            Minuman Sehat
-        </h2>
-        <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
-            <div style="width: 250px; text-align: center;">
-                <img src="{{ asset('images/wedang jahe merah.png') }}" style="width:100%; border-radius:10px;">
-                <h5 style="margin-top:10px;">Wedang Jahe Merah</h5>
+        <h2 class="fw-bold mb-4">Minuman Sehat</h2>
+        <div class="d-flex justify-content-center gap-4 flex-wrap">
+            <div class="menu-card">
+                <img src="{{ asset('images/wedang jahe merah.png') }}">
+                <h5 class="mt-2">Wedang Jahe Merah</h5>
                 <p>Rp 5.000</p>
             </div>
-            <div style="width: 250px; text-align: center;">
-                <img src="{{ asset('images/wedang susu jahe.png') }}" style="width:100%; border-radius:10px;">
-                <h5 style="margin-top:10px;">Wedang Susu Jahe</h5>
+            <div class="menu-card">
+                <img src="{{ asset('images/wedang susu jahe.png') }}">
+                <h5 class="mt-2">Wedang Susu Jahe</h5>
                 <p>Rp 5.000</p>
             </div>
         </div>
