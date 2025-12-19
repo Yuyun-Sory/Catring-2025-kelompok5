@@ -1,22 +1,62 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Teras Bu Rini Catering</title>
+    <title>@yield('title','Home') | Teras Bu Rini Catering Homemade</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- MIDTRANS SNAP (HANYA SATU KALI) -->
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <!-- MIDTRANS SNAP -->
     <script src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key="{{ config('services.midtrans.client_key') }}"></script>
 
     <style>
-        body { font-family: 'Poppins', sans-serif; }
+        body { font-family: 'Poppins', sans-serif; background: #fff; }
 
+        /* HEADER */
+        .header-top {
+            background: #9ef7a1;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-text { font-weight: bold; line-height: 1.2; }
+
+        /* NAVBAR */
+        .nav-bar {
+            padding: 12px 50px;
+            border-bottom: 2px solid #9ef7a1;
+            background: #fff;
+        }
+
+        .nav-bar a {
+            margin-right: 25px;
+            text-decoration: none;
+            color: #000;
+            font-weight: 500;
+        }
+
+        .nav-bar a.active {
+            color: #46d66a;
+            border-bottom: 2px solid #46d66a;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background: #eee;
+            text-align: center;
+        }
+
+        /* CHATBOT */
         .floating-chatbot {
             position: fixed;
             bottom: 30px;
@@ -89,21 +129,43 @@
             background: #9ef7a1;
             border: none;
             padding: 10px 15px;
-            cursor: pointer;
         }
 
-        .pay-btn {
-            margin-top: 8px;
-        }
+        .pay-btn { margin-top: 8px; }
     </style>
 </head>
 
 <body>
+
+<!-- HEADER -->
+<div class="header-top">
+    <div class="d-flex align-items-center gap-3">
+        <img src="{{ asset('images/BG teras.png') }}" width="60">
+        <div class="brand-text">
+            Teras Bu Rini <br>
+            <small>Catering Homemade</small>
+        </div>
+    </div>
+    <a href="/login" class="text-dark text-decoration-none fw-semibold">Login</a>
+</div>
+
+<!-- NAVBAR -->
+<div class="nav-bar">
+    <a href="/" class="{{ request()->is('/') ? 'active' : '' }}">Home</a>
+    <a href="/menu" class="{{ request()->is('menu*') ? 'active' : '' }}">Menu</a>
+    <a href="/cara-pesan" class="{{ request()->is('cara-pesan') ? 'active' : '' }}">Cara Pesan</a>
+    <a href="/tentang" class="{{ request()->is('tentang') ? 'active' : '' }}">Tentang</a>
+</div>
+
+<!-- CONTENT -->
 @yield('content')
-<!-- Floating Icon -->
+
+<footer>&copy; {{ date('Y') }} Teras Bu Rini Catering Homemade</footer>
+
+<!-- FLOATING CHAT -->
 <img src="{{ asset('images/chatbot.png') }}" class="floating-chatbot" onclick="toggleChatbot()">
 
-<!-- Chatbot -->
+<!-- CHATBOT -->
 <div id="chatbotPopup" class="chatbot-popup">
     <div class="chatbot-header">
         <span>Chatbot Teras Bu Rini</span>
@@ -167,7 +229,7 @@
         addUserMessage(message);
         input.value = "";
 
-        let typing = document.createElement("div");
+        const typing = document.createElement("div");
         typing.className = "bot-message";
         typing.innerText = "Sedang mengetik...";
         chatBody.appendChild(typing);
