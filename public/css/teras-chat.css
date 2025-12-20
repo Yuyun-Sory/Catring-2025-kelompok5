@@ -1,0 +1,354 @@
+/* ================= ROOT & GLOBAL ================= */
+:root {
+    --primary: #4f46e5;
+    --secondary: #6366f1;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --bg-soft: #f4f6fb;
+    --card-bg: #ffffff;
+    --text-dark: #1f2937;
+    --text-soft: #6b7280;
+}
+
+body {
+    background: var(--bg-soft);
+    color: var(--text-dark);
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ================= PAGE ================= */
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+/* ================= LAYOUT ================= */
+.calendar-admin-wrapper {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 24px;
+}
+
+/* ================= CALENDAR ================= */
+.calendar-box {
+    background: linear-gradient(180deg, #ffffff, #f8f9ff);
+    padding: 22px;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(79,70,229,.15);
+    border: none;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 14px;
+}
+
+.calendar-header button {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.calendar-header button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(79,70,229,.35);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.calendar-grid.header div {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-soft);
+}
+
+/* STATUS TANGGAL */
+.date-box {
+    text-align: center;
+    padding: 12px 0;
+    border-radius: 12px;
+    font-weight: 600;
+    background: #78F38F; /* default tersedia */
+    color: #fff;
+    transition: .2s;
+}
+
+.date-box:hover {
+    transform: translateY(-2px);
+}
+
+.date-libur {
+    background: #DF6464 !important; /* Hari libur */
+}
+
+.date-full {
+    background: #0736F4 !important; /* Sudah booking / penuh */
+}
+
+.date-disabled {
+    background: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* LEGEND */
+.legend {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-top: 12px;
+}
+
+.legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot.ava { background: #78F38F; }
+.dot.taken { background: #DF6464; }
+.dot.selected { background: #0736F4; }
+
+/* ================= ADMIN BOX ================= */
+.admin-box {
+    background: var(--card-bg);
+    padding: 22px;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.08);
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.admin-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* ================= TABLE ================= */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #eef2ff;
+    color: var(--text-soft);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px;
+}
+
+td {
+    padding: 12px;
+    font-size: 14px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+tr:hover td {
+    background: #f8f9ff;
+}
+
+.aksi {
+    display: flex;
+    gap: 6px;
+}
+
+/* ================= BUTTON ================= */
+.btn-add {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    transition: .25s;
+}
+
+.btn-add:hover {
+    transform: scale(1.05);
+}
+
+.btn-edit {
+    background: #e0e7ff;
+    color: var(--primary);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.btn-delete {
+    background: #fee2e2;
+    color: var(--danger);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* ================= MODAL ================= */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-card.fancy {
+    background: white;
+    padding: 30px;
+    width: 380px;
+    border-radius: 22px;
+    box-shadow: 0 30px 60px rgba(0,0,0,.35);
+    animation: pop .25s ease;
+}
+
+.modal-card h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.modal-card label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-soft);
+    margin-top: 14px;
+    display: block;
+}
+
+.modal-card input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    margin-top: 6px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 26px;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, var(--success), #16a34a);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 14px;
+    font-weight: 700;
+}
+
+/* ================= TOAST ================= */
+.toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    background: linear-gradient(135deg, var(--success), #16a34a);
+    color: white;
+    padding: 14px 20px;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(34,197,94,.4);
+    animation: fade 3s forwards;
+    z-index: 999;
+}
+
+@keyframes fade {
+    0% {opacity:0; transform:translateY(-10px)}
+    15% {opacity:1}
+    85% {opacity:1}
+    100% {opacity:0; transform:translateY(-10px)}
+}
+
+@keyframes pop {
+    from { transform: scale(.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+/* ================= STAT BOX MINI ================= */
+.stat-box {
+    flex: 1;
+    background: #eef2ff; /* soft biru */
+    color: #1f2937; /* teks gelap lembut */
+    padding: 14px 18px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform .2s, box-shadow .2s;
+    cursor: default;
+    min-width: 120px;
+}
+
+.stat-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,.12);
+}
+
+.stat-title {
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.8;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.stat-percent {
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 4px;
+    display: inline-flex;
+    align-items: center;
+    color: #22c55e; /* default hijau naik */
+}
+
+.stat-percent.down {
+    color: #ef4444; /* merah turun */
+}
+
+.stat-percent::before {
+    content: "▲";
+    font-size: 10px;
+    margin-right: 3px;
+}
+
+.stat-percent.down::before {
+    content: "▼";
+}

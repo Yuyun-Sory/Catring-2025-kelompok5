@@ -31,9 +31,10 @@
             <li class="{{ request()->routeIs('laporan') ? 'active' : '' }}">
                 <a href="{{ route('laporan') }}">📄 Laporan</a>
             </li>
-            <li class="{{ request()->routeIs('teras.chat') ? 'active' : '' }}">
-                <a href="{{ route('teras.chat') }}">💬 TerasChat</a>
+            <li class="{{ request()->routeIs('libur.*') ? 'active' : '' }}">
+                <a href="{{ route('libur.index') }}">💬 TerasChat</a>
             </li>
+
             <li>
                 <a href="{{ route('logout') }}">⏻ Logout</a>
             </li>

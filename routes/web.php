@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TotalPesananController;
 use App\Http\Controllers\ChatAiController;
 use App\Models\Ulasan;
+use App\Http\Controllers\LiburController;
 
 
 // Halaman utama
@@ -94,10 +95,6 @@ Route::get('/laporan', function () {
     return view('laporan');
 })->name('laporan');
 
-// Teras Chat
-Route::get('/teras-chat', function () {
-    return view('teras-chat');
-})->name('teras.chat');
 
 // Logout (halaman logout tampilan)
 Route::get('/logout', function () {
@@ -155,3 +152,5 @@ Route::put('/admin/akun/{id}', [AdminController::class, 'updateAkun'])->name('ad
 Route::delete('/admin/akun/{id}', [AdminController::class, 'hapusAkun'])->name('admin.akun.delete');
 
 Route::post('/chatbot/send', [ChatAiController::class, 'ask'])->name('chatbot.send');
+
+Route::resource('libur', LiburController::class);
