@@ -144,9 +144,8 @@ Route::delete('/admin/akun/{id}', [AdminController::class, 'hapusAkun'])->name('
 
 Route::post('/chatbot/send', [ChatAiController::class, 'ask'])->name('chatbot.send');
 
-<<<<<<< Updated upstream
+
 Route::resource('libur', LiburController::class);
-=======
 
 // PEMESANAN MASUK (SEMUA)
 Route::get('/pemesanan/masuk', [PesananController::class, 'index'])
@@ -160,4 +159,4 @@ Route::get('/pesanan/baru', [PesananController::class, 'pesananBaru'])
 Route::get('/tes-view', function () {
     dd(view()->exists('pesanan-baru'));
 });  
->>>>>>> Stashed changes
+
