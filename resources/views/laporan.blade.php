@@ -5,130 +5,110 @@
 @section('content')
 
 <style>
-/* =================== BASE LAYOUT & SUMMARY =================== */
-.laporan-container { width: 100%; padding: 0 20px; }
-.summary-container { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+.laporan-container { width:100%; padding:0 20px; }
+.summary-container { display:flex; gap:15px; margin-top:20px; flex-wrap:wrap; }
 .summary-box {
-    background: white;
-    border: 1px solid #dcdcdc;
-    padding: 18px 20px;
-    border-radius: 10px;
-    width: 200px;
+    background:#fff; border:1px solid #dcdcdc;
+    padding:18px 20px; border-radius:10px; width:200px;
 }
-.summary-title { font-size: 15px; margin-bottom: 5px; color: #555; }
-.summary-value { font-size: 20px; font-weight: bold; }
-.summary-sub { font-size: 13px; color: #2ecc71; margin-top: 4px; font-weight: 600; }
-.summary-sub .sabtu { color: #888; margin-left: 5px; font-weight: normal; }
+.summary-title { font-size:15px; margin-bottom:5px; color:#555; }
+.summary-value { font-size:20px; font-weight:bold; }
+.summary-sub { font-size:13px; color:#2ecc71; margin-top:4px; font-weight:600; }
 
 .grid-2 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-top: 20px;
-    width: 100%;
+    display:grid; grid-template-columns:repeat(2,1fr);
+    gap:15px; margin-top:20px;
 }
-
 .chart-box {
-    background: white;
-    border: 1px solid #dcdcdc;
-    border-radius: 12px;
-    padding: 20px;
-    min-height: 200px;
+    background:white; border:1px solid #dcdcdc;
+    border-radius:12px; padding:20px;
 }
-.chart-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+.chart-title { font-size:18px; font-weight:bold; margin-bottom:15px; }
 
-/* DROPDOWN BULAN */
-.month-selector { position:relative; display:inline-block; cursor:pointer; margin-bottom:10px; }
-.current-month { padding:8px 12px; background-color:white; border:1px solid #dcdcdc; border-radius:6px; font-weight:bold; color:#333; padding-right:25px; position:relative; font-size:14px; }
-.current-month::after { content:"\25BC"; position:absolute; top:50%; right:10px; transform:translateY(-50%); font-size:0.7em; color:#888; transition:transform 0.3s; }
-.month-selector.open .current-month::after { transform:translateY(-50%) rotate(180deg); }
-.month-dropdown-menu { position:absolute; top:100%; left:0; z-index:100; background:white; border:1px solid #ccc; box-shadow:0 4px 8px rgba(0,0,0,0.1); border-radius:4px; min-width:150px; display:none; padding:5px 0; max-height:250px; overflow-y:auto; }
-.month-dropdown-menu a { display:block; padding:8px 15px; text-decoration:none; color:#333; font-size:14px; }
-.month-dropdown-menu a:hover { background-color:#f0f0f0; }
-.month-dropdown-menu a.active { background-color:#e6f7ff; font-weight:bold; color:#0066ff; }
-
+/* DROPDOWN GLOBAL */
+.month-selector { position:relative; cursor:pointer; }
+.current-month {
+    padding:8px 12px; background:#fff; border:1px solid #dcdcdc;
+    border-radius:6px; font-weight:bold; padding-right:25px;
+}
+.current-month::after {
+    content:"▼"; position:absolute; right:10px; top:50%;
+    transform:translateY(-50%); font-size:10px;
+}
+.month-dropdown-menu {
+    display:none; position:absolute; right:0; top:110%;
+    background:white; border:1px solid #ccc;
+    border-radius:6px; min-width:160px; z-index:100;
+}
+.month-dropdown-menu a {
+    display:block; padding:8px 12px; color:#333; text-decoration:none;
+}
+.month-dropdown-menu a:hover { background:#f2f2f2; }
+.month-dropdown-menu a.active { font-weight:bold; color:#0066ff; }
 </style>
 
 <div class="laporan-container">
-    <h1 style="font-size:32px; font-weight:700; margin-bottom:0;">Laporan</h1>
-    <p style="margin-top:4px; color:#333;">Analisis performa bisnis dan pengambilan keputusan</p>
 
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 style="font-size:32px; font-weight:700;">Laporan</h1>
+            <p style="margin-top:4px;">Analisis performa bisnis dan pengambilan keputusan</p>
+        </div>
+
+        {{-- PERIODE GLOBAL --}}
+        <div class="month-selector" id="periodeGlobal">
+            <div class="current-month" id="currentPeriode">Januari 2025</div>
+            <div class="month-dropdown-menu">
+                @foreach(['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November'] as $m)
+                    <a href="#" class="{{ $m=='Januari'?'active':'' }}" data-value="{{ $m }} 2025">
+                        {{ $m }} 2025
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    {{-- SUMMARY --}}
     <div class="summary-container">
 
-        {{-- Total Pendapatan --}}
         <div class="summary-box">
             <div class="summary-title">💰 Total Pendapatan</div>
             <div class="summary-value">Rp 501.00 JT</div>
             <div class="summary-sub">⬆ 12%</div>
-            <div class="month-selector">
-                <div class="current-month">Januari 2025</div>
-                <div class="month-dropdown-menu">
-                    @foreach(['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November'] as $month)
-                        <a href="#" class="{{ $month=='Januari'?'active':'' }}">{{ $month }} 2025</a>
-                    @endforeach
-                </div>
-            </div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailPendapatanModal">
+            <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#pendapatanModal">
                 Lihat Detail
             </button>
         </div>
 
-        {{-- Total Profit --}}
         <div class="summary-box">
             <div class="summary-title">📈 Total Profit</div>
             <div class="summary-value">Rp 26.05 JT</div>
             <div class="summary-sub">⬆ 12%</div>
-            <div class="month-selector">
-                <div class="current-month">Januari 2025</div>
-                <div class="month-dropdown-menu">
-                    @foreach(['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November'] as $month)
-                        <a href="#" class="{{ $month=='Januari'?'active':'' }}">{{ $month }} 2025</a>
-                    @endforeach
-                </div>
-            </div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailProfitModal">
+            <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#profitModal">
                 Lihat Detail
             </button>
         </div>
 
-        {{-- Status Pesanan --}}
         <div class="summary-box">
             <div class="summary-title">📊 Status Pesanan</div>
             <div class="summary-value">750</div>
             <div class="summary-sub">⬆ 12%</div>
-            <div class="month-selector">
-                <div class="current-month">Januari 2025</div>
-                <div class="month-dropdown-menu">
-                    @foreach(['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November'] as $month)
-                        <a href="#" class="{{ $month=='Januari'?'active':'' }}">{{ $month }} 2025</a>
-                    @endforeach
-                </div>
-            </div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailStatusModal">
+            <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#statusModal">
                 Lihat Detail
             </button>
         </div>
 
-        {{-- Hari Tersibuk --}}
         <div class="summary-box">
             <div class="summary-title">📅 Hari Tersibuk</div>
             <div class="summary-value">Jumat</div>
             <div class="summary-sub">Sabtu</div>
-            <div class="month-selector">
-                <div class="current-month">Januari 2025</div>
-                <div class="month-dropdown-menu">
-                    @foreach(['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November'] as $month)
-                        <a href="#" class="{{ $month=='Januari'?'active':'' }}">{{ $month }} 2025</a>
-                    @endforeach
-                </div>
-            </div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailHariModal">
+            <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#hariModal">
                 Lihat Detail
             </button>
         </div>
     </div>
 
-    {{-- Chart Grid --}}
+    {{-- CHART --}}
     <div class="grid-2">
         <div class="chart-box">
             <div class="chart-title">Penjualan per Item</div>
@@ -139,22 +119,21 @@
             <canvas id="pieChart"></canvas>
         </div>
     </div>
+
     <div class="grid-2">
         <div class="chart-box">
-            <div class="chart-title">Trend Penjualan per Hari</div>
+            <div class="chart-title">Trend Penjualan</div>
             <canvas id="lineChart"></canvas>
         </div>
         <div class="chart-box">
-            <div class="chart-title">Pendapatan Vs Profit</div>
+            <div class="chart-title">Pendapatan vs Profit</div>
             <canvas id="barChart"></canvas>
         </div>
     </div>
 </div>
 
-{{-- MODAL DETAIL --}}
-
-{{-- Pendapatan --}}
-<div class="modal fade" id="detailPendapatanModal" tabindex="-1" aria-labelledby="detailPendapatanModalLabel" aria-hidden="true">
+{{-- MODAL PENDAPATAN --}}
+<div class="modal fade" id="pendapatanModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -162,21 +141,18 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <div class="row mb-2"><div class="col-8">Penjualan Online</div><div class="col-4 text-end fw-bold">Rp 300.00 Jt</div></div>
-        <div class="row mb-2"><div class="col-8">Penjualan Offline</div><div class="col-4 text-end fw-bold">Rp 150.00 Jt</div></div>
-        <div class="row mb-2"><div class="col-8">Catering</div><div class="col-4 text-end fw-bold">Rp 51.00 Jt</div></div>
+        <p>Penjualan Online <strong class="float-end">Rp 300 JT</strong></p>
+        <p>Penjualan Offline <strong class="float-end">Rp 150 JT</strong></p>
+        <p>Catering <strong class="float-end">Rp 51 JT</strong></p>
         <hr>
-        <div class="row"><div class="col-8 h6">Total Keseluruhan</div><div class="col-4 text-end h6">Rp 501.00 Jt</div></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success w-100" data-bs-dismiss="modal">Tutup</button>
+        <p class="fw-bold">Total <span class="float-end">Rp 501 JT</span></p>
       </div>
     </div>
   </div>
 </div>
 
-{{-- Profit --}}
-<div class="modal fade" id="detailProfitModal" tabindex="-1" aria-labelledby="detailProfitModalLabel" aria-hidden="true">
+{{-- MODAL PROFIT --}}
+<div class="modal fade" id="profitModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -184,22 +160,14 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <div class="row mb-2"><div class="col-8">Profit Kotor</div><div class="col-4 text-end fw-bold">Rp 50.00 Jt</div></div>
-        <div class="row mb-2"><div class="col-8">Biaya Operasional</div><div class="col-4 text-end fw-bold">Rp 15.00 Jt</div></div>
-        <div class="row mb-2"><div class="col-8">Biaya Bahan Baku</div><div class="col-4 text-end fw-bold">Rp 8.95 Jt</div></div>
-        <div class="row mb-2"><div class="col-8">Profit Bersih</div><div class="col-4 text-end fw-bold">Rp 26.05 Jt</div></div>
-        <hr>
-        <div class="row"><div class="col-8 h6">Total Profit</div><div class="col-4 text-end h6">Rp 26.05 Jt</div></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success w-100" data-bs-dismiss="modal">Tutup</button>
+        <p>Profit Bersih <strong class="float-end">Rp 26.05 JT</strong></p>
       </div>
     </div>
   </div>
 </div>
 
-{{-- Status Pesanan --}}
-<div class="modal fade" id="detailStatusModal" tabindex="-1" aria-labelledby="detailStatusModalLabel" aria-hidden="true">
+{{-- MODAL STATUS --}}
+<div class="modal fade" id="statusModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -207,22 +175,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <div class="row mb-2"><div class="col-8">Pesanan Selesai</div><div class="col-4 text-end fw-bold">450</div></div>
-        <div class="row mb-2"><div class="col-8">Dalam Proses</div><div class="col-4 text-end fw-bold text-bold">180</div></div>
-        <div class="row mb-2"><div class="col-8">Pending</div><div class="col-4 text-end fw-bold">50</div></div>
-        <div class="row mb-2"><div class="col-8">Dibatalkan</div><div class="col-4 text-end fw-bold">25</div></div>
-        <hr>
-        <div class="row"><div class="col-8 h6">Total Pesanan</div><div class="col-4 text-end h6">750</div></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success w-100" data-bs-dismiss="modal">Tutup</button>
+        <p>Selesai <strong class="float-end">450</strong></p>
+        <p>Proses <strong class="float-end">180</strong></p>
+        <p>Pending <strong class="float-end">50</strong></p>
       </div>
     </div>
   </div>
 </div>
 
-{{-- Hari Tersibuk --}}
-<div class="modal fade" id="detailHariModal" tabindex="-1" aria-labelledby="detailHariModalLabel" aria-hidden="true">
+{{-- MODAL HARI --}}
+<div class="modal fade" id="hariModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -230,56 +192,39 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <div class="row mb-2"><div class="col-8">Senin</div><div class="col-4 text-end fw-bold">85</div></div>
-        <div class="row mb-2"><div class="col-8">Selasa</div><div class="col-4 text-end fw-bold">95</div></div>
-        <div class="row mb-2"><div class="col-8">Rabu</div><div class="col-4 text-end fw-bold">78</div></div>
-        <div class="row mb-2"><div class="col-8">Kamis</div><div class="col-4 text-end fw-bold">105</div></div>
-        <div class="row mb-2"><div class="col-8">Jumat</div><div class="col-4 text-end fw-bold">145</div></div>
-        <div class="row mb-2"><div class="col-8">Sabtu</div><div class="col-4 text-end fw-bold">120</div></div>
-        <div class="row mb-2"><div class="col-8">Minggu</div><div class="col-4 text-end fw-bold">80</div></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success w-100" data-bs-dismiss="modal">Tutup</button>
+        <p>Jumat <strong class="float-end">145</strong></p>
+        <p>Sabtu <strong class="float-end">120</strong></p>
       </div>
     </div>
   </div>
 </div>
 
-{{-- CHART.JS --}}
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-// DROPDOWN BULAN
-document.querySelectorAll('.month-selector').forEach(selector=>{
-    const current = selector.querySelector('.current-month');
-    const menu = selector.querySelector('.month-dropdown-menu');
+const selector = document.getElementById('periodeGlobal');
+const current = document.getElementById('currentPeriode');
+const menu = selector.querySelector('.month-dropdown-menu');
 
-    current.addEventListener('click', ()=> {
-        menu.style.display = (menu.style.display==='block')?'none':'block';
-        selector.classList.toggle('open');
-    });
+current.onclick = () => {
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+};
 
-    menu.querySelectorAll('a').forEach(link=>{
-        link.addEventListener('click', e=>{
-            e.preventDefault();
-            current.textContent = link.textContent;
-            menu.querySelectorAll('a').forEach(a=>a.classList.remove('active'));
-            link.classList.add('active');
-            menu.style.display='none';
-            selector.classList.remove('open');
-            // TODO: refresh data laporan
-        });
-    });
+menu.querySelectorAll('a').forEach(a=>{
+    a.onclick = e=>{
+        e.preventDefault();
+        current.textContent = a.dataset.value;
+        menu.querySelectorAll('a').forEach(x=>x.classList.remove('active'));
+        a.classList.add('active');
+        menu.style.display='none';
+    };
 });
 
-// CHART.JS IMPLEMENTATION
-new Chart(document.getElementById('itemChart'), { type: 'bar', data: { labels: ['Nasi Ayam Goreng','Nasi Pecel','Sate Ayam'], datasets:[{label:'Jumlah Terjual',data:[85,65,40],backgroundColor:['#b15cd1','#0066ff','#7de99f'],borderRadius:8}]}, options:{indexAxis:'y',responsive:true, scales:{x:{beginAtZero:true}},plugins:{legend:{display:false}}} });
-
-new Chart(document.getElementById('pieChart'), { type:'doughnut', data:{labels:['Nasi Ayam Goreng','Nasi Pecel','Sate Ayam'], datasets:[{data:[35,28,20],backgroundColor:['#b15cd1','#0066ff','#7de99f']}]}, options:{cutout:'55%',responsive:true} });
-
-new Chart(document.getElementById('lineChart'), { type:'line', data:{labels:['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'],datasets:[{label:'Penjualan',data:[10,25,40,60,85,80],borderWidth:2,borderColor:'#0066ff',fill:false,tension:0.4,pointRadius:5,pointHoverRadius:8}]}, options:{responsive:true, scales:{y:{beginAtZero:true}}} });
-
-new Chart(document.getElementById('barChart'), { type:'bar', data:{labels:['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'],datasets:[{label:'Pendapatan',data:[10,20,35,40,55,45],backgroundColor:'#0066ff'},{label:'Profit',data:[5,10,18,25,30,20],backgroundColor:'#7de99f'}]}, options:{responsive:true, scales:{y:{beginAtZero:true}}} });
+new Chart(itemChart,{type:'bar',data:{labels:['Nasi Ayam','Nasi Pecel','Sate Ayam'],datasets:[{data:[85,65,40]}]},options:{indexAxis:'y'}});
+new Chart(pieChart,{type:'doughnut',data:{labels:['Ayam','Pecel','Sate'],datasets:[{data:[35,28,20]}]}});
+new Chart(lineChart,{type:'line',data:{labels:['Sen','Sel','Rab','Kam','Jum'],datasets:[{data:[10,25,40,60,85]}]}});
+new Chart(barChart,{type:'bar',data:{labels:['Sen','Sel','Rab','Kam','Jum'],datasets:[{label:'Pendapatan',data:[10,20,35,40,55]},{label:'Profit',data:[5,10,18,25,30]}]}});
 </script>
 
 @endsection

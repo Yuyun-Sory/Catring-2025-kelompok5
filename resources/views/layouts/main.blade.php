@@ -21,7 +21,13 @@
         data-client-key="{{ config('services.midtrans.client_key') }}"></script>
 
     <style>
+
         body { font-family: Poppins, sans-serif; }
+
+
+        body { font-family: Poppins, sans-serif; }
+
+
         body { font-family: 'Poppins', sans-serif; background: #fff; }
 
 
@@ -137,11 +143,13 @@
             padding: 10px 15px;
         }
 
+
         .order-form {
             background: #f8f9fa;
             padding: 10px;
             border-radius: 10px;
         }
+
         .pay-btn { margin-top: 8px; }
 
     </style>

@@ -2,28 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Pemesanan;
+use App\Models\Pesanan;
 
 class PesananController extends Controller
 {
+    /**
+     * =========================
+     * PEMESANAN MASUK (SEMUA)
+     * =========================
+     */
     public function index()
     {
-        // Ambil pesanan status baru
-        $pesananBaru = Pemesanan::where('status', 'Baru')
+        $pesanan = Pesanan::orderBy('created_at', 'DESC')->get();
+
+        $totalPesanan = Pesanan::count();
+        $menunggu     = Pesanan::where('status', 'Baru')->count();
+        $diproses     = Pesanan::where('status', 'Proses')->count();
+        $selesai      = Pesanan::where('status', 'Selesai')->count();
+        $dibatalkan   = Pesanan::where('status', 'Dibatalkan')->count();
+
+        return view('pemesanan-masuk', compact(
+            'pesanan',
+            'totalPesanan',
+            'menunggu',
+            'diproses',
+            'selesai',
+            'dibatalkan'
+        ));
+    }
+
+    /**
+     * =========================
+     * PESANAN BARU (STATUS BARU)
+     * =========================
+     */
+    public function pesananBaru()
+    {
+        $pesanan = Pesanan::where('status', 'Baru')
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        // Hitung jumlah untuk summary box
-        $totalBaru = Pemesanan::where('status', 'Baru')->count();
-        $totalProses = Pemesanan::where('status', 'Proses')->count();
-        $totalSelesai = Pemesanan::where('status', 'Selesai')->count();
-
-        return view('pemesanan-masuk', [
-            'pesananBaru'   => $pesananBaru,
-            'totalBaru'     => $totalBaru,
-            'totalProses'   => $totalProses,
-            'totalSelesai'  => $totalSelesai,
-        ]);
+        return view('pesanan.pesanan-baru', compact('pesanan'));
     }
 }

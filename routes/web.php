@@ -57,12 +57,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/admin/pemesanan/masuk', [MenuController::class, 'pesananMasuk'])
-     ->name('pemesanan.masuk');
-Route::get('/pemesanan-masuk', function () {
-    return view('pemesanan-masuk');
-})->name('pemesanan.masuk');
-
 Route::get('/status_pesanan', function () {
     return view('status_pesanan');
 })->name('status.pesanan');
@@ -123,9 +117,6 @@ Route::get('/pendapatan-detail', [LaporanController::class, 'pendapatanDetail'])
  // Rute Detail Profit
 Route::get('/profit-detail', [LaporanController::class, 'profitDetail'])->name('profit.detail');
 
-// CRUD Pesanan
-Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
-
 // CRUD Total Pesanan
 Route::resource('total-pesanan', App\Http\Controllers\TotalPesananController::class);
 
@@ -153,4 +144,20 @@ Route::delete('/admin/akun/{id}', [AdminController::class, 'hapusAkun'])->name('
 
 Route::post('/chatbot/send', [ChatAiController::class, 'ask'])->name('chatbot.send');
 
+<<<<<<< Updated upstream
 Route::resource('libur', LiburController::class);
+=======
+
+// PEMESANAN MASUK (SEMUA)
+Route::get('/pemesanan/masuk', [PesananController::class, 'index'])
+    ->name('pemesanan.masuk');
+
+// PESANAN BARU (FILTER STATUS = BARU)
+Route::get('/pesanan/baru', [PesananController::class, 'pesananBaru'])
+    ->name('pesanan.baru');
+
+
+Route::get('/tes-view', function () {
+    dd(view()->exists('pesanan-baru'));
+});  
+>>>>>>> Stashed changes
