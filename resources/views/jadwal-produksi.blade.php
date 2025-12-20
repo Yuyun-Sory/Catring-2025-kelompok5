@@ -1,410 +1,149 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Produksi - Jadwal Semua</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .active-menu { background-color: #94e9a9 !important; font-weight: bold; }
+        .tab-active { background-color: #94e9a9 !important; border: 1px solid #4ade80; font-weight: bold; }
+        .tab-inactive { background-color: #d1d5db !important; color: #4b5563; }
+        .modal-overlay { background-color: rgba(0, 0, 0, 0.5); z-index: 50; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
 
-@section('title', 'Jadwal Produksi')
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-[#58a46c] text-black flex flex-col p-4 space-y-4 shadow-xl">
+            <div class="flex justify-center mb-6 text-4xl font-bold">T</div>
+            <nav class="space-y-2">
+                <button class="w-full flex items-center p-2 hover:bg-green-600 rounded text-left"><i class="fas fa-home mr-3 w-5"></i> Dashboard</button>
+                <button class="w-full flex items-center p-2 hover:bg-green-600 rounded text-left"><i class="fas fa-box-open mr-3 w-5"></i> Pemesanan Masuk</button>
+                <button class="w-full flex items-center p-2 hover:bg-green-600 rounded text-left"><i class="fas fa-chart-bar mr-3 w-5"></i> Status Pesanan</button>
+                <button class="w-full flex items-center p-2 hover:bg-green-600 rounded text-left"><i class="fas fa-archive mr-3 w-5"></i> Stok Bahan</button>
+                <button class="w-full flex items-center p-2 rounded text-left active-menu shadow-md"><i class="fas fa-calendar-alt mr-3 w-5"></i> Jadwal Produksi</button>
+                <button class="w-full flex items-center p-2 hover:bg-green-600 rounded text-left"><i class="fas fa-file-alt mr-3 w-5"></i> Laporan</button>
+                <button class="w-full flex items-center p-2 hover:bg-green-600 rounded text-left"><i class="fas fa-robot mr-3 w-5"></i> TerasChat</button>
+                <button class="w-full flex items-center p-2 hover:bg-green-600 rounded mt-10 text-left"><i class="fas fa-power-off mr-3 w-5"></i> Logout</button>
+            </nav>
+        </aside>
 
-@section('content')
+        <main class="flex-1 flex flex-col">
+            <header class="bg-[#94e9a9] p-6 flex justify-between items-center shadow-sm">
+                <h1 class="text-4xl font-serif font-bold">Jadwal Produksi</h1>
+                <button onclick="toggleModal(true)" class="bg-[#c2f3cc] border border-black px-4 py-2 rounded-lg font-bold text-sm hover:bg-green-200 transition">
+                    + Tambah Jadwal
+                </button>
+            </header>
 
-<style>
-/* ===================== GLOBAL ===================== */
-.container-full {
-    width: 100%;
-    max-width: 100%;
-    font-family: 'Inter', sans-serif;
-    padding: 20px;
-    background: #f5f6fa;
-}
+            <div class="p-8 space-y-8">
+                <div class="bg-white border border-gray-400 p-8 rounded shadow-sm max-w-3xl mx-auto text-center">
+                    <div class="flex justify-center items-center space-x-12 mb-8 font-bold text-xl">
+                        <i class="fas fa-arrow-left cursor-pointer"></i> 
+                        <span>November</span> 
+                        <i class="fas fa-arrow-right cursor-pointer"></i>
+                    </div>
+                    <div class="flex justify-center space-x-4">
+                        <button onclick="filterJadwal('semua')" id="btn-semua" class="px-8 py-2 tab-active rounded shadow">Semua</button>
+                        <button onclick="filterJadwal('menunggu')" id="btn-menunggu" class="px-8 py-2 tab-inactive rounded shadow">Menunggu</button>
+                        <button onclick="filterJadwal('proses')" id="btn-proses" class="px-8 py-2 tab-inactive rounded shadow">Dalam Proses</button>
+                        <button onclick="filterJadwal('selesai')" id="btn-selesai" class="px-8 py-2 tab-inactive rounded shadow">Selesai</button>
+                    </div>
+                </div>
 
-h1 {
-    font-weight: 700;
-    font-size: 32px;
-}
+                <div class="grid grid-cols-5 gap-4">
+                    <div class="bg-blue-600 text-white p-4 rounded-lg shadow"><p class="text-xs font-bold">Total Jadwal</p><p class="text-2xl font-bold">5</p></div>
+                    <div class="bg-blue-500 text-white p-4 rounded-lg shadow opacity-90"><p class="text-xs font-bold">Semua</p><p class="text-2xl font-bold">2</p></div>
+                    <div class="bg-blue-500 text-white p-4 rounded-lg shadow opacity-90"><p class="text-xs font-bold">Menunggu</p><p class="text-2xl font-bold">1</p></div>
+                    <div class="bg-blue-500 text-white p-4 rounded-lg shadow opacity-90"><p class="text-xs font-bold">Proses</p><p class="text-2xl font-bold">1</p></div>
+                    <div class="bg-blue-500 text-white p-4 rounded-lg shadow opacity-90"><p class="text-xs font-bold">Selesai</p><p class="text-2xl font-bold">1</p></div>
+                </div>
 
-/* ===================== BUTTONS ===================== */
-.add-btn {
-    padding: 10px 18px;
-    background: #4b7bec;
-    color: white;
-    font-weight: 600;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
+                <div class="bg-white border border-gray-400 p-6 rounded shadow-sm">
+                    <div class="grid grid-cols-2 font-bold border-b-2 border-gray-100 pb-3 mb-4 px-4">
+                        <span>Menu Dipesan</span> 
+                        <span class="text-right pr-10">Status</span>
+                    </div>
+                    <div id="jadwal-list" class="space-y-4 px-4 text-lg">
+                        </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
-.add-btn:hover {
-    background: #3867d6;
-    transform: translateY(-2px);
-}
-
-.filter-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-top: 15px;
-}
-
-.filter-btn {
-    padding: 10px 22px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    background: #e0e0e0;
-    transition: all 0.3s;
-}
-
-.filter-btn:hover {
-    background: #d0d0d0;
-}
-
-.filter-active {
-    background: #4b7bec !important;
-    color: white !important;
-}
-
-/* ===================== MONTH SELECTOR ===================== */
-.month-selector {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    font-size: 20px;
-    margin-bottom: 20px;
-}
-
-.month-btn {
-    cursor: pointer;
-    font-size: 22px;
-    user-select: none;
-    transition: 0.3s;
-}
-
-.month-btn:hover {
-    color: #3867d6;
-}
-
-/* ===================== SUMMARY BOX ===================== */
-.summary-container {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 25px;
-    justify-content: center;
-}
-
-.summary-box {
-    background: linear-gradient(135deg,#4b7bec,#3867d6);
-    color: white;
-    padding: 18px 25px;
-    border-radius: 12px;
-    width: 140px;
-    text-align: center;
-    font-weight: 600;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
-}
-
-.summary-box:hover {
-    transform: translateY(-3px);
-}
-
-.summary-box div:first-child {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-/* ===================== TABLE ===================== */
-.table-box {
-    width: 100%;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-}
-
-.sidebar-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.sidebar-table th, .sidebar-table td {
-    padding: 14px;
-    text-align: left;
-    font-size: 16px;
-}
-
-.sidebar-table th {
-    background: #f7f7f7;
-    font-weight: 600;
-}
-
-.sidebar-table tr:hover {
-    background: #f0f4ff;
-    transition: background 0.3s;
-}
-
-/* ===================== STATUS BADGE ===================== */
-.status-box {
-    padding: 6px 12px;
-    border-radius: 14px;
-    text-align: center;
-    font-weight: 600;
-    display: inline-block;
-    width: 100px;
-    transition: all 0.3s;
-}
-
-.status-pending { background: #ffe29c; }
-.status-proses { background: #9ac1ff; }
-.status-selesai { background: #8ef08e; }
-
-/* ===================== POPUP ===================== */
-#popupOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-#popupBox {
-    width: 60%;
-    background: white;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 6px 25px rgba(0,0,0,0.2);
-}
-
-.input-box {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #cfcfcf;
-    margin-bottom: 15px;
-    transition: all 0.3s;
-}
-
-.input-box:focus {
-    border-color: #4b7bec;
-    box-shadow: 0 0 8px rgba(75,123,236,0.3);
-    outline: none;
-}
-
-.form-row {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.form-col {
-    flex: 1;
-}
-
-.btn-green {
-    background: #63f285;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.btn-green:hover {
-    background: #4bd66e;
-}
-
-.btn-red {
-    padding: 12px 25px;
-    background: white;
-    border: 1px solid black;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.btn-red:hover {
-    background: #f0f0f0;
-}
-</style>
-
-<div class="container-full">
-
-   
-
-    <!-- MONTH SELECTOR -->
-    <div style="border:1px solid #ccc; padding:25px; border-radius:12px; margin-bottom:25px; background:white;">
-        <div class="month-selector">
-            <span class="month-btn" onclick="changeMonth(-1)">←</span>
-            <strong id="monthLabel">November 2025</strong>
-            <span class="month-btn" onclick="changeMonth(1)">→</span>
-        </div>
-
-        <!-- FILTER BUTTONS -->
-        <div class="filter-container">
-            <button class="filter-btn filter-active" onclick="setFilter('Semua', this)">Semua</button>
-            <button class="filter-btn" onclick="setFilter('Menunggu', this)">Menunggu</button>
-            <button class="filter-btn" onclick="setFilter('Proses', this)">Dalam Proses</button>
-            <button class="filter-btn" onclick="setFilter('Selesai', this)">Selesai</button>
+    <div id="modal-jadwal" class="fixed inset-0 modal-overlay hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl overflow-hidden border border-gray-300">
+            <div class="p-8 space-y-5">
+                <div class="grid grid-cols-2 gap-6">
+                    <div><label class="block text-sm font-bold mb-1">Menu *</label><input type="text" placeholder="Nama menu" class="w-full border border-gray-400 p-3 rounded"></div>
+                    <div><label class="block text-sm font-bold mb-1">Jumlah Porsi *</label><input type="number" value="0" class="w-full border border-gray-400 p-3 rounded font-bold"></div>
+                </div>
+                <p class="font-bold text-sm text-gray-700">Informasi Pesanan</p>
+                <div class="grid grid-cols-2 gap-6">
+                    <div><label class="block text-xs text-gray-500">No. Pesanan</label><input type="text" placeholder="ORD-XXXX" class="w-full border border-gray-400 p-3 rounded text-sm"></div>
+                    <div><label class="block text-xs text-gray-500">Nama Customer</label><input type="text" placeholder="Nama Pemesan" class="w-full border border-gray-400 p-3 rounded text-sm"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div><label class="block text-sm font-bold mb-1">Tim Produksi</label><input type="text" value="Tim A" class="w-full border border-gray-400 p-3 rounded"></div>
+                    <div><label class="block text-sm font-bold mb-1">Penanggung Jawab</label><select class="w-full border border-gray-400 p-3 rounded bg-white"><option>Pilih Chef</option></select></div>
+                </div>
+                <div><label class="block text-sm font-bold mb-1">Status</label><input type="text" value="Panding" class="w-full border border-gray-400 p-3 rounded"></div>
+                <div><label class="block text-sm font-bold mb-1">Catatan</label><textarea placeholder="Catatan Khusus untuk produksi" class="w-full border border-gray-400 p-3 rounded h-24"></textarea></div>
+                <div class="flex space-x-6 pt-4">
+                    <button class="flex-1 bg-[#94e9a9] py-3 rounded font-bold border border-green-600 hover:bg-green-400 transition">Simpan</button>
+                    <button onclick="toggleModal(false)" class="flex-1 bg-white border border-gray-400 py-3 rounded font-bold hover:bg-gray-100 transition">Batal</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- SUMMARY -->
-<div class="summary-container" style="display:flex; gap:15px; margin-bottom:30px;">
-    <div class="summary-box" style="flex:1; background:#e74c3c;">
-        <div id="sumTotal">5</div>
-        <div>Total Jadwal</div>
-    </div>
-    <div class="summary-box" style="flex:1; background:#3498db;">
-        <div id="sumSemua">5</div>
-        <div>Semua</div>
-    </div>
-    <div class="summary-box" style="flex:1; background:#f1c40f; color:#333;">
-        <div id="sumMenunggu">1</div>
-        <div>Menunggu</div>
-    </div>
-    <div class="summary-box" style="flex:1; background:#9b59b6;">
-        <div id="sumProses">1</div>
-        <div>Proses</div>
-    </div>
-    <div class="summary-box" style="flex:1; background:#2ecc71;">
-        <div id="sumSelesai">2</div>
-        <div>Selesai</div>
-    </div>
-</div>
+    <script>
+        // Data Jadwal Berdasarkan Filter
+        const dataJadwal = {
+            semua: [
+                { menu: "Sayur Sop", status: "Semua" },
+                { menu: "Sate Ayam", status: "Semua" }
+            ],
+            menunggu: [
+                { menu: "Nasi Ayam Goreng", status: "Menunggu" }
+            ],
+            proses: [
+                { menu: "Nasi Pecel", status: "Proses" }
+            ],
+            selesai: [
+                { menu: "Soto Ayam", status: "Selesai" }
+            ]
+        };
 
+        function filterJadwal(filter) {
+            const listContainer = document.getElementById('jadwal-list');
+            const buttons = ['btn-semua', 'btn-menunggu', 'btn-proses', 'btn-selesai'];
+            
+            // Reset Button Styles
+            buttons.forEach(btnId => {
+                const btn = document.getElementById(btnId);
+                btn.className = (btnId === 'btn-' + filter) ? 'px-8 py-2 tab-active rounded shadow' : 'px-8 py-2 tab-inactive rounded shadow';
+            });
 
-    <!-- TABLE -->
-    <div class="table-box">
-        <table class="sidebar-table">
-            <thead>
-                <tr style="background:#f0f0f0;">
-                    <th>Menu Dipesan</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
-        </table>
-    </div>
-
-</div>
-
-<!-- POPUP -->
-<div id="popupOverlay">
-    <div id="popupBox">
-        <h2 style="text-align:center; margin-bottom:20px; font-weight:600;">Tambah Jadwal Produksi</h2>
-
-        <form>
-            <div class="form-row">
-                <div class="form-col">
-                    <label>Menu *</label>
-                    <input type="text" class="input-box" placeholder="Nama menu">
+            // Update List Content
+            const items = dataJadwal[filter];
+            listContainer.innerHTML = items.map(item => `
+                <div class="grid grid-cols-2 items-center py-1">
+                    <span>${item.menu}</span> 
+                    <span class="text-right pr-10">${item.status}</span>
                 </div>
-                <div class="form-col">
-                    <label>Jumlah Porsi *</label>
-                    <input type="number" class="input-box" value="0">
-                </div>
-            </div>
+            `).join('');
+        }
 
-            <div class="form-row">
-                <div class="form-col">
-                    <label>No.Pesanan</label>
-                    <input type="text" class="input-box" placeholder="ORD-XXXX">
-                </div>
-                <div class="form-col">
-                    <label>Nama Customer</label>
-                    <input type="text" class="input-box" placeholder="Nama pemesan">
-                </div>
-            </div>
+        function toggleModal(show) {
+            const modal = document.getElementById('modal-jadwal');
+            modal.classList.toggle('hidden', !show);
+        }
 
-            <div class="form-row">
-                <div class="form-col">
-                    <label>Tim Produksi</label>
-                    <input type="text" class="input-box" placeholder="Tim A">
-                </div>
-                <div class="form-col">
-                    <label>Penanggung Jawab</label>
-                    <input type="text" class="input-box" placeholder="Chef">
-                </div>
-            </div>
-
-            <label>Status</label>
-            <input type="text" class="input-box" placeholder="Pending">
-
-            <label>Catatan</label>
-            <textarea class="input-box" rows="3"></textarea>
-
-            <div style="display:flex; justify-content:space-between; margin-top:20px;">
-                <button type="button" class="btn-red" onclick="closePopup()">Batal</button>
-                <button type="submit" class="btn-green">Simpan</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<script>
-    // ==== SAMPLE DATA ====
-    const data = [
-        { menu: "Soto Ayam", status: "Selesai" },
-        { menu: "Nasi Ayam Goreng", status: "Menunggu" },
-        { menu: "Nasi Pecel", status: "Selesai" },
-        { menu: "Sayur Sop", status: "Proses" },
-        { menu: "Sate Ayam", status: "Proses" }
-    ];
-
-    let currentFilter = "Semua";
-    const monthNames = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-    let currentMonth = 10;
-    let currentYear = 2025;
-
-    renderTable();
-    updateSummary();
-
-    function changeMonth(step) {
-        currentMonth += step;
-        if(currentMonth < 0){ currentMonth = 11; currentYear--; }
-        if(currentMonth > 11){ currentMonth = 0; currentYear++; }
-        document.getElementById("monthLabel").innerText = monthNames[currentMonth] + " " + currentYear;
-    }
-
-    function setFilter(filter, btn) {
-        currentFilter = filter;
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('filter-active'));
-        btn.classList.add('filter-active');
-        renderTable();
-        updateSummary();
-    }
-
-    function renderTable() {
-        const body = document.getElementById("tableBody");
-        body.innerHTML = "";
-        const filtered = data.filter(d => currentFilter === "Semua" || d.status === currentFilter);
-        filtered.forEach(d => {
-            let statusClass = d.status === "Menunggu" ? "status-pending" : d.status === "Proses" ? "status-proses" : "status-selesai";
-            body.innerHTML += `<tr>
-                <td>${d.menu}</td>
-                <td><span class="status-box ${statusClass}">${d.status}</span></td>
-            </tr>`;
-        });
-    }
-
-    function updateSummary() {
-        document.getElementById("sumTotal").innerText = data.length;
-        document.getElementById("sumSemua").innerText = data.length;
-        document.getElementById("sumMenunggu").innerText = data.filter(d => d.status === "Menunggu").length;
-        document.getElementById("sumProses").innerText = data.filter(d => d.status === "Proses").length;
-        document.getElementById("sumSelesai").innerText = data.filter(d => d.status === "Selesai").length;
-    }
-
-    function openPopup() { document.getElementById("popupOverlay").style.display = "flex"; }
-    function closePopup() { document.getElementById("popupOverlay").style.display = "none"; }
-</script>
-
-@endsection
+        // Jalankan filter 'semua' sebagai tampilan default
+        window.onload = () => filterJadwal('semua');
+    </script>
+</body>
+</html>
