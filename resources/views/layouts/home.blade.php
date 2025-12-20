@@ -431,14 +431,8 @@
                 dan terjamin dengan cita rasa terbaik untuk setiap momen Anda.
             </p>
             <div class="social-icons mt-3">
-                <a href="https://wa.me/6281234567890" target="_blank" title="WhatsApp">
+                <a href="https://wa.me/+6285727120836" target="_blank" title="WhatsApp">
                     <img src="{{ asset('icons/wa.png') }}" alt="WhatsApp">
-                </a>
-                <a href="https://www.instagram.com/terasburini" target="_blank" title="Instagram">
-                    <img src="{{ asset('icons/ig.png') }}" alt="Instagram">
-                </a>
-                <a href="https://www.facebook.com/terasburini" target="_blank" title="Facebook">
-                    <img src="{{ asset('icons/fb.png') }}" alt="Facebook">
                 </a>
             </div>
         </div>
@@ -447,7 +441,7 @@
             <h4 class="fw-bold">Lokasi</h4>
             <p>📍 Garongan Kembang RT 02 RW 18, Wonokerto, Turi, Sleman 55551</p>
             <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.583459911582!2d110.378!3d-7.678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwNDAnNDIuOCJTIDExMMKwMjInNDEuOCJF!5e0!3m2!1sen!2sid!4v1630000000000"
+                src="https://maps.app.goo.gl/qjhLBcUozy9fDnH38?g_st=ic"
                 width="100%" height="230" style="border:0; border-radius:10px;" allowfullscreen=""
                 loading="lazy"></iframe>
         </div>
