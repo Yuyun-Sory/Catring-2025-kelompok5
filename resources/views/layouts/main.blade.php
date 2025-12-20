@@ -9,23 +9,21 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<<<<<<< HEAD
+
     <!-- Midtrans -->
-=======
+
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
     <!-- MIDTRANS SNAP -->
->>>>>>> d94be1977e9e5c79daf138011580d54182683263
+
     <script src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key="{{ config('services.midtrans.client_key') }}"></script>
 
     <style>
-<<<<<<< HEAD
         body { font-family: Poppins, sans-serif; }
-=======
         body { font-family: 'Poppins', sans-serif; background: #fff; }
->>>>>>> d94be1977e9e5c79daf138011580d54182683263
+
 
         /* HEADER */
         .header-top {
@@ -139,15 +137,13 @@
             padding: 10px 15px;
         }
 
-<<<<<<< HEAD
         .order-form {
             background: #f8f9fa;
             padding: 10px;
             border-radius: 10px;
         }
-=======
         .pay-btn { margin-top: 8px; }
->>>>>>> d94be1977e9e5c79daf138011580d54182683263
+
     </style>
 </head>
 
@@ -262,7 +258,6 @@ function sendChat() {
             addBotMessage(data.reply.replace(/\n/g,"<br>"));
         }
 
-<<<<<<< HEAD
         if (data.show_form) {
             orderForm.style.display = "block";
             document.getElementById("menu_id").innerHTML = "";
@@ -272,12 +267,12 @@ function sendChat() {
                 </option>`;
             });
         }
-=======
+
         const typing = document.createElement("div");
         typing.className = "bot-message";
         typing.innerText = "Sedang mengetik...";
         chatBody.appendChild(typing);
->>>>>>> d94be1977e9e5c79daf138011580d54182683263
+
 
         if (data.snap_token) {
             addBotMessage(`

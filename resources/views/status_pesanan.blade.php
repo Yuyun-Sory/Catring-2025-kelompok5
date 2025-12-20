@@ -219,10 +219,7 @@ input[type="text"]:focus {
     </div>
     <p style="font-weight:bold;">Soto Ayam Special</p>
     <p>Budi Santoso<br><span style="opacity:0.7;">0812-3469-7850</span></p>
-    <div style="margin-top:12px; display:flex; gap:10px;">
-        <button class="update-btn btn-proses" onclick="updateStatus(this,'diproses')">Proses</button>
-        <button class="update-btn btn-batalkan" onclick="updateStatus(this,'batal')">Batalkan</button>
-    </div>
+
 </div>
 
 <div class="card-order card-item diproses">
