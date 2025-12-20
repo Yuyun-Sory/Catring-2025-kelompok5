@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,25 +9,25 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- MIDTRANS SNAP (HANYA SATU KALI) -->
+    <!-- Midtrans -->
     <script src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key="{{ config('services.midtrans.client_key') }}"></script>
 
     <style>
-        body { font-family: 'Poppins', sans-serif; }
+        body { font-family: Poppins, sans-serif; }
 
         .floating-chatbot {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 90px;
+            width: 80px;
             cursor: pointer;
             z-index: 9999;
         }
 
         .chatbot-popup {
             position: fixed;
-            bottom: 130px;
+            bottom: 120px;
             right: 30px;
             width: 380px;
             height: 520px;
@@ -89,11 +88,12 @@
             background: #9ef7a1;
             border: none;
             padding: 10px 15px;
-            cursor: pointer;
         }
 
-        .pay-btn {
-            margin-top: 8px;
+        .order-form {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -112,96 +112,188 @@
 
     <div class="chatbot-body" id="chatBody">
         <div class="bot-message">
-            Halo! Ada yang bisa saya bantu? 😊<br>
+            Halo 👋<br>
+            Saya bisa membantu:<br>
             • Menu<br>
-            • Cara pesan<br>
-            • Lokasi
+            • Cara Pesan<br>
+            • Pesan<br>
+            • Lokasi <br>
+
         </div>
     </div>
 
+    <!-- FORM PEMESANAN -->
+    <div id="orderForm" class="order-form m-2" style="display:none">
+        <select id="menu_id" class="form-control mb-2"></select>
+        <input id="jumlah" class="form-control mb-2" placeholder="Jumlah porsi">
+        <input id="nama" class="form-control mb-2" placeholder="Nama pemesan">
+        <input id="telepon" class="form-control mb-2" placeholder="No HP">
+        <textarea id="alamat" class="form-control mb-2" placeholder="Alamat lengkap"></textarea>
+
+        <button class="btn btn-success w-100" onclick="submitOrder()">
+            Kirim Pesanan
+        </button>
+    </div>
+
     <div class="chatbot-input">
-        <input type="text" id="chatInput" placeholder="Ketik pesan..."
+        <input id="chatInput" placeholder="Ketik pesan..."
             onkeydown="if(event.key==='Enter') sendChat()">
         <button onclick="sendChat()">Kirim</button>
     </div>
 </div>
 
 <script>
-    const popup = document.getElementById("chatbotPopup");
-    const chatBody = document.getElementById("chatBody");
+const chatBody = document.getElementById("chatBody");
+const popup = document.getElementById("chatbotPopup");
+const orderForm = document.getElementById("orderForm");
 
-    function toggleChatbot() {
-        popup.style.display = popup.style.display === "flex" ? "none" : "flex";
-    }
+function toggleChatbot() {
+    popup.style.display = popup.style.display === "flex" ? "none" : "flex";
+}
 
-    function escapeHtml(text) {
-        const div = document.createElement("div");
-        div.textContent = text;
-        return div.innerHTML;
-    }
+function addUserMessage(msg) {
+    chatBody.innerHTML += `<div class="user-message">${msg}</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
 
-    function addUserMessage(msg) {
-        chatBody.innerHTML += `<div class="user-message">${escapeHtml(msg)}</div>`;
-        chatBody.scrollTop = chatBody.scrollHeight;
-    }
+function addBotMessage(html) {
+    chatBody.innerHTML += `<div class="bot-message">${html}</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
 
-    function addBotMessage(html) {
-        chatBody.innerHTML += `<div class="bot-message">${html}</div>`;
-        chatBody.scrollTop = chatBody.scrollHeight;
-    }
+function sendChat() {
+    const input = document.getElementById("chatInput");
+    const message = input.value.trim();
+    if (!message) return;
 
-    function payNow(token) {
-        snap.pay(token, {
-            onSuccess: () => addBotMessage("✅ Pembayaran berhasil. Terima kasih 🙏"),
-            onPending: () => addBotMessage("⏳ Menunggu pembayaran..."),
-            onError: () => addBotMessage("❌ Pembayaran gagal."),
-            onClose: () => addBotMessage("⚠️ Pembayaran ditutup.")
-        });
-    }
+    addUserMessage(message);
+    input.value = "";
 
-    function sendChat() {
-        const input = document.getElementById("chatInput");
-        const message = input.value.trim();
-        if (!message) return;
+    fetch("/chatbot/send", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ message })
+    })
+    .then(res => res.json())
+    .then(data => {
 
-        addUserMessage(message);
-        input.value = "";
+        if (data.reply) {
+            addBotMessage(data.reply.replace(/\n/g,"<br>"));
+        }
 
-        let typing = document.createElement("div");
-        typing.className = "bot-message";
-        typing.innerText = "Sedang mengetik...";
-        chatBody.appendChild(typing);
+        if (data.show_form) {
+            orderForm.style.display = "block";
+            document.getElementById("menu_id").innerHTML = "";
+            data.menus.forEach(m => {
+                menu_id.innerHTML += `<option value="${m.id}">
+                    ${m.nama_menu} - Rp${m.harga}
+                </option>`;
+            });
+        }
 
-        fetch("/chatbot/send", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({ message })
+        if (data.snap_token) {
+            addBotMessage(`
+                <button class="btn btn-success mt-2"
+                    onclick="payNow('${data.snap_token}')">
+                    💳 Bayar Sekarang
+                </button>
+            `);
+        }
+    });
+}
+
+function submitOrder() {
+    fetch("/chatbot/send", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+            form_order: true,
+            menu_id: menu_id.value,
+            jumlah: jumlah.value,
+            nama: nama.value,
+            telepon: telepon.value,
+            alamat: alamat.value
         })
-        .then(res => res.json())
-        .then(data => {
-            typing.remove();
+    })
+    .then(res => res.json())
+    .then(data => {
+    orderForm.style.display = "none";
 
-            if (data.reply) {
-                addBotMessage(escapeHtml(data.reply).replace(/\n/g, "<br>"));
-            }
+    // Pesan sukses
+    addBotMessage(data.reply);
 
-            if (data.snap_token) {
-                addBotMessage(`
-                    <button class="btn btn-success pay-btn"
-                        onclick="payNow('${data.snap_token}')">
-                        💳 Bayar Sekarang
-                    </button>
-                `);
-            }
-        })
-        .catch(() => {
-            typing.remove();
-            addBotMessage("⚠️ Tidak dapat terhubung ke server.");
-        });
+    // 🔥 TAMPILKAN DETAIL PESANAN
+    if (data.order_detail) {
+        addBotMessage(`
+            <div class="order-detail mt-2 p-2" style="background:#f8f9fa;border-radius:8px">
+                <strong>🧾 Detail Pesanan</strong><br>
+                No Order: <b>${data.order_detail.no_order}</b><br>
+                Nama: ${data.order_detail.nama}<br>
+                Menu: ${data.order_detail.menu}<br>
+                Jumlah: ${data.order_detail.jumlah}<br>
+                Harga: Rp${data.order_detail.harga_satuan.toLocaleString()}<br>
+                <hr style="margin:6px 0">
+                <b>Total: Rp${data.order_detail.total_harga.toLocaleString()}</b><br>
+                Alamat: ${data.order_detail.alamat}
+            </div>
+        `);
     }
+
+    // Tombol bayar SETELAH detail
+    if (data.snap_token) {
+        addBotMessage(`
+            <button class="btn btn-success mt-2 w-100"
+                onclick="payNow('${data.snap_token}')">
+                💳 Bayar Sekarang
+            </button>
+        `);
+    }
+});
+
+}
+
+function payNow(token) {
+    snap.pay(token, {
+        onSuccess: function () {
+            addBotMessage(`
+                Terima kasih 🙏<br>
+                Silakan beri rating:<br><br>
+                <span onclick="sendRating(1)" style="cursor:pointer">⭐</span>
+                <span onclick="sendRating(2)" style="cursor:pointer">⭐</span>
+                <span onclick="sendRating(3)" style="cursor:pointer">⭐</span>
+                <span onclick="sendRating(4)" style="cursor:pointer">⭐</span>
+                <span onclick="sendRating(5)" style="cursor:pointer">⭐</span>
+            `);
+
+            fetch("/chatbot/review", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                }
+            });
+        }
+    });
+}
+
+function sendRating(star) {
+    addUserMessage(star.toString());
+    fetch("/chatbot/send", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ message: star.toString() })
+    })
+    .then(res => res.json())
+    .then(data => addBotMessage(data.reply));
+}
 </script>
 
 </body>

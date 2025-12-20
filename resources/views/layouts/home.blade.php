@@ -3,7 +3,6 @@
 
 @section('content')
 <style>
- 
 /* === HERO SECTION === */
 .hero-section {
     position: relative;
@@ -13,8 +12,6 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    margin-top: 40px;
-    z-index: 1;
 }
 
 /* === BACKGROUND === */
@@ -155,17 +152,15 @@
         2px 2px 0 rgba(0,0,0,0.45),
         4px 4px 12px rgba(0,0,0,0.55),
         0 0 18px rgba(0,0,0,0.8);
-} 
+}
 
 
 
 .welcome-banner {
-   position: relative;     /* WAJIB */
-    z-index: 999;           /* ANTI KETUTUP */
-    background-color: #f2f2f2;
+            background-color: #f2f2f2;
     text-align: center;
     padding: 60px 20px;
-    margin: 0 0 40px 0;
+    margin: 0;
 }
 
 /* === HURUF WELCOME BANNER (GAYA PREMIUM + GLOW) === */
@@ -190,7 +185,7 @@
     text-shadow:
         1px 1px 0 rgba(255,255,255,0.8),
         2px 2px 5px rgba(0,0,0,0.25);
-
+=======
     background-color: #f2f2f2;
     text-align: center;
     padding: 60px 20px;
@@ -242,6 +237,27 @@
         color: #333;
         line-height: 1.7;
     }
+
+
+    .ulasan-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    height: 100%;
+}
+
+.ulasan-card strong {
+    color: #2f7f3a;
+    font-size: 15px;
+}
+
+.ulasan-card p {
+    font-size: 14px;
+    margin: 8px 0 0;
+    color: #444;
+}
+
 
 
 /* RESPONSIVE */
@@ -389,6 +405,20 @@
     </div>
 </section>
 
+<!-- ====== ULASAN PELANGGAN ====== -->
+<section class="py-5" style="background-color:#f9f9f9">
+    <div class="container">
+        <h2 style="font-family:'Poppins',sans-serif;font-weight:700;font-size:30px;color:#000;margin-bottom:30px">
+            Ulasan Pelanggan
+        </h2>
+
+        <div id="ulasanList" class="row g-3">
+            <!-- Ulasan muncul otomatis di sini -->
+        </div>
+    </div>
+</section>
+
+
 <!-- === BAGIAN LOKASI & FOOTER === -->
 <section class="location-section">
     <div class="location-content">
@@ -422,4 +452,50 @@
                 loading="lazy"></iframe>
         </div>
 </div>
+
+<script>
+function renderStars(rating) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        stars += i <= rating ? '⭐' : '☆';
+    }
+    return stars;
+}
+
+function loadUlasan() {
+    fetch('/ulasan/list')
+        .then(res => res.json())
+        .then(data => {
+            let html = '';
+
+            if (data.length === 0) {
+                html = '<p>Belum ada ulasan pelanggan.</p>';
+            } else {
+                data.forEach(u => {
+                    html += `
+                        <div class="col-md-4">
+                            <div class="p-3 bg-white shadow-sm rounded">
+                                <strong>${u.nama_pelanggan}</strong><br>
+                                <div style="color:#f5b301;font-size:18px">
+                                    ${renderStars(u.rating)}
+                                </div>
+                                <p class="mt-2">"${u.komentar}"</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            document.getElementById('ulasanList').innerHTML = html;
+        });
+}
+
+// load pertama
+loadUlasan();
+
+// auto refresh
+setInterval(loadUlasan, 5000);
+</script>
+
+
 @endsection

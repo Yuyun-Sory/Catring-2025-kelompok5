@@ -12,6 +12,7 @@ use App\Http\Controllers\PesananController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TotalPesananController;
 use App\Http\Controllers\ChatAiController;
+use App\Models\Ulasan;
 
 
 // Halaman utama
@@ -64,6 +65,13 @@ Route::get('/pemesanan-masuk', function () {
 Route::get('/status_pesanan', function () {
     return view('status_pesanan');
 })->name('status.pesanan');
+
+Route::post('/chatbot/review', [ChatAIController::class, 'setReview']);
+
+
+Route::get('/ulasan/list', function () {
+    return Ulasan::latest()->take(6)->get();
+});
 
 
 
