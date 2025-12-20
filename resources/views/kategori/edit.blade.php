@@ -163,6 +163,9 @@
             <label for="edit-harga">Harga (Angka saja)</label>
             <input type="number" id="edit-harga" name="harga" required>
 
+            <label for="edit-nama">Deskripsi</label>
+            <input type="text" id="edit-deskripsi" name="deskripsi" required>
+
             <label for="edit-kategori">Kategori</label>
             {{-- Value akan diatur oleh JavaScript --}}
             <select id="edit-kategori" name="kategori" required>

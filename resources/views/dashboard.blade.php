@@ -95,7 +95,7 @@
     </a>
 
     <!-- Pesanan Card -->
-    <a class="card-link" href="{{ route('pesanan.index') }}">
+    <a class="card-link" href="{{ route('pesanan.baru') }}">
         <div class="card orange">
             <div class="icon">🛒</div>
             <div class="title">Pesanan Baru</div>

@@ -1,135 +1,130 @@
 @extends('layouts.app')
-@section('title', 'Daftar Admin')
-
-@push('styles')
-<style>
-    .admin-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 25px;
-    }
-    .admin-table th, .admin-table td {
-        border: 1px solid #d6d6d6;
-        padding: 8px;
-        text-align: center;
-    }
-    .admin-table th {
-        background: #f4f4f4;
-        font-weight: bold;
-    }
-    .btn-edit {
-        background: #4cd964;
-        color: white;
-        padding: 4px 12px;
-        border-radius: 5px;
-        border: none;
-        text-decoration: none;
-    }
-    .btn-delete {
-        background: #ff3b30;
-        color: white;
-        padding: 4px 12px;
-        border-radius: 5px;
-        border: none;
-    }
-</style>
-@endpush
 
 @section('content')
-<div class="content-wrapper p-4">
-    
-    <h4><b>Daftar Admin</b></h4>
+<div class="d-flex justify-content-center mt-4">
+    <div class="card shadow" style="width:90%; max-width:1200px;">
+        <div class="card-body">
 
-    {{-- FORM TAMBAH ADMIN --}}
-    <form action="{{ route('admin.akun.store') }}" method="POST" class="mb-4">
-        @csrf
-
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label>Nama Admin</label>
-                <input type="text" name="name" class="form-control" required>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0"><b>Daftar Admin</b></h4>
+                <a href="{{ route('admin.akun.tambah') }}" class="btn btn-success">
+                    + Tambah Admin
+                </a>
             </div>
 
-            <div class="col-md-4">
-                <label>Email</label>
-                <input type="email" name="email" class="form-control" required>
-            </div>
+            @if(session('success'))
+                <div class="alert alert-success text-center">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-            <div class="col-md-4">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" required>
-            </div>
+            <table class="table table-bordered text-center align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Telepon</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th width="160">Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                @foreach($users as $i => $user)
+                    <tr>
+                        <td>{{ $i + 1 }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->phone }}</td>
+                        <td>{{ $user->role }}</td>
+                        <td>
+                            <span class="badge bg-success">{{ $user->status }}</span>
+                        </td>
+                        <td>
+                            <a href="{{ route('admin.akun.edit', $user->id) }}"
+                               class="btn btn-sm btn-primary">
+                                Edit
+                            </a>
+
+                            <button class="btn btn-sm btn-danger"
+                                onclick="bukaModal({{ $user->id }})">
+                                Hapus
+                            </button>
+
+                            <form id="hapus-{{ $user->id }}"
+                                  action="{{ route('admin.akun.delete', $user->id) }}"
+                                  method="POST" class="d-none">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+
         </div>
-
-        <div class="row mb-3">
-
-            <div class="col-md-4">
-                <label>Role</label>
-                <select name="role" class="form-select" required>
-                    <option value="Admin">Admin</option>
-                    <option value="Karyawan">Karyawan</option>
-                </select>
-            </div>
-
-            <div class="col-md-4">
-                <label>Telepon</label>
-                <input type="text" name="phone" class="form-control" placeholder="08xxxxxxxx" required>
-            </div>
-
-        </div>
-
-        <button class="btn btn-success px-4">Simpan</button>
-    </form>
-
-    {{-- TABEL DATA ADMIN --}}
-    <table class="admin-table">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Telepon</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach($users as $index => $user)
-            <tr>
-                <td>{{ $index + 1 }}.</td>
-                <td>{{ $user->name }}</td>
-                <td>{{ $user->email }}</td>
-                <td>{{ $user->phone }}</td>
-                <td>{{ $user->role }}</td>
-                <td>{{ $user->status ?? 'Aktif' }}</td>
-
-                <td>
-
-                    {{-- TOMBOL EDIT --}}
-                    <a href="{{ route('admin.akun.edit', $user->id) }}" class="btn-edit">
-                        Edit
-                    </a>
-
-                    {{-- TOMBOL HAPUS --}}
-                    <form action="{{ route('admin.akun.delete', $user->id) }}" 
-                          method="POST" 
-                          style="display:inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-delete"
-                                onclick="return confirm('Yakin mau hapus akun ini?')">
-                            Hapus
-                        </button>
-                    </form>
-
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-
-    </table>
-
+    </div>
 </div>
+
+{{-- MODAL KONFIRMASI HAPUS --}}
+<div id="modalHapus" class="modal-custom">
+    <div class="modal-box">
+        <h5 class="mb-3">Konfirmasi</h5>
+        <p>Apakah Anda yakin menghapus akun admin ini?</p>
+
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <button id="btnYa" class="btn btn-danger px-4">
+                Ya
+            </button>
+            <button onclick="tutupModal()" class="btn btn-success px-4">
+                Tidak
+            </button>
+        </div>
+    </div>
+</div>
+
+{{-- STYLE MODAL --}}
+<style>
+.modal-custom {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-box {
+    background: white;
+    padding: 25px 30px;
+    border-radius: 10px;
+    width: 350px;
+    text-align: center;
+}
+</style>
+
+{{-- SCRIPT --}}
+<script>
+let idHapus = null;
+
+function bukaModal(id) {
+    idHapus = id;
+    document.getElementById('modalHapus').style.display = 'flex';
+}
+
+function tutupModal() {
+    document.getElementById('modalHapus').style.display = 'none';
+    idHapus = null;
+}
+
+document.getElementById('btnYa').addEventListener('click', function () {
+    if (idHapus) {
+        document.getElementById('hapus-' + idHapus).submit();
+    }
+});
+</script>
 @endsection

@@ -25,6 +25,7 @@ class KategoriController extends Controller
         $request->validate([
             'nama_menu' => 'required|string',
             'harga' => 'required|numeric',
+            'deskripsi' => 'required|string',
             'kategori' => 'required|string',
             'foto' => 'required|image|mimes:png,jpg,jpeg|max:2048',
         ]);
@@ -34,6 +35,7 @@ class KategoriController extends Controller
         Kategori::create([
             'nama_menu' => $request->nama_menu,
             'harga' => $request->harga,
+            'deskripsi' => $request->deskripsi,
             'kategori' => $request->kategori,
             'foto' => $file,
         ]);
@@ -49,6 +51,7 @@ class KategoriController extends Controller
         $request->validate([
             'nama_menu' => 'required|string',
             'harga' => 'required|numeric',
+            'deskripsi' => 'required|string',
             'kategori' => 'required|string',
             'foto' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
         ]);
@@ -63,6 +66,7 @@ class KategoriController extends Controller
         $menu->update([
             'nama_menu' => $request->nama_menu,
             'harga' => $request->harga,
+            'deskripsi' => $request->deskripsi,
             'kategori' => $request->kategori,
             'foto' => $file,
         ]);

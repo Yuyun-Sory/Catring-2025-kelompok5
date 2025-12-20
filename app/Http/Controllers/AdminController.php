@@ -13,77 +13,94 @@ class AdminController extends Controller
         return view('dashboard');
     }
 
-    // Daftar Akun
+    // =====================
+    // DAFTAR ADMIN
+    // =====================
     public function daftarAkun()
     {
-        $users = Admin::all();
+        $users = Admin::orderBy('id', 'desc')->get();
         return view('daftar-akun', compact('users'));
     }
 
-    // Form Tambah Akun
+    // =====================
+    // FORM TAMBAH ADMIN
+    // =====================
     public function tambahAkun()
     {
         return view('tambah-akun');
     }
 
-    // Simpan Akun Baru
+    // =====================
+    // SIMPAN ADMIN BARU
+    // =====================
     public function storeAkun(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'phone' => 'nullable|string',
-            'role' => 'required|string',
-            'status' => 'nullable|string',
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'phone'    => 'nullable|string',
+            'role'     => 'required',
         ]);
 
         Admin::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-            'phone' => $validated['phone'] ?? null,
-            'role' => $validated['role'],
-            'status' => $validated['status'] ?? 'Aktif',
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => bcrypt($request->password),
+            'phone'    => $request->phone,
+            'role'     => $request->role,
+            'status'   => 'Aktif',
         ]);
 
-        return redirect()->route('admin.akun')->with('success', 'Akun berhasil ditambahkan!');
+        // 🔥 INI KUNCINYA
+        return redirect()
+            ->route('admin.akun')
+            ->with('success', 'Admin berhasil ditambahkan!');
     }
 
-    // Form Edit Akun
+    // =====================
+    // FORM EDIT ADMIN
+    // =====================
     public function editAkun($id)
     {
         $user = Admin::findOrFail($id);
         return view('edit-akun', compact('user'));
     }
 
-    // Update Akun
+    // =====================
+    // UPDATE ADMIN
+    // =====================
     public function updateAkun(Request $request, $id)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
+        $request->validate([
+            'name'  => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'phone' => 'nullable|string',
-            'role' => 'required|string',
-            'status' => 'nullable|string',
+            'role'  => 'required',
         ]);
 
         $user = Admin::findOrFail($id);
         $user->update([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? null,
-            'role' => $validated['role'],
-            'status' => $validated['status'] ?? $user->status,
+            'name'  => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'role'  => $request->role,
         ]);
 
-        return redirect()->route('admin.akun')->with('success', 'Akun berhasil diperbarui!');
+        return redirect()
+            ->route('admin.akun')
+            ->with('success', 'Admin berhasil diperbarui!');
     }
 
-    // Hapus Akun
+    // =====================
+    // HAPUS ADMIN
+    // =====================
     public function hapusAkun($id)
     {
         Admin::findOrFail($id)->delete();
-        return redirect()->route('admin.akun')->with('success', 'Akun berhasil dihapus!');
+
+        return redirect()
+            ->route('admin.akun')
+            ->with('success', 'Admin berhasil dihapus!');
     }
 }

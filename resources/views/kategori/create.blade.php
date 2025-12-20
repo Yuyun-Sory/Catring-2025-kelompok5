@@ -139,6 +139,9 @@
             <label for="harga">Harga (Angka saja)</label>
             <input type="number" id="harga" name="harga" placeholder="Contoh: 25000" required>
 
+            <label for="nama_menu">Deskripsi</label>
+            <input type="text" id="deskripsi" name="deskripsi" placeholder="Contoh: Nasi Goreng Spesial adalah nasi" required>
+
             <label for="kategori">Kategori</label>
             <select id="kategori" name="kategori" required>
                 <option value="" disabled selected>Pilih Kategori Menu</option>

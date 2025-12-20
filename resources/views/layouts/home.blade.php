@@ -264,6 +264,27 @@
     }
 
 
+    .ulasan-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    height: 100%;
+}
+
+.ulasan-card strong {
+    color: #2f7f3a;
+    font-size: 15px;
+}
+
+.ulasan-card p {
+    font-size: 14px;
+    margin: 8px 0 0;
+    color: #444;
+}
+
+
+
 /* RESPONSIVE */
 @media (max-width: 992px) {
     .hero-inner {
@@ -400,6 +421,20 @@
     </div>
 </section>
 
+<!-- ====== ULASAN PELANGGAN ====== -->
+<section class="py-5" style="background-color:#f9f9f9">
+    <div class="container">
+        <h2 style="font-family:'Poppins',sans-serif;font-weight:700;font-size:30px;color:#000;margin-bottom:30px">
+            Ulasan Pelanggan
+        </h2>
+
+        <div id="ulasanList" class="row g-3">
+            <!-- Ulasan muncul otomatis di sini -->
+        </div>
+    </div>
+</section>
+
+
 <!-- === BAGIAN LOKASI & FOOTER === -->
 <section class="location-section">
     <div class="location-content">
@@ -412,14 +447,8 @@
                 dan terjamin dengan cita rasa terbaik untuk setiap momen Anda.
             </p>
             <div class="social-icons mt-3">
-                <a href="https://wa.me/6281234567890" target="_blank" title="WhatsApp">
+                <a href="https://wa.me/+6285727120836" target="_blank" title="WhatsApp">
                     <img src="{{ asset('icons/wa.png') }}" alt="WhatsApp">
-                </a>
-                <a href="https://www.instagram.com/terasburini" target="_blank" title="Instagram">
-                    <img src="{{ asset('icons/ig.png') }}" alt="Instagram">
-                </a>
-                <a href="https://www.facebook.com/terasburini" target="_blank" title="Facebook">
-                    <img src="{{ asset('icons/fb.png') }}" alt="Facebook">
                 </a>
             </div>
         </div>
@@ -428,9 +457,55 @@
             <h4 class="fw-bold">Lokasi</h4>
             <p>📍 Garongan Kembang RT 02 RW 18, Wonokerto, Turi, Sleman 55551</p>
             <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.583459911582!2d110.378!3d-7.678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwNDAnNDIuOCJTIDExMMKwMjInNDEuOCJF!5e0!3m2!1sen!2sid!4v1630000000000"
+                src="https://maps.app.goo.gl/qjhLBcUozy9fDnH38?g_st=ic"
                 width="100%" height="230" style="border:0; border-radius:10px;" allowfullscreen=""
                 loading="lazy"></iframe>
         </div>
 </div>
+
+<script>
+function renderStars(rating) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        stars += i <= rating ? '⭐' : '☆';
+    }
+    return stars;
+}
+
+function loadUlasan() {
+    fetch('/ulasan/list')
+        .then(res => res.json())
+        .then(data => {
+            let html = '';
+
+            if (data.length === 0) {
+                html = '<p>Belum ada ulasan pelanggan.</p>';
+            } else {
+                data.forEach(u => {
+                    html += `
+                        <div class="col-md-4">
+                            <div class="p-3 bg-white shadow-sm rounded">
+                                <strong>${u.nama_pelanggan}</strong><br>
+                                <div style="color:#f5b301;font-size:18px">
+                                    ${renderStars(u.rating)}
+                                </div>
+                                <p class="mt-2">"${u.komentar}"</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            document.getElementById('ulasanList').innerHTML = html;
+        });
+}
+
+// load pertama
+loadUlasan();
+
+// auto refresh
+setInterval(loadUlasan, 5000);
+</script>
+
+
 @endsection

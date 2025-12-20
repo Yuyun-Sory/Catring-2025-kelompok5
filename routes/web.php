@@ -12,6 +12,8 @@ use App\Http\Controllers\PesananController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TotalPesananController;
 use App\Http\Controllers\ChatAiController;
+use App\Models\Ulasan;
+use App\Http\Controllers\LiburController;
 
 
 // Halaman utama
@@ -55,15 +57,16 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/admin/pemesanan/masuk', [MenuController::class, 'pesananMasuk'])
-     ->name('pemesanan.masuk');
-Route::get('/pemesanan-masuk', function () {
-    return view('pemesanan-masuk');
-})->name('pemesanan.masuk');
-
 Route::get('/status_pesanan', function () {
     return view('status_pesanan');
 })->name('status.pesanan');
+
+Route::post('/chatbot/review', [ChatAIController::class, 'setReview']);
+
+
+Route::get('/ulasan/list', function () {
+    return Ulasan::latest()->take(6)->get();
+});
 
 
 
@@ -86,10 +89,6 @@ Route::get('/laporan', function () {
     return view('laporan');
 })->name('laporan');
 
-// Teras Chat
-Route::get('/teras-chat', function () {
-    return view('teras-chat');
-})->name('teras.chat');
 
 // Logout (halaman logout tampilan)
 Route::get('/logout', function () {
@@ -118,9 +117,6 @@ Route::get('/pendapatan-detail', [LaporanController::class, 'pendapatanDetail'])
  // Rute Detail Profit
 Route::get('/profit-detail', [LaporanController::class, 'profitDetail'])->name('profit.detail');
 
-// CRUD Pesanan
-Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
-
 // CRUD Total Pesanan
 Route::resource('total-pesanan', App\Http\Controllers\TotalPesananController::class);
 
@@ -147,3 +143,20 @@ Route::put('/admin/akun/{id}', [AdminController::class, 'updateAkun'])->name('ad
 Route::delete('/admin/akun/{id}', [AdminController::class, 'hapusAkun'])->name('admin.akun.delete');
 
 Route::post('/chatbot/send', [ChatAiController::class, 'ask'])->name('chatbot.send');
+
+
+Route::resource('libur', LiburController::class);
+
+// PEMESANAN MASUK (SEMUA)
+Route::get('/pemesanan/masuk', [PesananController::class, 'index'])
+    ->name('pemesanan.masuk');
+
+// PESANAN BARU (FILTER STATUS = BARU)
+Route::get('/pesanan/baru', [PesananController::class, 'pesananBaru'])
+    ->name('pesanan.baru');
+
+
+Route::get('/tes-view', function () {
+    dd(view()->exists('pesanan-baru'));
+});  
+

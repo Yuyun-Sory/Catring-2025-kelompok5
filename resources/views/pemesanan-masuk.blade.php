@@ -3,240 +3,167 @@
 @section('content')
 
 <style>
-/* ===========================
-   UMUM & JUDUL
-   =========================== */
-.title-page {
-    font-size: 48px;
-    font-weight: bold;
-    font-family: Georgia, serif;
-    margin-bottom: 25px;
-    color: #222;
+/* ===================
+   TITLE
+=================== */
+.title-page{
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:16px;
 }
 
-/* ===========================
-   STATISTICS CARDS
-   =========================== */
-.stat-box {
-    padding: 25px 30px;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 20px;
-    text-align: center;
-    min-width: 150px;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    cursor: default;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* ===================
+   STAT CARD
+=================== */
+.stat-wrapper{
+    display:flex;
+    gap:16px;
+    margin-bottom:14px;
 }
-.stat-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+.stat-box{
+    height:90px;
+    min-width:180px;
+    border-radius:12px;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+.stat-title{font-size:14px;font-weight:600;}
+.stat-number{font-size:26px;font-weight:700;}
+
+.total{background:#4e73df;}
+.menunggu{background:#f6b23e;}
+.diproses{background:#36b9cc;}
+.selesai{background:#1cc88a;}
+.dibatalkan{background:#e74a3b;}
+
+/* ===================
+   FILTER BUTTON
+=================== */
+.filter-wrapper{
+    display:flex;
+    gap:10px;
+    margin-bottom:12px;
+}
+.filter-btn{
+    padding:6px 14px;
+    border-radius:8px;
+    background:#e9ecef;
+    font-size:13px;
+    cursor:pointer;
+}
+.filter-btn.active{
+    background:#1cc88a;
+    color:#fff;
 }
 
-/* Warna per status */
-.stat-box.total { background: #4b7bec; }       /* Biru */
-.stat-box.menunggu { background: #ffb347; }    /* Kuning-Orange */
-.stat-box.diproses { background: #4aa3ff; }    /* Biru Muda */
-.stat-box.selesai { background: #2ecc71; }     /* Hijau */
-.stat-box.dibatalkan { background: #ff6f6f; }  /* Merah */
-
-/* ===========================
-   FILTER & SEARCH
-   =========================== */
-.filter-btn {
-    padding: 10px 25px;
-    border-radius: 12px;
-    border: none;
-    background: #e0e0e0;
-    cursor: pointer;
-    font-size: 16px;
-    font-family: Georgia;
-    transition: 0.3s;
+/* ===================
+   SEARCH
+=================== */
+.search-box{
+    margin-bottom:16px;
 }
-.filter-btn:hover {
-    background: #d0d0d0;
-}
-.filter-active {
-    background: #6fcf97 !important;
-    color: white;
-    font-weight: bold;
-}
-.search-box {
-    width: 100%;
-    padding: 14px 18px;
-    border-radius: 12px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    margin-top: 15px;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-    transition: border 0.3s;
-}
-.search-box:focus {
-    outline: none;
-    border-color: #6fcf97;
+.search-box input{
+    width:100%;
+    padding:10px 14px;
+    border-radius:8px;
+    border:1px solid #ddd;
 }
 
-/* ===========================
+/* ===================
    TABLE
-   =========================== */
-.table-wrapper {
-    margin-top: 25px;
-    background: white;
-    border-radius: 12px;
-    padding: 15px 20px 25px 20px;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+=================== */
+.table-wrapper{
+    background:#fff;
+    padding:16px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.05);
 }
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 16px;
-    font-family: Georgia, serif;
+table{
+    width:100%;
+    border-collapse:collapse;
 }
-thead tr {
-    background: #f7f7f7;
-    font-weight: bold;
-    font-size: 17px;
+th,td{
+    padding:12px;
+    font-size:14px;
+    border-bottom:1px solid #eee;
 }
-th, td {
-    padding: 14px 12px;
-    border-bottom: 1px solid #eee;
-    vertical-align: top;
-}
-tbody tr:hover {
-    background: #f0f8ff;
-}
+thead{background:#f7f7f7;}
 
-/* ===========================
-   STATUS BADGES
-   =========================== */
-.badge {
-    padding: 6px 14px;
-    border-radius: 12px;
-    font-size: 14px;
-    color: white;
-    font-weight: bold;
-}
-.badge-wait { background: #ffb347; }       /* Menunggu */
-.badge-process { background: #4aa3ff; }    /* Diproses */
-.badge-done { background: #2ecc71; }       /* Selesai */
-.badge-cancel { background: #ff6f6f; }     /* Dibatalkan */
-
-/* ===========================
-   BUTTON AKSI
-   =========================== */
-.btn-aksi {
-    padding: 6px 10px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.3s;
-}
-.btn-view { background: #dcdcdc; }
-.btn-view:hover { background: #c8c8c8; }
-.btn-approve { background: #6fcf97; color:white; }
-.btn-approve:hover { background: #57b874; }
-.btn-reject { background: #ff6f6f; color:white; }
-.btn-reject:hover { background: #e45c5c; }
-
-/* ===========================
+/* ===================
    PAGINATION
-   =========================== */
-.pagination-area {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 25px;
+=================== */
+.pagination-wrapper{
+    display:flex;
+    justify-content:center;
+    margin-top:16px;
 }
-.page-btn {
-    padding: 8px 14px;
-    border: 1px solid #ccc;
-    background: white;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
+.pagination{
+    display:flex;
+    gap:6px;
 }
-.page-btn:hover { background: #f0f0f0; }
-.page-active {
-    background: #6fcf97;
-    border-color: #6fcf97;
-    color: white;
+.pagination span,
+.pagination a{
+    padding:6px 12px;
+    font-size:13px;
+    border-radius:6px;
+    background:#e9ecef;
+    color:#333;
+    text-decoration:none;
 }
-
-/* ===========================
-   MODAL DETAIL PESANAN
-   =========================== */
-.modal-content-custom {
-    border-radius: 16px;
+.pagination .active{
+    background:#1cc88a;
+    color:#fff;
 }
-.modal-body-custom .detail-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 15px;
-    padding: 6px 0;
-    border-bottom: 1px dashed #eee;
-}
-.detail-label {
-    font-weight: 500;
-    color: #555;
-}
-.detail-value {
-    font-weight: bold;
-    text-align: right;
-}
-.sisa-pembayaran-text {
-    font-size: 24px;
-    font-weight: bold;
-    color: #ff6f6f;
-    text-align: right;
-    margin-top: 10px;
+.pagination .disabled{
+    opacity:0.5;
+    pointer-events:none;
 }
 </style>
 
-{{-- TITLE --}}
-<h1 class="title-page">Pesanan Masuk</h1>
+<h1 class="title-page">Pemesanan Masuk</h1>
 
-{{-- STATISTICS --}}
-<div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">
-    <div class="stat-box total" style="flex:1; min-width:0;">
-        <div>Total Pesanan</div>
-        <div style="font-size: 28px; margin-top:8px;">5</div>
+{{-- ================= CARD ================= --}}
+<div class="stat-wrapper">
+    <div class="stat-box total">
+        <div class="stat-title">Total Pesanan</div>
+        <div class="stat-number">5</div>
     </div>
-    <div class="stat-box menunggu" style="flex:1; min-width:0;">
-        <div>Menunggu</div>
-        <div style="font-size: 28px; margin-top:8px;">2</div>
+    <div class="stat-box menunggu">
+        <div class="stat-title">Menunggu</div>
+        <div class="stat-number">2</div>
     </div>
-    <div class="stat-box diproses" style="flex:1; min-width:0;">
-        <div>Diproses</div>
-        <div style="font-size: 28px; margin-top:8px;">1</div>
+    <div class="stat-box diproses">
+        <div class="stat-title">Diproses</div>
+        <div class="stat-number">1</div>
     </div>
-    <div class="stat-box selesai" style="flex:1; min-width:0;">
-        <div>Selesai</div>
-        <div style="font-size: 28px; margin-top:8px;">1</div>
+    <div class="stat-box selesai">
+        <div class="stat-title">Selesai</div>
+        <div class="stat-number">1</div>
     </div>
-    <div class="stat-box dibatalkan" style="flex:1; min-width:0;">
-        <div>Dibatalkan</div>
-        <div style="font-size: 28px; margin-top:8px;">1</div>
+    <div class="stat-box dibatalkan">
+        <div class="stat-title">Dibatalkan</div>
+        <div class="stat-number">1</div>
     </div>
 </div>
 
-
-{{-- FILTER --}}
-<div style="display:flex; flex-wrap:wrap; gap:12px; margin:25px 0 15px 0;">
-    <button class="filter-btn filter-active" data-status="Semua">Semua</button>
-    <button class="filter-btn" data-status="Menunggu">Menunggu</button>
-    <button class="filter-btn" data-status="Diproses">Diproses</button>
-    <button class="filter-btn" data-status="Selesai">Selesai</button>
-    <button class="filter-btn" data-status="Dibatalkan">Dibatalkan</button>
+{{-- ================= FILTER ================= --}}
+<div class="filter-wrapper">
+    <div class="filter-btn active" data-filter="Semua">Semua</div>
+    <div class="filter-btn" data-filter="Menunggu">Menunggu</div>
+    <div class="filter-btn" data-filter="Diproses">Diproses</div>
+    <div class="filter-btn" data-filter="Selesai">Selesai</div>
+    <div class="filter-btn" data-filter="Dibatalkan">Dibatalkan</div>
 </div>
 
-{{-- SEARCH --}}
-<input type="text" id="search-input" class="search-box" placeholder="🔍  Cari Pesanan Pelanggan (ID, Nama, Menu)">
+{{-- ================= SEARCH ================= --}}
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Cari Pesanan Pelanggan (ID, Nama, Menu)">
+</div>
 
-{{-- TABLE --}}
+{{-- ================= TABLE ================= --}}
 <div class="table-wrapper">
 <table>
     <thead>
@@ -250,36 +177,81 @@ tbody tr:hover {
             <th>Aksi</th>
         </tr>
     </thead>
-    <tbody id="order-table-body">
-        {{-- BARIS DATA DITERUSKAN DARI KODE ASLI --}}
+
+    <tbody id="orderTable">
+        <tr data-status="Menunggu">
+            <td>PLG001</td>
+            <td>Andi</td>
+            <td>Nasi Box</td>
+            <td>Rp 25.000</td>
+            <td>20-12-2025</td>
+            <td>Menunggu</td>
+            <td>Detail</td>
+        </tr>
+        <tr data-status="Diproses">
+            <td>PLG002</td>
+            <td>Budi</td>
+            <td>Snack Box</td>
+            <td>Rp 15.000</td>
+            <td>21-12-2025</td>
+            <td>Diproses</td>
+            <td>Detail</td>
+        </tr>
+        <tr data-status="Selesai">
+            <td>PLG003</td>
+            <td>Sinta</td>
+            <td>Nasi Tumpeng</td>
+            <td>Rp 300.000</td>
+            <td>22-12-2025</td>
+            <td>Selesai</td>
+            <td>Detail</td>
+        </tr>
+        <tr data-status="Dibatalkan">
+            <td>PLG004</td>
+            <td>Dewi</td>
+            <td>Nasi Kotak</td>
+            <td>Rp 20.000</td>
+            <td>23-12-2025</td>
+            <td>Dibatalkan</td>
+            <td>Detail</td>
+        </tr>
     </tbody>
 </table>
-</div>
 
-{{-- PAGINATION --}}
-<div class="pagination-area">
-    <button class="page-btn">Sebelumnya</button>
-    <button class="page-btn page-active">1</button>
-    <button class="page-btn">2</button>
-    <button class="page-btn">Selanjutnya</button>
-</div>
-
-{{-- MODAL DETAIL PESANAN --}}
-<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-content-custom">
-            <div class="modal-header modal-header-custom">
-                <h5 class="modal-title" id="detailModalLabel">Detail Pesanan</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body modal-body-custom">
-                {{-- Detail rows diteruskan dari kode asli --}}
-            </div>
-            <div class="modal-footer modal-footer-custom">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-            </div>
-        </div>
+{{-- ================= PAGINATION ================= --}}
+<div class="pagination-wrapper">
+    <div class="pagination">
+        <span class="disabled">Sebelumnya</span>
+        <span class="active">1</span>
+        <a href="#">2</a>
+        <a href="#">Selanjutnya</a>
     </div>
 </div>
+</div>
+
+{{-- ================= SCRIPT FILTER & SEARCH ================= --}}
+<script>
+// FILTER
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function(){
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const filter = this.dataset.filter;
+        document.querySelectorAll('#orderTable tr').forEach(row => {
+            const status = row.dataset.status;
+            row.style.display = (filter === 'Semua' || status === filter) ? '' : 'none';
+        });
+    });
+});
+
+// SEARCH
+document.getElementById('searchInput').addEventListener('keyup', function(){
+    const value = this.value.toLowerCase();
+    document.querySelectorAll('#orderTable tr').forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(value) ? '' : 'none';
+    });
+});
+</script>
 
 @endsection

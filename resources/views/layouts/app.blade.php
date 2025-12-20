@@ -31,9 +31,10 @@
             <li class="{{ request()->routeIs('laporan') ? 'active' : '' }}">
                 <a href="{{ route('laporan') }}">📄 Laporan</a>
             </li>
-            <li class="{{ request()->routeIs('teras.chat') ? 'active' : '' }}">
-                <a href="{{ route('teras.chat') }}">💬 TerasChat</a>
+            <li class="{{ request()->routeIs('libur.*') ? 'active' : '' }}">
+                <a href="{{ route('libur.index') }}">💬 TerasChat</a>
             </li>
+
             <li>
                 <a href="{{ route('logout') }}">⏻ Logout</a>
             </li>
@@ -46,9 +47,11 @@
     </div>
 
     <!-- CONTENT -->
-    <div class="content-wrapper p-4">
-        @yield('content')
-    </div>
+    <!-- CONTENT WRAPPER -->
+<div class="content-wrapper p-4" style="margin-left:200px; margin-top:60px;">
+    @yield('content')
+</div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     @stack('scripts')

@@ -158,6 +158,7 @@
             <tr>
                 <th>Nama Menu</th>
                 <th>Harga</th>
+                <th>Deskripsi</th>
                 <th>Foto</th>
                 <th style="width: 15%; text-align: center;">Aksi</th>
             </tr>
@@ -196,6 +197,7 @@
             <tr>
                 <th>Nama Menu</th>
                 <th>Harga</th>
+                <th>Deskripsi</th>
                 <th>Foto</th>
                 <th style="width: 15%; text-align: center;">Aksi</th>
             </tr>
@@ -235,6 +237,7 @@
             <tr>
                 <th>Nama Menu</th>
                 <th>Harga</th>
+                <th>Deskripsi</th>
                 <th>Foto</th>
                 <th style="width: 15%; text-align: center;">Aksi</th>
             </tr>
@@ -274,6 +277,7 @@
             <tr>
                 <th>Nama Menu</th>
                 <th>Harga</th>
+                <th>Deskripsi</th>
                 <th>Foto</th>
                 <th style="width: 15%; text-align: center;">Aksi</th>
             </tr>

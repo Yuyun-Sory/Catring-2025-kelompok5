@@ -12,7 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('nama_menu');
             $table->integer('harga');
-            $table->string('foto'); // path gambar
+            $table->string('deskripsi');
+            $table->string('foto');// path gambar 
             $table->string('kategori'); // makanan, minuman, cemilan, oleh-oleh
             $table->timestamps();
         });
