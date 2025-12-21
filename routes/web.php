@@ -147,6 +147,7 @@ Route::post('/chatbot/send', [ChatAiController::class, 'ask'])->name('chatbot.se
 
 Route::resource('libur', LiburController::class);
 
+
 // PEMESANAN MASUK (SEMUA)
 Route::get('/pemesanan/masuk', [PesananController::class, 'index'])
     ->name('pemesanan.masuk');
