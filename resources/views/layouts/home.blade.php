@@ -358,25 +358,28 @@
 <section class="py-5">
     <div class="container">
         <h2 class="fw-bold mb-4">Menu Populer</h2>
+
         <div class="d-flex justify-content-center gap-4 flex-wrap">
-            <div class="menu-card">
-                <img src="{{ asset('images/Nasi ayam goreng.png') }}">
-                <h5 class="mt-2">Nasi Ayam Goreng Lalapan</h5>
-                <p>Rp 20.000</p>
-            </div>
-            <div class="menu-card">
-                <img src="{{ asset('images/soto ayam.png') }}">
-                <h5 class="mt-2">Soto Ayam</h5>
-                <p>Rp 15.000</p>
-            </div>
-            <div class="menu-card">
-                <img src="{{ asset('images/nasi pecal.png') }}">
-                <h5 class="mt-2">Nasi Pecel</h5>
-                <p>Rp 12.000</p>
-            </div>
+            @forelse ($menuPopuler as $menu)
+                <div class="menu-card text-center">
+                    <img 
+                        src="{{ asset('storage/' . $menu->foto) }}"
+                        alt="{{ $menu->nama_menu }}"
+                        style="width:200px;height:150px;object-fit:cover"
+                    >
+                    <h5 class="mt-2">{{ $menu->nama_menu }}</h5>
+                    <p>Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
+                    <small class="text-muted">
+                        🔥 Dibeli {{ $menu->total_dibeli }} kali
+                    </small>
+                </div>
+            @empty
+                <p class="text-muted">Belum ada menu populer</p>
+            @endforelse
         </div>
     </div>
 </section>
+
 
 <!-- ====== OLEH-OLEH POPULER ====== -->
 <section class="py-5" style="background:#f9f9f9;">

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Menu;
+use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
@@ -252,4 +254,109 @@ class MenuController extends Controller
 
         return view('layouts.menu.menu_detail', compact('menu'));
     }
+
+    public function index()
+    {
+        $menus = Menu::latest()->get();
+        return view('menu.index', compact('menus'));
+    }
+
+    public function menuUser()
+    {
+        $menus = Menu::latest()->get();
+
+        // Kelompokkan menu berdasarkan kategori
+        $kategori = $menus->groupBy('kategori');
+
+        // Kirim variabel $kategori ke view
+        return view('layouts.menu-user', compact('kategori'));
+    }
+
+public function detailMenuUser($id)
+{
+    $menu = Menu::with('ulasan')->where('id_menu', $id)->firstOrFail();
+    return view('layouts.menu.menu_detail', compact('menu'));
+}
+
+
+
+
+    public function create()
+    {
+        return view('menu.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama_menu' => 'required',
+            'harga' => 'required|numeric',
+            'kategori' => 'required',
+            'foto' => 'nullable|image|max:2048',
+        ]);
+
+        $foto = null;
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto')->store('ImgMenu', 'public');
+        }
+
+        Menu::create([
+            'nama_menu' => $request->nama_menu,
+            'harga' => $request->harga,
+            'kategori' => $request->kategori,
+            'foto' => $foto,
+        ]);
+
+        return redirect()->route('menu')->with('success', 'Menu berhasil ditambahkan');
+    }
+
+    public function edit($id)
+    {
+        $menu = Menu::where('id_menu', $id)->firstOrFail();
+        return view('menu.edit', compact('menu'));
+    }
+
+
+    public function update(Request $request, $id)
+{
+    $menu = Menu::where('id_menu', $id)->firstOrFail();
+
+    $request->validate([
+        'nama_menu' => 'required|string|max:255',
+        'harga'     => 'required|numeric',
+        'kategori'  => 'required|string',
+        'foto'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+    // Jika upload foto baru
+    if ($request->hasFile('foto')) {
+
+        // Hapus foto lama
+        if ($menu->foto && Storage::disk('public')->exists($menu->foto)) {
+            Storage::disk('public')->delete($menu->foto);
+        }
+
+        // Simpan foto baru
+        $menu->foto = $request->file('foto')->store('menu', 'public');
+    }
+
+    $menu->update([
+        'nama_menu' => $request->nama_menu,
+        'harga'     => $request->harga,
+        'kategori'  => $request->kategori,
+        'foto'      => $menu->foto,
+    ]);
+
+    return redirect()->route('menu')
+        ->with('success', 'Menu berhasil diperbarui');
+}
+
+    public function destroy($id)
+    {
+        Menu::destroy($id);
+        return back()->with('success', 'Menu berhasil dihapus');
+    }
+
+
+
 }

@@ -70,6 +70,7 @@
 
 @section('content')
 
+<div class="p-4">
 <div class="title-box">
     Dashboard
     <span class="breadcrumb">⚙ / Overview</span>
@@ -111,6 +112,10 @@
             <div class="count">Rp {{ number_format($totalPendapatan ?? 0, 0, ',', '.') }}</div>
         </div>
     </a>
+</div>
+
+
+
 </div>
 
 @endsection

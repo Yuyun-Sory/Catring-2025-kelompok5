@@ -183,7 +183,31 @@
     <h1>Daftar Menu Yang Tersedia</h1>
 </section>
 
+
+@foreach($kategori as $key => $items)
 <section class="menu-section">
+    <h2>{{ $key }}</h2>
+    <div class="menu-grid">
+        @foreach($items as $item)
+        <div class="menu-card">
+            <img src="{{ $item->foto ? asset('storage/'.$item->foto) : asset('images/default.png') }}" alt="{{ $item->nama_menu }}">
+            <div class="menu-info">
+                <h4>{{ $item->nama_menu }} Rp {{ number_format($item->harga,0,',','.') }}</h4>
+                <p>Minimal Rp {{ number_format($item->harga,0,',','.') }}</p>
+                <a href="{{ route('menuUser', ['id' => $item->id_menu]) }}" class="menu-btn">Lihat</a>
+
+
+                <div class="menu-rating">⭐ <span>{{ $item->rating ?? '5.0' }}</span></div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</section>
+@endforeach
+
+
+
+<!-- <section class="menu-section">
     <h2>Makanan</h2>
 
     <div class="menu-grid">
@@ -338,7 +362,6 @@
         </div>
     </div>
 </section>
-<!-- ================= PAKET OLEH-OLEH ================= -->
 <section class="menu-section">
     <h2>Paket Oleh-Oleh</h2>
 
@@ -403,7 +426,10 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
+
+
+
 <div style="text-align: center; margin: 60px 0;">
     Nikmati hidangan lezat dan berkualitas dari kami! <br>
     Semua menu dibuat dengan bahan segar dan cita rasa terbaik. <br>
