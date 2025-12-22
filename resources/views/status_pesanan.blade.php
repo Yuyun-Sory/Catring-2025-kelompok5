@@ -85,19 +85,23 @@
 .order-grid small{color:#555}
 </style>
 
+
+<div class="p-4">
+
+
 <!-- ================= JUDUL ================= -->
 <div class="status-title">
-    📊 Status Pesanan
+    📊 Status Pesanan 
 </div>
 
 <!-- ================= SUMMARY ================= -->
 <div class="summary">
-    <div class="summary-item">🕒 Menunggu 1</div>
-    <div class="summary-item">⚙️ Diproses 1</div>
-    <div class="summary-item">🚚 Dalam Perjalanan 1</div>
-    <div class="summary-item">✔️ Selesai 1</div>
-    <div class="summary-item">❌ Dibatalkan 1</div>
+    <div class="summary-item">🕒 Menunggu {{ $menunggu }}</div>
+    <div class="summary-item">⚙️ Diproses {{ $diproses }}</div>
+    <div class="summary-item">✔️ Selesai {{ $selesai }}</div>
+    <div class="summary-item">❌ Dibatalkan {{ $dibatalkan }}</div>
 </div>
+
 
 <!-- ================= SEARCH ================= -->
 <input type="text" id="searchInput" class="search-box"
@@ -105,86 +109,55 @@
 
 <!-- ================= PESANAN ================= -->
 
+@foreach($pesanan as $item)
 <div class="order-card searchable">
     <div class="card-top">
-        📄 <b>2025-003</b>
-        <span class="badge-status badge-selesai">Selesai</span>
+        📄 <b>{{ $item->no_order }}</b>
+
+        <span class="badge-status badge-{{ $item->status_order }}">
+            {{ ucfirst($item->status_order) }}
+        </span>
     </div>
-    <div class="order-title">Nasi Ayam Goreng Lalapan</div>
+
+    <div class="order-title">
+        {{ optional($item->menu)->nama_menu }}
+    </div>
+
     <div class="order-grid">
-        <div><small>Nama</small><br>Ahmad Rizki</div>
-        <div><small>No HP</small><br>0898-1234-5678</div>
-        <div><small>Tanggal Pesan</small><br>10/11/2025</div>
-        <div><small>Tanggal Antar</small><br>15/11/2025</div>
-        <div><small>Jumlah</small><br>70 Orang</div>
-        <div><small>Total</small><br>1.400.000</div>
+        <div>
+            <small>Nama</small><br>
+            {{ $item->nama_pelanggan }}
+        </div>
+
+        <div>
+            <small>No HP</small><br>
+            {{ $item->no_hp ?? '-' }}
+        </div>
+
+        <div>
+            <small>Tanggal Pesan</small><br>
+            {{ $item->created_at->format('d/m/Y') }}
+        </div>
+
+        <div>
+            <small>Tanggal Antar</small><br>
+            {{ $item->tanggal_pengiriman }}
+        </div>
+
+        <div>
+            <small>Jumlah</small><br>
+            {{ $item->total_item }} Porsi
+        </div>
+
+        <div>
+            <small>Total</small><br>
+            Rp {{ number_format($item->total_harga,0,',','.') }}
+        </div>
     </div>
 </div>
+@endforeach
 
-<div class="order-card searchable">
-    <div class="card-top">
-        📄 <b>2025-002</b>
-        <span class="badge-status badge-menunggu">Menunggu</span>
-    </div>
-    <div class="order-title">Soto Ayam</div>
-    <div class="order-grid">
-        <div><small>Nama</small><br>Budi Santoso</div>
-        <div><small>No HP</small><br>0812-3456-7890</div>
-        <div><small>Tanggal Pesan</small><br>10/11/2025</div>
-        <div><small>Tanggal Antar</small><br>20/11/2025</div>
-        <div><small>Jumlah</small><br>60 Orang</div>
-        <div><small>Total</small><br>720.000</div>
-    </div>
 </div>
-
-<div class="order-card searchable">
-    <div class="card-top">
-        📄 <b>2025-004</b>
-        <span class="badge-status badge-diproses">Diproses</span>
-    </div>
-    <div class="order-title">Ayam Geprek</div>
-    <div class="order-grid">
-        <div><small>Nama</small><br>Siti Nurhaliza</div>
-        <div><small>No HP</small><br>0856-7890-1234</div>
-        <div><small>Tanggal Pesan</small><br>14/11/2025</div>
-        <div><small>Tanggal Antar</small><br>18/11/2025</div>
-        <div><small>Jumlah</small><br>50 Orang</div>
-        <div><small>Total</small><br>750.000</div>
-    </div>
-</div>
-
-<div class="order-card searchable">
-    <div class="card-top">
-        📄 <b>2025-005</b>
-        <span class="badge-status badge-perjalanan">Dalam Perjalanan</span>
-    </div>
-    <div class="order-title">Nasi Box Komplit</div>
-    <div class="order-grid">
-        <div><small>Nama</small><br>Dewi Lestari</div>
-        <div><small>No HP</small><br>0821-7788-9900</div>
-        <div><small>Tanggal Pesan</small><br>16/11/2025</div>
-        <div><small>Tanggal Antar</small><br>17/11/2025</div>
-        <div><small>Jumlah</small><br>40 Orang</div>
-        <div><small>Total</small><br>600.000</div>
-    </div>
-</div>
-
-<div class="order-card searchable">
-    <div class="card-top">
-        📄 <b>2025-006</b>
-        <span class="badge-status badge-dibatalkan">Dibatalkan</span>
-    </div>
-    <div class="order-title">Soto Ayam</div>
-    <div class="order-grid">
-        <div><small>Nama</small><br>Rizky</div>
-        <div><small>No HP</small><br>0813-2222-9999</div>
-        <div><small>Tanggal Pesan</small><br>12/11/2025</div>
-        <div><small>Tanggal Antar</small><br>13/11/2025</div>
-        <div><small>Jumlah</small><br>30 Orang</div>
-        <div><small>Total</small><br>360.000</div>
-    </div>
-</div>
-
 <!-- ================= SEARCH SCRIPT ================= -->
 <script>
 document.getElementById('searchInput').addEventListener('keyup', function(){

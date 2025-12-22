@@ -11,7 +11,37 @@
     font-weight:700;
     margin-bottom:16px;
 }
-
+/* =================== MODAL =================== */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgba(0,0,0,0.5); 
+}
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto; 
+  padding: 20px;
+  border-radius: 12px;
+  width: 500px; 
+  max-width: 90%;
+  position: relative;
+}
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover { color: black; }
 /* ===================
    STAT CARD
 =================== */
@@ -123,29 +153,30 @@ thead{background:#f7f7f7;}
 }
 </style>
 
+<div class="p-4">
 <h1 class="title-page">Pemesanan Masuk</h1>
 
 {{-- ================= CARD ================= --}}
 <div class="stat-wrapper">
     <div class="stat-box total">
         <div class="stat-title">Total Pesanan</div>
-        <div class="stat-number">5</div>
+        <div class="stat-number">{{ $total }}</div>
     </div>
     <div class="stat-box menunggu">
         <div class="stat-title">Menunggu</div>
-        <div class="stat-number">2</div>
+        <div class="stat-number">{{ $menunggu }}</div>
     </div>
     <div class="stat-box diproses">
         <div class="stat-title">Diproses</div>
-        <div class="stat-number">1</div>
+        <div class="stat-number">{{ $diproses }}</div>
     </div>
     <div class="stat-box selesai">
         <div class="stat-title">Selesai</div>
-        <div class="stat-number">1</div>
+        <div class="stat-number">{{ $selesai }}</div>
     </div>
     <div class="stat-box dibatalkan">
         <div class="stat-title">Dibatalkan</div>
-        <div class="stat-number">1</div>
+        <div class="stat-number">{{ $dibatalkan }}</div>
     </div>
 </div>
 
@@ -178,44 +209,47 @@ thead{background:#f7f7f7;}
         </tr>
     </thead>
 
-    <tbody id="orderTable">
-        <tr data-status="Menunggu">
-            <td>PLG001</td>
-            <td>Andi</td>
-            <td>Nasi Box</td>
-            <td>Rp 25.000</td>
-            <td>20-12-2025</td>
-            <td>Menunggu</td>
-            <td>Detail</td>
-        </tr>
-        <tr data-status="Diproses">
-            <td>PLG002</td>
-            <td>Budi</td>
-            <td>Snack Box</td>
-            <td>Rp 15.000</td>
-            <td>21-12-2025</td>
-            <td>Diproses</td>
-            <td>Detail</td>
-        </tr>
-        <tr data-status="Selesai">
-            <td>PLG003</td>
-            <td>Sinta</td>
-            <td>Nasi Tumpeng</td>
-            <td>Rp 300.000</td>
-            <td>22-12-2025</td>
-            <td>Selesai</td>
-            <td>Detail</td>
-        </tr>
-        <tr data-status="Dibatalkan">
-            <td>PLG004</td>
-            <td>Dewi</td>
-            <td>Nasi Kotak</td>
-            <td>Rp 20.000</td>
-            <td>23-12-2025</td>
-            <td>Dibatalkan</td>
-            <td>Detail</td>
-        </tr>
-    </tbody>
+  <tbody id="orderTable">
+@foreach($pesanan as $item)
+<tr data-status="{{ ucfirst($item->status_order) }}">
+    <td>{{ $item->no_order }}</td>
+    <td>{{ $item->nama_pelanggan }}</td>
+    <td>{{ optional($item->menu)->nama_menu }}</td>
+    <td>Rp {{ number_format($item->total_harga,0,',','.') }}</td>
+    <td>{{ $item->tanggal_pengiriman }}</td>
+
+    {{-- STATUS ORDER --}}
+    <td>
+        <form action="{{ route('pesanan.updateStatus',$item->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <select name="status_order" onchange="this.form.submit()">
+                <option value="menunggu" {{ $item->status_order=='menunggu'?'selected':'' }}>Menunggu</option>
+                <option value="diproses" {{ $item->status_order=='diproses'?'selected':'' }}>Diproses</option>
+                <option value="selesai" {{ $item->status_order=='selesai'?'selected':'' }}>Selesai</option>
+                <option value="dibatalkan" {{ $item->status_order=='dibatalkan'?'selected':'' }}>Dibatalkan</option>
+            </select>
+        </form>
+    </td>
+
+   {{-- DETAIL BUTTON --}}
+    <td>
+        <button class="detail-btn" 
+            data-no_order="{{ $item->no_order }}"
+            data-nama="{{ $item->nama_pelanggan }}"
+            data-menu="{{ optional($item->menu)->nama_menu }}"
+            data-harga="{{ number_format($item->total_harga,0,',','.') }}"
+            data-jumlah="{{ $item->total_item }}"
+              data-alamat="{{ $item->pelanggan->alamat ?? '-' }}"
+            data-tanggal="{{ $item->tanggal_pengiriman }}">
+            Detail
+        </button>
+    </td>
+</tr>
+@endforeach
+</tbody>
+
+
 </table>
 
 {{-- ================= PAGINATION ================= --}}
@@ -229,7 +263,24 @@ thead{background:#f7f7f7;}
 </div>
 </div>
 
-{{-- ================= SCRIPT FILTER & SEARCH ================= --}}
+</div>
+
+{{-- MODAL POP-UP --}}
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Detail Pesanan</h3>
+        <p><strong>No Order:</strong> <span id="modalNoOrder"></span></p>
+        <p><strong>Nama Pelanggan:</strong> <span id="modalNama"></span></p>
+        <p><strong>Menu:</strong> <span id="modalMenu"></span></p>
+        <p><strong>Jumlah:</strong> <span id="modalJumlah"></span></p>
+        <p><strong>Harga:</strong> Rp <span id="modalHarga"></span></p>
+        <p><strong>Alamat:</strong> <span id="modalAlamat"></span></p>
+        <p><strong>Tanggal Pengiriman:</strong> <span id="modalTanggal"></span></p>
+    </div>
+</div>
+
+{{-- SCRIPT --}}
 <script>
 // FILTER
 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -252,6 +303,29 @@ document.getElementById('searchInput').addEventListener('keyup', function(){
         row.style.display = row.innerText.toLowerCase().includes(value) ? '' : 'none';
     });
 });
+
+// MODAL DETAIL
+const modal = document.getElementById("detailModal");
+const spanClose = document.querySelector(".close");
+
+document.querySelectorAll('.detail-btn').forEach(btn => {
+    btn.addEventListener('click', function(){
+        document.getElementById('modalNoOrder').innerText = this.dataset.no_order;
+        document.getElementById('modalNama').innerText = this.dataset.nama;
+        document.getElementById('modalMenu').innerText = this.dataset.menu;
+        document.getElementById('modalJumlah').innerText = this.dataset.jumlah;
+        document.getElementById('modalHarga').innerText = this.dataset.harga;
+        document.getElementById('modalAlamat').innerText = this.dataset.alamat;
+        document.getElementById('modalTanggal').innerText = this.dataset.tanggal;
+        modal.style.display = "block";
+    });
+});
+
+// CLOSE MODAL
+spanClose.onclick = function() { modal.style.display = "none"; }
+window.onclick = function(event) { if(event.target == modal) modal.style.display = "none"; }
 </script>
+
+
 
 @endsection

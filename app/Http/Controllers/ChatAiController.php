@@ -7,6 +7,8 @@ use App\Models\Menu;
 use App\Models\Pesanan;
 use App\Models\Pelanggan;
 use App\Models\Ulasan;
+use App\Models\JadwalProduksi;
+use App\Models\Libur;
 use App\Services\ChatState;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -15,65 +17,105 @@ use Midtrans\Snap;
 
 class ChatAIController extends Controller
 {
+ public function index()
+{
+    $jadwals   = JadwalProduksi::with('menu')->orderBy('tanggal_produksi')->orderBy('jam_produksi')->get();
+    $liburs    = Libur::orderBy('tanggal')->get();
+    $pesanans  = JadwalProduksi::with('menu')->orderBy('tanggal_produksi')->orderBy('jam_produksi')->get();
+    $chatLogs  = Ulasan::orderBy('created_at','desc')->get();
+
+    return view('chatbot.index', compact('jadwals','liburs','pesanans','chatLogs'));
+}
+
+
+
     public function ask(Request $request)
     {
         try {
             $state = ChatState::get();
             $msg   = strtolower(trim($request->message));
 
-            /* ================= MENU ================= */
-            if (str_contains($msg, 'menu')) {
+            /* MENU */
+            if(str_contains($msg,'menu')){
                 $menus = Menu::all();
                 $text = "📋 Daftar Menu:\n";
-                foreach ($menus as $m) {
+                foreach($menus as $m){
                     $text .= "- {$m->nama_menu} (Rp" . number_format($m->harga) . ")\n";
                 }
-                return response()->json(['reply' => $text]);
+                return response()->json(['reply'=>$text]);
             }
 
-                            /* ================= LOKASI ================= */
-                if (str_contains($msg, 'lokasi') || str_contains($msg, 'alamat')) {
-                    return response()->json([
-                        'reply' => "📍 *Lokasi Kami*\nJl. Contoh No. 123, Yogyakarta\n\n📌 Google Maps:\nhttps://maps.google.com/?q=Jl+Contoh+No+123"
-                    ]);
-                }
-
-                /* ================= CARA PESAN ================= */
-                if (str_contains($msg, 'cara pesan') || str_contains($msg, 'cara order')) {
-                    return response()->json([
-                        'reply' => "🛒 *Cara Pemesanan*\n".
-                                "1️⃣ Ketik *menu* untuk melihat daftar menu\n".
-                                "2️⃣ Ketik *pesan*\n".
-                                "3️⃣ Isi form pemesanan\n".
-                                "4️⃣ Klik tombol *Bayar*\n".
-                                "5️⃣ Lakukan pembayaran\n".
-                                "6️⃣ Setelah bayar, berikan rating & ulasan ⭐"
-                    ]);
-                }
-
-
-            /* ================= PESAN → TAMPILKAN FORM ================= */
-            if ($msg === 'pesan') {
-
-                $menus = Menu::select('id','nama_menu','harga')->get();
-
-                ChatState::set(['step' => 'form']);
-
+            /* LOKASI */
+            if(str_contains($msg,'lokasi') || str_contains($msg,'alamat')){
                 return response()->json([
-                    'reply' => "📝 Silakan isi form pemesanan di bawah 👇",
-                    'show_form' => true,
-                    'menus' => $menus
+                    'reply' => "📍 Lokasi Kami\nJl. Contoh No.123, Yogyakarta\nhttps://maps.google.com/?q=Jl+Contoh+No+123"
                 ]);
             }
 
-            /* ================= SIMPAN PESANAN DARI FORM ================= */
-            if ($request->has('form_order')) {
+            /* CARA PESAN */
+            if(str_contains($msg,'cara pesan') || str_contains($msg,'cara order')){
+                return response()->json([
+                    'reply' => "🛒 Cara Pemesanan:\n1. Ketik *menu* untuk lihat menu\n2. Ketik *pesan*\n3. Isi form pemesanan\n4. Klik tombol *Bayar*\n5. Bayar\n6. Beri rating & ulasan ⭐"
+                ]);
+            }
 
+            /* CEK TANGGAL + LIBUR */
+            if(str_contains($msg,'cek tanggal')){
+                $jadwals = JadwalProduksi::with('menu')->orderBy('tanggal_produksi')->orderBy('jam_produksi')->get();
+                $liburs = Libur::pluck('keterangan','tanggal')->toArray();
+
+                $dates = [];
+                foreach($jadwals as $j){
+                    $tgl = $j->tanggal_produksi;
+                    $status = $liburs[$tgl] ?? ($j->status_bahan ?? 'Kosong');
+
+                    if(!isset($dates[$tgl])){
+                        $dates[$tgl] = [
+                            'status' => $status,
+                            'items' => []
+                        ];
+                    }
+
+                    $dates[$tgl]['items'][] = [
+                        'jam' => $j->jam_produksi,
+                        'menu' => $j->menu->nama_menu ?? '-'
+                    ];
+                }
+
+                // tambahkan libur yang tidak ada jadwal
+                foreach($liburs as $tgl=>$keterangan){
+                    if(!isset($dates[$tgl])){
+                        $dates[$tgl] = [
+                            'status' => $keterangan,
+                            'items' => []
+                        ];
+                    }
+                }
+
+                return response()->json([
+                    'reply' => "📅 Jadwal Teras:",
+                    'available_dates' => $dates
+                ]);
+            }
+
+            /* TAMPILKAN FORM PESANAN */
+            if($msg==='pesan'){
+                $menus = Menu::select('id_menu','nama_menu','harga')->get();
+                ChatState::set(['step'=>'form']);
+                return response()->json([
+                    'reply'=>"📝 Silakan isi form pemesanan di bawah 👇",
+                    'show_form'=>true,
+                    'menus'=>$menus
+                ]);
+            }
+
+            /* SIMPAN FORM PESANAN */
+            if($request->has('form_order')){
                 DB::beginTransaction();
 
-                $menu = Menu::findOrFail($request->menu_id);
+                $menu = Menu::findOrFail($request->id_menu);
                 $total = $menu->harga * $request->jumlah;
-                $noOrder = 'ORD-' . strtoupper(Str::random(8));
+                $noOrder = 'ORD-'.strtoupper(Str::random(8));
 
                 Pelanggan::create([
                     'nama' => $request->nama,
@@ -81,7 +123,16 @@ class ChatAIController extends Controller
                     'alamat' => $request->alamat
                 ]);
 
+                $request->validate([
+                'id_menu' => 'required|exists:menu,id_menu',
+                'nama' => 'required|string|max:200',
+                'telepon' => 'required|string|max:20',
+                'alamat' => 'required|string|max:255',
+                'jumlah' => 'required|integer|min:1',
+            ]);
+
                 Pesanan::create([
+                    'id_menu' => $menu->id_menu,
                     'no_order' => $noOrder,
                     'nama_pelanggan' => $request->nama,
                     'total_item' => $request->jumlah,
@@ -90,8 +141,9 @@ class ChatAIController extends Controller
                 ]);
 
                 ChatState::set([
-                    'step' => 'waiting_payment',
-                    'last_customer' => $request->nama
+                    'step'=>'waiting_payment',
+                    'last_customer'=>$request->nama,
+                     'id_menu' => $menu->id_menu 
                 ]);
 
                 Config::$serverKey = config('services.midtrans.server_key');
@@ -100,65 +152,65 @@ class ChatAIController extends Controller
                 Config::$is3ds = true;
 
                 $snapToken = Snap::getSnapToken([
-                    'transaction_details' => [
-                        'order_id' => $noOrder,
-                        'gross_amount' => (int) $total
+                    'transaction_details'=>[
+                        'order_id'=>$noOrder,
+                        'gross_amount'=>(int)$total
                     ]
                 ]);
 
                 DB::commit();
 
                 return response()->json([
-                'reply' => "✅ Pesanan berhasil! Silakan lanjutkan pembayaran 👇",
-                'snap_token' => $snapToken,
-                'order_detail' => [
-                    'no_order' => $noOrder,
-                    'nama' => $request->nama,
-                    'menu' => $menu->nama_menu,
-                    'jumlah' => $request->jumlah,
-                    'harga_satuan' => $menu->harga,
-                    'total_harga' => $total,
-                    'alamat' => $request->alamat
-                ]
-            ]);
-
+                    'reply'=>"✅ Pesanan berhasil! Silakan lanjutkan pembayaran 👇",
+                    'snap_token'=>$snapToken,
+                    'order_detail'=>[
+                        'no_order'=>$noOrder,
+                        'nama'=>$request->nama,
+                        'menu'=>$menu->nama_menu,
+                        'jumlah'=>$request->jumlah,
+                        'harga_satuan'=>$menu->harga,
+                        'total_harga'=>$total,
+                        'alamat'=>$request->alamat
+                    ]
+                ]);
             }
 
-            /* ================= RATING ================= */
-            if (($state['step'] ?? null) === 'rating') {
-
+            /* RATING */
+            if(($state['step'] ?? null)==='rating'){
                 ChatState::set([
-                    'step' => 'review',
-                    'rating' => (int) $msg,
-                    'last_customer' => $state['last_customer']
+                    'step'=>'review',
+                    'rating'=>(int)$msg,
+                    'last_customer'=>$state['last_customer']
                 ]);
-
-                return response()->json([
-                    'reply' => "Terima kasih ⭐{$msg}\nSilakan tulis ulasan Anda 📝"
-                ]);
+                return response()->json(['reply'=>"Terima kasih ⭐{$msg}\nSilakan tulis ulasan Anda 📝"]);
             }
 
-            /* ================= ULASAN ================= */
-            if (($state['step'] ?? null) === 'review') {
+            /* ULASAN */
+            if(($state['step'] ?? null)==='review'){
+                // pastikan id_menu ada di state
+                $idMenu = $state['id_menu'] ?? null;
+
+                if(!$idMenu){
+                    throw new \Exception("Menu untuk ulasan tidak ditemukan");
+                }
 
                 Ulasan::create([
+                    'id_menu' => $idMenu,
                     'nama_pelanggan' => $state['last_customer'],
                     'rating' => $state['rating'],
                     'komentar' => $request->message
                 ]);
 
                 ChatState::reset();
-
-                return response()->json([
-                    'reply' => "🙏 Terima kasih atas ulasan Anda!"
-                ]);
+                return response()->json(['reply'=>"🙏 Terima kasih atas ulasan Anda!"]);
             }
 
-            return response()->json(['reply' => "Ketik *menu* atau *pesan* 😊"]);
 
-        } catch (\Throwable $e) {
+            return response()->json(['reply'=>"Ketik *menu* atau *pesan* 😊"]);
+
+        } catch (\Throwable $e){
             DB::rollBack();
-            return response()->json(['reply' => 'ERROR: ' . $e->getMessage()], 500);
+            return response()->json(['reply'=>"ERROR: ".$e->getMessage()],500);
         }
     }
 
@@ -166,10 +218,9 @@ class ChatAIController extends Controller
     {
         $state = ChatState::get();
         ChatState::set([
-            'step' => 'rating',
-            'last_customer' => $state['last_customer']
+            'step'=>'rating',
+            'last_customer'=>$state['last_customer']
         ]);
-
-        return response()->json(['status' => 'ok']);
+        return response()->json(['status'=>'ok']);
     }
 }

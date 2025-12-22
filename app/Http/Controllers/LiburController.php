@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Libur;
 use Illuminate\Http\Request;
+use App\Models\Pesanan;
+use App\Models\Ulasan;
 
 class LiburController extends Controller
 {
-    public function index()
-    {
-        // JAMAK karena banyak data
-        $liburs = Libur::orderBy('tanggal')->get();
+  public function index()
+{
+    $liburs = Libur::orderBy('tanggal')->get();
+    $pesanans = Pesanan::with('menu')->get();
+    $chatLogs = Ulasan::orderBy('created_at', 'desc')->get(); // gunakan ulasan sebagai log
 
-        return view('teras-chat.index', compact('liburs'));
-    }
-
+    return view('teras-chat.index', compact('liburs', 'pesanans', 'chatLogs'));
+}
     public function create()
     {
         return view('teras-chat.create');

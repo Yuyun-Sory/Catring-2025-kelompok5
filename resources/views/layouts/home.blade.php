@@ -358,25 +358,28 @@
 <section class="py-5">
     <div class="container">
         <h2 class="fw-bold mb-4">Menu Populer</h2>
+
         <div class="d-flex justify-content-center gap-4 flex-wrap">
-            <div class="menu-card">
-                <img src="{{ asset('images/Nasi ayam goreng.png') }}">
-                <h5 class="mt-2">Nasi Ayam Goreng Lalapan</h5>
-                <p>Rp 20.000</p>
-            </div>
-            <div class="menu-card">
-                <img src="{{ asset('images/soto ayam.png') }}">
-                <h5 class="mt-2">Soto Ayam</h5>
-                <p>Rp 15.000</p>
-            </div>
-            <div class="menu-card">
-                <img src="{{ asset('images/nasi pecal.png') }}">
-                <h5 class="mt-2">Nasi Pecel</h5>
-                <p>Rp 12.000</p>
-            </div>
+            @forelse ($menuPopuler as $menu)
+                <div class="menu-card text-center">
+                    <img 
+                        src="{{ asset('storage/' . $menu->foto) }}"
+                        alt="{{ $menu->nama_menu }}"
+                        style="width:200px;height:150px;object-fit:cover"
+                    >
+                    <h5 class="mt-2">{{ $menu->nama_menu }}</h5>
+                    <p>Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
+                    <small class="text-muted">
+                        🔥 Dibeli {{ $menu->total_dibeli }} kali
+                    </small>
+                </div>
+            @empty
+                <p class="text-muted">Belum ada menu populer</p>
+            @endforelse
         </div>
     </div>
 </section>
+
 
 <!-- ====== OLEH-OLEH POPULER ====== -->
 <section class="py-5" style="background:#f9f9f9;">
@@ -448,7 +451,7 @@
             </p>
             <div class="social-icons mt-3">
                 <a href="https://wa.me/+6285727120836" target="_blank" title="WhatsApp">
-                    <img src="{{ asset('icons/wa.png') }}" alt="WhatsApp">
+                    <img src="{{ asset('images/logo wa.png') }}" alt="WhatsApp">
                 </a>
             </div>
         </div>
@@ -456,10 +459,7 @@
         <div class="location-right">
             <h4 class="fw-bold">Lokasi</h4>
             <p>📍 Garongan Kembang RT 02 RW 18, Wonokerto, Turi, Sleman 55551</p>
-            <iframe
-                src="https://maps.app.goo.gl/qjhLBcUozy9fDnH38?g_st=ic"
-                width="100%" height="230" style="border:0; border-radius:10px;" allowfullscreen=""
-                loading="lazy"></iframe>
+            <<iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3954.3938287499977!2d110.37794107500343!3d-7.6407279923751865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zN8KwMzgnMjYuNiJTIDExMMKwMjInNDkuOSJF!5e0!3m2!1sid!2sid!4v1766393362387!5m2!1sid!2sid" width="520" height="350" style="border:0; border-radius: 20px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
 </div>
 
