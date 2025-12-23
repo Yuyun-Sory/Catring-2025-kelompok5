@@ -447,7 +447,7 @@
             </p>
             <div class="social-icons mt-3">
                 <a href="https://wa.me/+6285727120836" target="_blank" title="WhatsApp">
-                    <img src="{{ asset('icons/wa.png') }}" alt="WhatsApp">
+                    <img src="{{ asset('images/logo wa.png') }}" alt="WhatsApp">
                 </a>
             </div>
         </div>
