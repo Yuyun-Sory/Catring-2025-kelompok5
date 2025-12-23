@@ -223,10 +223,7 @@ resep yang tak pernah berubah — masak dengan hati, layani dengan senyum.
         <div class="location-right">
             <h4 class="fw-bold">Lokasi</h4>
             <p>📍 Garongan Kembang RT 02 RW 18, Wonokerto, Turi, Sleman 55551</p>
-            <iframe
-                src="https://maps.app.goo.gl/qjhLBcUozy9fDnH38?g_st=ic"
-                width="100%" height="230" style="border:0; border-radius:10px;" allowfullscreen=""
-                loading="lazy"></iframe>
+           <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3954.3938287499977!2d110.37794107500343!3d-7.6407279923751865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zN8KwMzgnMjYuNiJTIDExMMKwMjInNDkuOSJF!5e0!3m2!1sid!2sid!4v1766393362387!5m2!1sid!2sid" width="520" height="350" style="border:0; border-radius: 20px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div>
 @endsection

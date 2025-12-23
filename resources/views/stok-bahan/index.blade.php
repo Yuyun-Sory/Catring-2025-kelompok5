@@ -8,8 +8,10 @@
 @endpush
 
 @section('content')
+<div class="p-4">
 
-<h1 class="page-title">Stok Bahan</h1>
+
+<h1 class="page-title">Stok Bahan </h1>
 
 {{-- STATISTICS CARDS --}}
 <div class="stats-container">
@@ -96,7 +98,7 @@
 </div>
 
 @endsection
-
+</div>
 @push('scripts')
 <script>
 $(document).ready(function() {
