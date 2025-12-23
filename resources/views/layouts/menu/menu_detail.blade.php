@@ -1,67 +1,69 @@
 @php $hideNavbar = true; @endphp
-@extends('layouts.user')
+@extends('layouts.main')
+
+@section('title', $menu['nama'])
 
 @section('content')
 <style>
-    .detail-container {
-        max-width: 950px;
-        margin: auto;
-        padding: 20px;
-    }
+.detail-container {
+    max-width: 950px;
+    margin: auto;
+    padding: 20px;
+}
 
-    .detail-title {
-        font-weight: 700;
-        font-size: 32px;
-    }
+.detail-title {
+    font-weight: 700;
+    font-size: 32px;
+}
 
-    .detail-sub {
-        color: gray;
-    }
+.detail-sub {
+    color: gray;
+}
 
-    .detail-image {
-        width: 100%;
-        border-radius: 12px;
-    }
+.detail-image {
+    width: 100%;
+    border-radius: 12px;
+}
 
-    .detail-price {
-        text-align: center;
-        font-weight: bold;
-        margin-top: 10px;
-        font-size: 18px;
-    }
+.detail-price {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 18px;
+}
 
-    .rating-stars {
-        font-size: 20px;
-        color: gold;
-    }
+.rating-stars {
+    font-size: 20px;
+    color: gold;
+}
 
-    /* === ULASAN DIPERKECIL === */
-    .ulasan-user {
-        display: flex;
-        gap: 10px;
-        margin-top: 10px;
-        padding: 12px 0;
-        border-bottom: 1px solid #ececec;
-    }
+/* === ULASAN DIPERKECIL === */
+.ulasan-user {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid #ececec;
+}
 
-    .ulasan-user-icon {
-        font-size: 28px;
-    }
+.ulasan-user-icon {
+    font-size: 28px;
+}
 
-    .ulasan-nama {
-        font-size: 14px;
-        font-weight: 600;
-    }
+.ulasan-nama {
+    font-size: 14px;
+    font-weight: 600;
+}
 
-    .ulasan-rating {
-        font-size: 14px;
-        color: gold;
-    }
+.ulasan-rating {
+    font-size: 14px;
+    color: gold;
+}
 
-    .ulasan-komentar {
-        font-size: 13px;
-        margin-top: 2px;
-    }
+.ulasan-komentar {
+    font-size: 13px;
+    margin-top: 2px;
+}
 </style>
 
 <div class="detail-container">
@@ -97,24 +99,19 @@
 
     <h3 class="fw-bold">Ulasan</h3>
 
-    @foreach ($menu['ulasan'] as $u)
-    <div class="ulasan-user">
-        <div class="ulasan-user-icon">👤</div>
-
-        <div>
-            <div class="ulasan-nama">{{ $u['nama'] }}</div>
-
-            @isset($u['bintang'])
-            <div class="ulasan-rating">
-                {{ str_repeat('★', $u['bintang']) }}
-            </div>
-            @endisset
-
-            <div class="ulasan-komentar">
-                {{ $u['komentar'] }}
+    @foreach ($menu->ulasan as $u)
+        <div class="ulasan-user">
+            <div class="ulasan-user-icon">👤</div>
+            <div>
+                <div class="ulasan-nama">{{ $u->nama_pelanggan }}</div>
+                @isset($u->rating)
+                    <div class="ulasan-rating">
+                        {{ str_repeat('★', $u->rating) }}
+                    </div>
+                @endisset
+                <div class="ulasan-komentar">{{ $u->komentar }}</div>
             </div>
         </div>
-    </div>
     @endforeach
 
 </div>

@@ -183,7 +183,31 @@
     <h1>Daftar Menu Yang Tersedia</h1>
 </section>
 
+
+@foreach($kategori as $key => $items)
 <section class="menu-section">
+    <h2>{{ $key }}</h2>
+    <div class="menu-grid">
+        @foreach($items as $item)
+        <div class="menu-card">
+            <img src="{{ $item->foto ? asset('storage/'.$item->foto) : asset('images/default.png') }}" alt="{{ $item->nama_menu }}">
+            <div class="menu-info">
+                <h4>{{ $item->nama_menu }} Rp {{ number_format($item->harga,0,',','.') }}</h4>
+                <p>Minimal Rp {{ number_format($item->harga,0,',','.') }}</p>
+                <a href="{{ route('menuUser', ['id' => $item->id_menu]) }}" class="menu-btn">Lihat</a>
+
+
+                <div class="menu-rating">⭐ <span>{{ $item->rating ?? '5.0' }}</span></div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</section>
+@endforeach
+
+
+
+<!-- <section class="menu-section">
     <h2>Makanan</h2>
 
     <div class="menu-grid">
@@ -338,7 +362,6 @@
         </div>
     </div>
 </section>
-<!-- ================= PAKET OLEH-OLEH ================= -->
 <section class="menu-section">
     <h2>Paket Oleh-Oleh</h2>
 
@@ -403,7 +426,10 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
+
+
+
 <div style="text-align: center; margin: 60px 0;">
     Nikmati hidangan lezat dan berkualitas dari kami! <br>
     Semua menu dibuat dengan bahan segar dan cita rasa terbaik. <br>
@@ -429,10 +455,7 @@
         <div class="location-right">
             <h4 class="fw-bold">Lokasi</h4>
             <p>📍 Garongan Kembang RT 02 RW 18, Wonokerto, Turi, Sleman 55551</p>
-            <iframe
-                src="https://maps.app.goo.gl/qjhLBcUozy9fDnH38?g_st=ic"
-                width="100%" height="230" style="border:0; border-radius:10px;" allowfullscreen=""
-                loading="lazy"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3954.3938287499977!2d110.37794107500343!3d-7.6407279923751865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zN8KwMzgnMjYuNiJTIDExMMKwMjInNDkuOSJF!5e0!3m2!1sid!2sid!4v1766393362387!5m2!1sid!2sid" width="520" height="350" style="border:0; border-radius: 20px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
 </div>
 @endsection

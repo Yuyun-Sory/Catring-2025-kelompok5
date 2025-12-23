@@ -17,6 +17,9 @@
             <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <a href="{{ route('dashboard') }}">🏠 Dashboard</a>
             </li>
+            <li class="{{ request()->routeIs('menu') ? 'active' : '' }}">
+                <a href="{{ route('menu') }}">🍔 Menu</a>
+            </li>
             <li class="{{ request()->routeIs('pemesanan.masuk') ? 'active' : '' }}">
                 <a href="{{ route('pemesanan.masuk') }}">📥 Pemesanan Masuk</a>
             </li>
