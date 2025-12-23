@@ -15,7 +15,10 @@ class Pesanan extends Model
         'total_item',
         'total_harga',
         'status',
+<<<<<<< HEAD
         'tanggal_produksi',
+=======
+>>>>>>> 2154e4b68bba9b697e3b2dc0bd83434d3cd78766
         'status_order',
     ];
 

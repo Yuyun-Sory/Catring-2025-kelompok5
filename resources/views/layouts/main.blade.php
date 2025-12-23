@@ -95,9 +95,18 @@
     </div>
 
     <!-- FORM PEMESANAN -->
+<<<<<<< HEAD
 <div id="orderForm"
      class="order-form m-2 p-2 rounded-3 shadow-sm bg-white"
      style="display:none">
+=======
+    <div id="orderForm" class="order-form m-2" style="display:none">
+        <select id="id_menu" class="form-control mb-2"></select>
+        <input id="jumlah" class="form-control mb-2" placeholder="Jumlah porsi">
+        <input id="nama" class="form-control mb-2" placeholder="Nama pemesan">
+        <input id="telepon" class="form-control mb-2" placeholder="No HP">
+        <textarea id="alamat" class="form-control mb-2" placeholder="Alamat lengkap"></textarea>
+>>>>>>> 2154e4b68bba9b697e3b2dc0bd83434d3cd78766
 
     <div class="text-center fw-semibold mb-2" style="font-size:13px">
         📝 Pemesanan
@@ -202,6 +211,10 @@ function sendChat() {
     typing.id = "typing-indicator";
     typing.innerText = "Sedang mengetik...";
     chatBody.appendChild(typing);
+<<<<<<< HEAD
+=======
+    chatBody.scrollTop = chatBody.scrollHeight;
+>>>>>>> 2154e4b68bba9b697e3b2dc0bd83434d3cd78766
 
     fetch("/chatbot/send", {
         method: "POST",
@@ -213,6 +226,7 @@ function sendChat() {
     })
     .then(res => res.json())
     .then(data => {
+<<<<<<< HEAD
         document.getElementById("typing-indicator")?.remove();
 
         if (data.reply) {
@@ -229,11 +243,32 @@ function sendChat() {
             addBotMessage(`
                 <button class="btn btn-success mt-2 w-100"
                     onclick="payNow('${data.snap_token}')">
+=======
+        const typingEl = document.getElementById("typing-indicator");
+        if (typingEl) typingEl.remove();
+
+        if (data.reply) addBotMessage(data.reply.replace(/\n/g, "<br>"));
+
+        // tampilkan form pesanan
+        if (data.show_form) {
+            orderForm.style.display = "block";
+            id_menu.innerHTML = "";
+            data.menus.forEach(m => {
+                id_menu.innerHTML += `<option value="${m.id_menu}">${m.nama_menu} - Rp${m.harga}</option>`;
+            });
+        }
+
+        // snap payment
+        if (data.snap_token) {
+            addBotMessage(`
+                <button class="btn btn-success mt-2 w-100" onclick="payNow('${data.snap_token}')">
+>>>>>>> 2154e4b68bba9b697e3b2dc0bd83434d3cd78766
                     💳 Bayar Sekarang
                 </button>
             `);
         }
 
+<<<<<<< HEAD
         /* JADWAL TERAS */
         if (data.available_dates) {
             let html = "<b>📅 Jadwal Teras</b><br>";
@@ -250,6 +285,26 @@ function sendChat() {
     .catch(() => {
         document.getElementById("typing-indicator")?.remove();
         addBotMessage("❌ Terjadi kesalahan, silakan coba lagi.");
+=======
+        // tampilkan tanggal teras (available_dates)
+        if (data.available_dates) {
+    let html = data.reply + "<br>";
+    Object.keys(data.available_dates).forEach(tgl => {
+        const info = data.available_dates[tgl];
+        html += `- ${tgl} → ${info.status}<br>`;
+        info.items.forEach(item => {
+            html += `• Jam: ${item.jam} | Menu: ${item.menu}<br>`;
+        });
+    });
+    addBotMessage(html);
+}
+
+    })
+    .catch(() => {
+        const typingEl = document.getElementById("typing-indicator");
+        if (typingEl) typingEl.remove();
+        addBotMessage("❌ Terjadi kesalahan, coba lagi.");
+>>>>>>> 2154e4b68bba9b697e3b2dc0bd83434d3cd78766
     });
 }
 
@@ -290,6 +345,7 @@ function submitOrder() {
     })
     .then(res => res.json())
     .then(data => {
+<<<<<<< HEAD
 
         /* 🚫 JADWAL BENTROK */
         if (data.show_form && data.reply.includes('Tanggal produksi')) {
@@ -340,6 +396,30 @@ function submitOrder() {
             addBotMessage(`
                 <button class="btn btn-success mt-2 w-100"
                     onclick="payNow('${data.snap_token}')">
+=======
+        orderForm.style.display = "none";
+        addBotMessage(data.reply);
+
+        if (data.order_detail) {
+            addBotMessage(`
+                <div class="order-detail mt-2 p-2" style="background:#f8f9fa;border-radius:8px">
+                    <strong>🧾 Detail Pesanan</strong><br>
+                    No Order: <b>${data.order_detail.no_order}</b><br>
+                    Nama: ${data.order_detail.nama}<br>
+                    Menu: ${data.order_detail.menu}<br>
+                    Jumlah: ${data.order_detail.jumlah}<br>
+                    Harga: Rp${data.order_detail.harga_satuan.toLocaleString()}<br>
+                    <hr style="margin:6px 0">
+                    <b>Total: Rp${data.order_detail.total_harga.toLocaleString()}</b><br>
+                    Alamat: ${data.order_detail.alamat}
+                </div>
+            `);
+        }
+
+        if (data.snap_token) {
+            addBotMessage(`
+                <button class="btn btn-success mt-2 w-100" onclick="payNow('${data.snap_token}')">
+>>>>>>> 2154e4b68bba9b697e3b2dc0bd83434d3cd78766
                     💳 Bayar Sekarang
                 </button>
             `);
@@ -353,18 +433,22 @@ function payNow(token) {
         onSuccess: () => {
             addBotMessage(`
                 Terima kasih 🙏<br>
+<<<<<<< HEAD
                 Beri rating ya:<br>
                 ${[1,2,3,4,5].map(i =>
                     `<span onclick="sendRating(${i})" style="cursor:pointer">⭐</span>`
                 ).join('')}
+=======
+                Silakan beri rating:<br>
+                <span onclick="sendRating(1)" style="cursor:pointer">⭐</span>
+                <span onclick="sendRating(2)" style="cursor:pointer">⭐</span>
+                <span onclick="sendRating(3)" style="cursor:pointer">⭐</span>
+                <span onclick="sendRating(4)" style="cursor:pointer">⭐</span>
+                <span onclick="sendRating(5)" style="cursor:pointer">⭐</span>
+>>>>>>> 2154e4b68bba9b697e3b2dc0bd83434d3cd78766
             `);
 
-            fetch("/chatbot/review", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                }
-            });
+            fetch("/chatbot/review", { method: "POST", headers: { "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content } });
         }
     });
 }

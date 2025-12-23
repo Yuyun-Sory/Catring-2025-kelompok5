@@ -99,6 +99,7 @@ class ChatAIController extends Controller
             }
 
             /* TAMPILKAN FORM PESANAN */
+<<<<<<< HEAD
            if($msg==='pesan'){
             $menus = Menu::select('id_menu','nama_menu','harga')->get();
             $blockedDates = $this->getBlockedDates();
@@ -113,6 +114,17 @@ class ChatAIController extends Controller
             ]);
         }
 
+=======
+            if($msg==='pesan'){
+                $menus = Menu::select('id_menu','nama_menu','harga')->get();
+                ChatState::set(['step'=>'form']);
+                return response()->json([
+                    'reply'=>"📝 Silakan isi form pemesanan di bawah 👇",
+                    'show_form'=>true,
+                    'menus'=>$menus
+                ]);
+            }
+>>>>>>> 2154e4b68bba9b697e3b2dc0bd83434d3cd78766
 
             /* SIMPAN FORM PESANAN */
             if($request->has('form_order')){
@@ -134,6 +146,7 @@ class ChatAIController extends Controller
                 'telepon' => 'required|string|max:20',
                 'alamat' => 'required|string|max:255',
                 'jumlah' => 'required|integer|min:1',
+<<<<<<< HEAD
                  'tanggal_produksi' => 'required|date',
             ]);
             $blockedDates = $this->getBlockedDates();
@@ -149,6 +162,9 @@ class ChatAIController extends Controller
                     'blocked_dates' => $blockedDates
                 ]);
             }
+=======
+            ]);
+>>>>>>> 2154e4b68bba9b697e3b2dc0bd83434d3cd78766
 
                 Pesanan::create([
                     'id_menu' => $menu->id_menu,
@@ -187,7 +203,10 @@ class ChatAIController extends Controller
                         'no_order'=>$noOrder,
                         'nama'=>$request->nama,
                         'menu'=>$menu->nama_menu,
+<<<<<<< HEAD
                             'tanggal_produksi'=>$request->tanggal_produksi,
+=======
+>>>>>>> 2154e4b68bba9b697e3b2dc0bd83434d3cd78766
                         'jumlah'=>$request->jumlah,
                         'harga_satuan'=>$menu->harga,
                         'total_harga'=>$total,
@@ -244,6 +263,7 @@ class ChatAIController extends Controller
         ]);
         return response()->json(['status'=>'ok']);
     }
+<<<<<<< HEAD
 
             private function getBlockedDates()
         {
@@ -258,4 +278,6 @@ class ChatAIController extends Controller
             return array_unique(array_merge($libur, $jadwalProduksi, $pesanan));
         }
 
+=======
+>>>>>>> 2154e4b68bba9b697e3b2dc0bd83434d3cd78766
 }
