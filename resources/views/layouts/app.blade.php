@@ -98,38 +98,6 @@
     @stack('styles')
 </head>
 <body>
-<<<<<<< HEAD
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="logo">T</div>
-        <ul>
-            <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <a href="{{ route('dashboard') }}">🏠 Dashboard</a>
-            </li>
-            <li class="{{ request()->routeIs('menu') ? 'active' : '' }}">
-                <a href="{{ route('menu') }}">🍔 Menu</a>
-            </li>
-            <li class="{{ request()->routeIs('pemesanan.masuk') ? 'active' : '' }}">
-                <a href="{{ route('pemesanan.masuk') }}">📥 Pemesanan Masuk</a>
-            </li>
-            <li class="{{ request()->routeIs('status.pesanan') ? 'active' : '' }}">
-                <a href="{{ route('status.pesanan') }}">📊 Status Pesanan</a>
-            </li>
-            <li class="{{ request()->routeIs('stok.bahan') ? 'active' : '' }}">
-                <a href="{{ route('stok.bahan') }}">📦 Stok Bahan</a>
-            </li>
-            <li class="{{ request()->routeIs('jadwal.produksi') ? 'active' : '' }}">
-                <a href="{{ route('jadwal.produksi') }}">📅 Jadwal Produksi</a>
-            </li>
-            <li class="{{ request()->routeIs('laporan') ? 'active' : '' }}">
-                <a href="{{ route('laporan') }}">📄 Laporan</a>
-            </li>
-            <li class="{{ request()->routeIs('libur.*') ? 'active' : '' }}">
-                <a href="{{ route('libur.index') }}">💬 TerasChat</a>
-            </li>
-=======
->>>>>>> 2154e4b68bba9b697e3b2dc0bd83434d3cd78766
-
 <!-- SIDEBAR -->
 <div class="sidebar">
     <div class="logo">T</div>
